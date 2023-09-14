@@ -116,7 +116,7 @@ export function Salas() {
                             placeholder='Insira a quantidade de leitos da sala'
                             required={true}
                             name='quantidadeleitosSala'
-                            error={errors.emailSala}
+                            error={errors.quantidadeleitosSala}
                             validations={register('quantidadeleitosSala', {
                                 required: {
                                     value: true,

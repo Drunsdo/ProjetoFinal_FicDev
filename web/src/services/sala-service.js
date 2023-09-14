@@ -23,8 +23,8 @@ export async function deleteSala(id) {
 export async function updateSala(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.put(`/sala/${data.id}`, {
-        tipo: data.tiposala,
-        quantidadeleitos: data.quantidadeleitossala
+        tipo: data.tipoSala,
+        quantidadeleitos: data.quantidadeleitosSala
     }, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
@@ -36,8 +36,8 @@ export async function updateSala(data) {
 export async function createSala(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.post('/sala', {
-        tipo: data.tiposala,
-        quantidadeleitos: data.quantidadeleitossala
+        tipo: data.tipoSala,
+        quantidadeleitos: data.quantidadeleitosSala
     }, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`

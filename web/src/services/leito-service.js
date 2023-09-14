@@ -23,10 +23,10 @@ export async function deleteLeito(id) {
 export async function updateLeito(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.put(`/leito/${data.id}`, {
-        salaId: data.salaIdleito,
-        data: data.dataleito,
-        pacienteatual: data.pacienteatualleito,
-        status: data.statusleito
+        salaId: data.salaIdLeito,
+        data: data.dataLeito,
+        pacienteatual: data.pacienteatualLeito,
+        status: data.statusLeito
     }, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
@@ -38,10 +38,10 @@ export async function updateLeito(data) {
 export async function createLeito(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.post('/leito', {
-        salaId: data.salaIdleito,
-        data: data.dataleito,
-        pacienteatual: data.pacienteatualleito,
-        status: data.statusleito
+        salaId: data.salaIdLeito,
+        data: data.dataLeito,
+        pacienteatual: data.pacienteatualLeito,
+        status: data.statusLeito
     }, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
