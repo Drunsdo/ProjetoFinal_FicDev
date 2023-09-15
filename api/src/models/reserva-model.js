@@ -6,7 +6,8 @@ class ReservaModel extends Model {
             responsavel: DataTypes.TEXT,
             data: DataTypes.DATE,
             horainicio: DataTypes.TIME,
-            horafim: DataTypes.TIME
+            horafim: DataTypes.TIME,
+            salaId: DataTypes.INTEGER
         }, {
             sequelize,
             tableName: 'reserva',

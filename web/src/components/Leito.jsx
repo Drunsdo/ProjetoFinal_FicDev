@@ -16,7 +16,7 @@ export function Leito(props) {
     return (
         <>
             <Card className="mb-3 p-3 bg-light">
-                <Card.Title><strong>Status: </strong>{props.leito.status}</Card.Title>
+                <Card.Title><strong>Status: </strong>{props.leito.status? "ocpado": "não ocupado"}</Card.Title>
                 <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
                 <Card.Text><strong>Data: </strong>{props.leito.data}</Card.Text>
                 <Card.Text><strong>Id da sala pertencente: </strong>{props.leito.salaId}</Card.Text>

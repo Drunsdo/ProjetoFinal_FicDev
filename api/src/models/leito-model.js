@@ -5,7 +5,8 @@ class LeitoModel extends Model {
         super.init({
             pacienteatual: DataTypes.TEXT,
             data: DataTypes.DATE,
-            status: DataTypes.BOOLEAN
+            status: DataTypes.BOOLEAN,
+            salaId: DataTypes.INTEGER
         }, {
             sequelize,
             tableName: 'leito',
