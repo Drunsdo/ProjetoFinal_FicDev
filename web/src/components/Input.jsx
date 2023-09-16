@@ -9,7 +9,7 @@ export function Input(props) {
                     placeholder={props.placeholder}
                     isInvalid={props.error}
                     required={props.required}
-                    id={props.name}
+                    id={props.id}
                     name={props.name}
                     defaultValue={props.defaultValue}
                     {...props.validations}

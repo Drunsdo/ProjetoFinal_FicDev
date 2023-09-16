@@ -16,7 +16,7 @@ export function Leito(props) {
     return (
         <>
             <Card className="mb-3 p-3 bg-light">
-                <Card.Title><strong>Status: </strong>{props.leito.status? "ocpado": "não ocupado"}</Card.Title>
+                <Card.Title><strong>Status: </strong>{props.leito.status? "Disponível": "Ocupado"}</Card.Title>
                 <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
                 <Card.Text><strong>Data: </strong>{props.leito.data}</Card.Text>
                 <Card.Text><strong>Id da sala pertencente: </strong>{props.leito.salaId}</Card.Text>
@@ -33,7 +33,7 @@ export function Leito(props) {
             </Card>
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
-                    <Modal.Title>Editar leito: {props.leito.nome}</Modal.Title>
+                    <Modal.Title>Editar leito: {props.leito.id}</Modal.Title>
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(editLeito)} validated={!!errors}>
                     <Modal.Body>
@@ -87,7 +87,7 @@ export function Leito(props) {
                         />
                         <Input
                             className="mb-3"
-                            type='integer'
+                            type='number'
                             defaultValue={props.leito.salaId}
                             label='Id da sala'
                             placeholder='Insira o id da salaaa que pertence'

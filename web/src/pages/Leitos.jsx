@@ -54,7 +54,8 @@ export function Leitos() {
             await updateLeito({
                 statusLeito: data.statusLeito,
                 dataLeito: data.dataLeito,
-                pacienteatualLeito: data.pacienteatualLeito
+                pacienteatualLeito: data.pacienteatualLeito,
+                salaIdLeito: data.salaIdLeito
             });
             await findLeitos();
         } catch (error) {
@@ -142,7 +143,7 @@ export function Leitos() {
                         />
                         <Input
                         className="mb-3"
-                        type='integer'
+                        type='number'
                         label='Id da sala'
                         placeholder='Insira o id da salaaa que pertence'
                         required={true}
