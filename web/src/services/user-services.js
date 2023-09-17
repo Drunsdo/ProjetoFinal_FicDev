@@ -11,7 +11,7 @@ export async function loginUser(data) {
 }
 
 
-/*export async function getUser() {
+export async function getUser() {
     try {
         const token = JSON.parse(sessionStorage.getItem('token'));
         if (!token) {
@@ -64,4 +64,4 @@ export async function deleteUser() {
     } catch (error) {
         return false;
     }
-}*/
+}

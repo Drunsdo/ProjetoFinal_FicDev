@@ -52,6 +52,7 @@ export function Leitos() {
     async function editLeito(data) {
         try {
             await updateLeito({
+                idLeito: data.idLeito,
                 statusLeito: data.statusLeito,
                 dataLeito: data.dataLeito,
                 pacienteatualLeito: data.pacienteatualLeito,

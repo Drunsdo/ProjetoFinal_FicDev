@@ -52,6 +52,7 @@ export function Salas() {
     async function editSala(data) {
         try {
             await updateSala({
+                idSala: data.idSala,
                 tipoSala: data.tipoSala,
                 quantidadeleitosSala: data.quantidadeleitosSala
             });

@@ -52,6 +52,7 @@ export function Reservas() {
     async function editReserva(data) {
         try {
             await updateReserva({
+                idReserva: data.idReserva,
                 responsavelReserva: data.responsavelReserva,
                 horainicioReserva: data.horainicioReserva,
                 horafimReserva: data.horafimReserva,
