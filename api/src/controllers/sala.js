@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Sequelize } = require("sequelize");
 const { HttpHelper } = require('../utils/http-helper');
 const { SalaModel } = require('../models/sala-model');
 
@@ -39,7 +39,7 @@ class SalaController {
             if (!tipo) return httpHelper.badRequest('Parâmetros inválidos!');
             const salas = await SalaModel.findAll({
                 where: {tipo:{
-                    [Op.gte]:tipo
+                    [Sequelize.gte]:tipo
                 }}
             });
             return httpHelper.ok(salas);

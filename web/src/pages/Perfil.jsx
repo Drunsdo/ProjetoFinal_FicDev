@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Col, Button, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
+import { NavbarComponent } from "../components/Navbar";
 
 import { User } from "../components/User";
 import { Header } from "../components/Header";
@@ -50,15 +51,8 @@ export function Perfil() {
 
     return (
         <Container fluid>
+            <NavbarComponent />
             <Header title="Perfil" />
-            <Row className="w-50 m-auto mb-5 mt-5 ">
-                <Col>
-                    <Button variant="outline-secondary" onClick={() => {
-                        sessionStorage.removeItem('token');
-                        navigate('/');
-                    }}>Sair</Button>
-                </Col>
-            </Row>
             <Col className="w-50 m-auto">
                 {user && user.length > 0
                     ? user.map((userData, index) => (

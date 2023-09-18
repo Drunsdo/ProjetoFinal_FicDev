@@ -2,6 +2,7 @@ import { Container, Col, Modal, Form, Button, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
+import { NavbarComponent } from "../components/Navbar";
 
 import { Leito } from "../components/Leito";
 import { Header } from "../components/Header";
@@ -66,16 +67,11 @@ export function Leitos() {
 
     return (
         <Container fluid>
+            <NavbarComponent />
             <Header title="Leitos" />
             <Row className="w-50 m-auto mb-5 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar novo Leito</Button>
-                </Col>
-                <Col>
-                    <Button variant="outline-secondary" onClick={() => {
-                        sessionStorage.removeItem('token');
-                        navigate('/');
-                    }}>Sair</Button>
                 </Col>
             </Row>
             <Col className="w-50 m-auto">
