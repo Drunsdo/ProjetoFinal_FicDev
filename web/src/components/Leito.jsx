@@ -16,12 +16,15 @@ export function Leito(props) {
     return (
         <>
             <Card className="mb-3 p-3 bg-light">
-                <Card.Title><strong>Status: </strong>{props.leito.status? "Disponível": "Ocupado"}</Card.Title>
+                <Card.Title><strong>Status: </strong>{props.leito.status ? "Disponível" : "Ocupado"}</Card.Title>
+                <Card.Text><strong>Id do leito: </strong>{props.leito.id}</Card.Text>
+                <Card.Text><strong>Id da sala: </strong>{props.leito.salaId}</Card.Text>
                 <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
                 <Card.Text><strong>Data: </strong>{props.leito.data}</Card.Text>
-                <Card.Text><strong>Id da sala pertencente: </strong>{props.leito.salaId}</Card.Text>
                 <Row xs="auto" className="d-flex justify-content-end">
-                    <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
+                    <Button variant="primary" onClick={() => setIsUpdated(true)}>Reservar</Button>
+
+                    <Button variant="secondary" className="ms-3" onClick={() => setIsUpdated(true)}>Editar</Button>
                     <Button
                         variant="outline-danger"
                         className="ms-3"

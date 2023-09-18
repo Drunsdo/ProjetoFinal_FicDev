@@ -39,8 +39,6 @@ export async function createLeito(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.post('/leito', {
         salaId: data.salaIdLeito,
-        data: data.dataLeito,
-        pacienteatual: data.pacienteatualLeito,
         status: data.statusLeito
     }, {
         headers: {

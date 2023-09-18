@@ -95,16 +95,16 @@ export function Leitos() {
                     <Modal.Body>
                         <Input
                             className="mb-3"
-                            type='text'
-                            label='Nome do paciente'
-                            placeholder='Insira o nome do paciente'
+                            type='number'
+                            label='Id da sala'
+                            placeholder='Insira o id da salaaa que pertence'
                             required={true}
-                            name='pacienteatualLeito'
-                            error={errors.pacienteatualLeito}
-                            validations={register('pacienteatualLeito', {
+                            name='salaIdLeito'
+                            error={errors.salaIdLeito}
+                            validations={register('salaIdLeito', {
                                 required: {
                                     value: true,
-                                    message: 'Nome do cliente é obrigatório.'
+                                    message: 'sala que o leito é obrigatório.'
                                 }
                             })}
                         />
@@ -123,36 +123,6 @@ export function Leitos() {
                                 }
                             })}
                         />
-                        <Input
-                            className="mb-3"
-                            type='date'
-                            label='Data'
-                            placeholder='Insira a data'
-                            required={true}
-                            name='dataLeito'
-                            error={errors.dataLeito}
-                            validations={register('dataLeito', {
-                                required: {
-                                    value: true,
-                                    message: 'data da estadia do leito é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                        className="mb-3"
-                        type='number'
-                        label='Id da sala'
-                        placeholder='Insira o id da salaaa que pertence'
-                        required={true}
-                        name='salaIdLeito'
-                        error={errors.salaIdLeito}
-                        validations={register('salaIdLeito', {
-                            required: {
-                                value: true,
-                                message: 'sala que o leito é obrigatório.'
-                            }
-                        })}
-                    />
 
                     </Modal.Body>
                     <Modal.Footer>
@@ -162,7 +132,7 @@ export function Leitos() {
                         <Button variant="secondary" onClick={() => setIsCreated(false)}>
                             Fechar
                         </Button>
-                        
+
                     </Modal.Footer>
                 </Form>
             </Modal>

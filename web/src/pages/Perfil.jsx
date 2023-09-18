@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Container, Col, Button, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Container, Card, Modal, Form, Button, Row } from "react-bootstrap";
 import { useForm } from 'react-hook-form';
 import { NavbarComponent } from "../components/Navbar";
-
-import { User } from "../components/User";
+import { Input } from '../components/Input';
 import { Header } from "../components/Header";
 import { deleteUser, getUser, updateUser } from "../services/user-service";
 
-export function Perfil() {
-    const [user, setUser] = useState(null);
-    const { handleSubmit, register, formState: { errors }, setValue } = useForm();
-    const navigate = useNavigate();
+export function Perfil(props) {
+    const [user, setUser] = useState([]);
+    const [isUpdated, setIsUpdated] = useState(false);
+    const { handleSubmit, register, formState: { errors }} = useForm();
 
     useEffect(() => {
         findUser();
@@ -20,17 +18,17 @@ export function Perfil() {
 
     async function findUser() {
         try {
-            const result = await getUser();
+            const result = await getUser(props.user.id);
             setUser(result.data);
         } catch (error) {
             console.error(error);
         }
     }
 
-    async function removeUser(id) {
+    async function removeUser() {
         try {
-            await deleteUser(id);
-            await findUser();
+            await deleteUser(props.user.id);
+            findUser(); 
         } catch (error) {
             console.error(error);
         }
@@ -43,7 +41,8 @@ export function Perfil() {
                 emailUser: data.emailUser,
                 passwordUser: data.passwordUser
             });
-            await findUser(); // Corrected from findSalas() to findUser()
+            await findUser(); 
+            setIsUpdated(false);
         } catch (error) {
             console.error(error);
         }
@@ -53,24 +52,56 @@ export function Perfil() {
         <Container fluid>
             <NavbarComponent />
             <Header title="Perfil" />
-            <Col className="w-50 m-auto">
-                {user && user.length > 0
-                    ? user.map((userData, index) => (
-                        <User
-                            key={index}
-                            user={userData}
-                            removeUser={() => removeUser(userData.id)}
-                            editUser={editUser}
-                            register={register}
-                            setValue={setValue}
-                            handleSubmit={handleSubmit}
-                            errors={errors}
+            <Card className="mb-3 p-3 bg-light">
+                <Card.Title><strong>Email: </strong>{user.email}</Card.Title>
+                <Card.Text><strong>Senha: </strong>{"******"}</Card.Text>
+                <Row xs="auto" className="d-flex justify-content-end">
+                    <Button variant="primary" onClick={() => setIsUpdated(true)}>Editar</Button>
+                    <Button
+                        variant="outline-danger"
+                        className="ms-3"
+                        onClick={removeUser}
+                    >
+                        Apagar
+                    </Button>
+                </Row>
+            </Card>
+
+            <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
+                <Modal.Header>
+                    <Modal.Title>Editar Perfil</Modal.Title>
+                </Modal.Header>
+                <Form noValidate onSubmit={handleSubmit(editUser)} validated={!!errors}>
+                    <Modal.Body>
+                        <Input
+                            className="mb-3"
+                            type='text'
+                            defaultValue={user.email}
+                            label='Email'
+                            placeholder='Insira o novo email'
+                            name='emailUser'
+                            {...register('emailUser')}
                         />
-                    ))
-
-                    : <p className="text-center">Não existe nenhum user cadastrado!</p>}
-            </Col>
-
+                        <Input
+                            className="mb-3"
+                            type='text'
+                            defaultValue="******"
+                            label='Senha'
+                            placeholder='Insira a nova senha'
+                            name='passwordUser'
+                            {...register('passwordUser')}
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" type="submit">
+                            Editar
+                        </Button>
+                        <Button variant="secondary" onClick={() => setIsUpdated(false)}>
+                            Fechar
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal>
         </Container>
     );
 }

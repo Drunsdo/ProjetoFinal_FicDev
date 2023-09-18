@@ -8,7 +8,7 @@ import { Sala } from "../components/Sala";
 import { Header } from "../components/Header";
 import { Input } from '../components/Input';
 
-import { createSala, deleteSala, getSalas, updateSala, getFiltroSalas } from "../services/sala-service";
+import { createSala, deleteSala, getSalas, updateSala } from "../services/sala-service";
 
 export function Salas() {
     const [salas, setSalas] = useState([]);
@@ -31,7 +31,7 @@ export function Salas() {
         }
     }
 
-    async function findTipoSalas(data) {
+    /*async function findTipoSalas(data) {
         try {
             const result = await getFiltroSalas(data);
             setSalas(result.data);
@@ -39,7 +39,7 @@ export function Salas() {
             console.error(error);
             navigate('/');
         }
-    }
+    }*/
 
     async function removeSala(id) {
         try {
@@ -82,7 +82,7 @@ export function Salas() {
                     <Button onClick={() => setIsCreated(true)}>Criar nova Sala</Button>
                 </Col>
             </Row>
-            <Row className="w-50 m-auto mb-5 mt-5 ">
+            {/*<Row className="w-50 m-auto mb-5 mt-5 ">
                 <Form
                     noValidate
                     validated={!errors}
@@ -110,7 +110,7 @@ export function Salas() {
 
                     </Modal.Footer>
                 </Form>
-            </Row>
+                        </Row>*/}
             <Col className="w-50 m-auto">
                 {salas && salas.length > 0
                     ? salas.map((sala, index) => (

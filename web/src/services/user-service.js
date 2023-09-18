@@ -17,7 +17,7 @@ export async function getUser(id) {
         if (!token) {
             return null;
         }
-        const result = await api.get(`/user`, {
+        const result = await api.get(`/user${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

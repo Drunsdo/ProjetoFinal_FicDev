@@ -5,13 +5,13 @@ class LeitoController {
     async create(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const { status, data, pacienteatual, salaId } = request.body;
-            if (status === undefined || data === undefined || pacienteatual === undefined || salaId === undefined) {
+            const { status, salaId } = request.body;
+            if (status === undefined || salaId === undefined) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
             
             const leito = await LeitoModel.create({
-                status, data, pacienteatual, salaId
+                status,  salaId
             });
             
             return httpHelper.created(leito);
