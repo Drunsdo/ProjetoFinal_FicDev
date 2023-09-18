@@ -31,16 +31,17 @@ class ReservaController {
         }
     }
 
-    async getById(request, response) {
+    async getBySalaId(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const { id } = request.params;
-            if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
+            const { salaId } = request.params;
+            if (!salaId) return httpHelper.badRequest('Parâmetros inválidos!');
             
-            const reserva = await ReservaModel.findByPk(id);
-            if (!reserva) return httpHelper.notFound('Reserva não encontrada!');
+            const reservas = await ReservaModel.findAll({
+                where: {salaId}
+            });
             
-            return httpHelper.ok(reserva);
+            return httpHelper.ok(reservas);
         } catch (error) {
             return httpHelper.internalError(error);
         }

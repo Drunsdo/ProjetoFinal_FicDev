@@ -11,11 +11,11 @@ class SalaController {
             if (tipo === undefined || quantidadeleitos === undefined) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
-            
+
             const sala = await SalaModel.create({
                 tipo, quantidadeleitos
             });
-            
+
             return httpHelper.created(sala);
         } catch (error) {
             return httpHelper.internalError(error);
@@ -32,21 +32,22 @@ class SalaController {
         }
     }
 
-    async filtro(request, response) {
+    async getByTipo(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
             const { tipo } = request.params;
             if (!tipo) return httpHelper.badRequest('Parâmetros inválidos!');
+
             const salas = await SalaModel.findAll({
-                where: {tipo:{
-                    [Sequelize.gte]:tipo
-                }}
+                where: { tipo }
             });
+
             return httpHelper.ok(salas);
         } catch (error) {
             return httpHelper.internalError(error);
         }
     }
+
 
     async delete(request, response) {
         const httpHelper = new HttpHelper(response);
@@ -64,6 +65,7 @@ class SalaController {
         }
     }
 
+
     async update(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
@@ -72,13 +74,13 @@ class SalaController {
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
             const salaExists = await SalaModel.findByPk(id);
             if (!salaExists) return httpHelper.notFound('Sala não encontrada!');
-            
+
             await SalaModel.update({
                 tipo, quantidadeleitos
             }, {
                 where: { id }
             });
-            
+
             return httpHelper.ok({
                 message: 'Sala atualizada com sucesso!'
             });

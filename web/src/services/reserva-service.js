@@ -10,6 +10,16 @@ export async function getReservas() {
     return result;
 }
 
+export async function getFiltroReservas(data) {
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get(`/reservas/${data.salaIdReserva}`, {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    return result;
+}
+
 export async function deleteReserva(id) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.delete(`/reserva/${id}`, {

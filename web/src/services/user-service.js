@@ -12,40 +12,26 @@ export async function loginUser(data) {
 
 
 export async function getUser(id) {
-    try {
-        const token = JSON.parse(sessionStorage.getItem('token'));
-        if (!token) {
-            return null;
-        }
-        const result = await api.get(`/user${id}`, {
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get(`/user/${id}`, {
             headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return result.data;
-    } catch (error) {
-        return null;
-    }
+                'Authorization': `Bearer ${JSON.parse(accessToken)}`
+            }        
+    });
+    return result;
 }
 
 export async function updateUser(data) {
-    try {
-        const token = JSON.parse(sessionStorage.getItem('token'));
-        if (!token) {
-            return null;
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.put(`/user/${data.id}`, {
+        email: data.emailUser,
+        password: data.passwordUser
+    }, {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }
-        const result = await api.put(`/user/${data.id}`,{
-            email: data.emailUser,
-            password: data.passwordUser
-        },{
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return result.data;
-    } catch (error) {
-        return null;
-    }
+    });
+    return result;
 }
 
 export async function deleteUser(id) {

@@ -2,7 +2,7 @@ import { api } from "./api";
 
 export async function getFiltroSalas(data) {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get(`/sala/${data.tipoSala}`, {
+    const result = await api.get(`/salas/${data.tipoSala}`, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }

@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-
 import { Input } from "./Input";
 
 export function Leito(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
 
-    async function editLeito(data) {
-        await props.editLeito({ ...data, id: props.leito.id });
-        setIsUpdated(false);
+    async function handleEditLeito(data) {
+        try {
+            await props.editLeito({ ...data, id: props.leito.id });
+            setIsUpdated(false);
+        } catch (error) {
+            console.error("Erro ao editar leito:", error);
+        }
     }
 
     return (
@@ -19,12 +22,21 @@ export function Leito(props) {
                 <Card.Title><strong>Status: </strong>{props.leito.status ? "Disponível" : "Ocupado"}</Card.Title>
                 <Card.Text><strong>Id do leito: </strong>{props.leito.id}</Card.Text>
                 <Card.Text><strong>Id da sala: </strong>{props.leito.salaId}</Card.Text>
-                <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
-                <Card.Text><strong>Data: </strong>{props.leito.data}</Card.Text>
+                {props.leito.status === false && (
+                    <>
+                        <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
+                        <Card.Text><strong>Data: </strong>{props.leito.data}</Card.Text>
+                    </>
+                )}
                 <Row xs="auto" className="d-flex justify-content-end">
-                    <Button variant="primary" onClick={() => setIsUpdated(true)}>Reservar</Button>
-
-                    <Button variant="secondary" className="ms-3" onClick={() => setIsUpdated(true)}>Editar</Button>
+                    {props.leito.status === true && (
+                        <Button variant="primary" onClick={() => setIsUpdated(true)}>
+                            Reservar
+                        </Button>
+                    )}
+                    <Button variant="secondary" className="ms-3" onClick={() => setIsUpdated(true)}>
+                        Editar
+                    </Button>
                     <Button
                         variant="outline-danger"
                         className="ms-3"
@@ -38,7 +50,7 @@ export function Leito(props) {
                 <Modal.Header>
                     <Modal.Title>Editar leito: {props.leito.id}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(editLeito)} validated={!!errors}>
+                <Form noValidate onSubmit={handleSubmit(handleEditLeito)} validated={!!errors}>
                     <Modal.Body>
                         <Input
                             className="mb-3"
@@ -68,7 +80,7 @@ export function Leito(props) {
                             validations={register('statusLeito', {
                                 required: {
                                     value: true,
-                                    message: 'status do leito é obrigatório.'
+                                    message: 'Status do leito é obrigatório.'
                                 }
                             })}
                         />
@@ -78,29 +90,23 @@ export function Leito(props) {
                             defaultValue={props.leito.data}
                             label='Data'
                             placeholder='Insira a data'
-                            required={true}
                             name='dataLeito'
                             error={errors.dataLeito}
-                            validations={register('dataLeito', {
-                                required: {
-                                    value: true,
-                                    message: 'data da estadia do leito é obrigatório.'
-                                }
-                            })}
+                            validations={register('dataLeito')}
                         />
                         <Input
                             className="mb-3"
                             type='number'
                             defaultValue={props.leito.salaId}
                             label='Id da sala'
-                            placeholder='Insira o id da salaaa que pertence'
+                            placeholder='Insira o id da sala à qual pertence'
                             required={true}
                             name='salaIdLeito'
                             error={errors.salaIdLeito}
                             validations={register('salaIdLeito', {
                                 required: {
                                     value: true,
-                                    message: 'sala que o leito é obrigatório.'
+                                    message: 'Id da sala é obrigatório.'
                                 }
                             })}
                         />

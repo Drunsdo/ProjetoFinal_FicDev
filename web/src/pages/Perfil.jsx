@@ -1,34 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Modal, Form, Button, Row } from "react-bootstrap";
-import { useForm } from 'react-hook-form';
+import { Container, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { NavbarComponent } from "../components/Navbar";
-import { Input } from '../components/Input';
 import { Header } from "../components/Header";
 import { deleteUser, getUser, updateUser } from "../services/user-service";
+import { User } from "../components/User";
 
-export function Perfil(props) {
-    const [user, setUser] = useState([]);
-    const [isUpdated, setIsUpdated] = useState(false);
-    const { handleSubmit, register, formState: { errors }} = useForm();
+export function Perfil() {
+    const [user, setUser] = useState({});
+    const navigate = useNavigate();
+
+    const id = sessionStorage.getItem('idUser');
 
     useEffect(() => {
-        findUser();
+        findUser(id);
         // eslint-disable-next-line
-    }, []);
+    }, [id]);
 
-    async function findUser() {
+    async function findUser(id) {
         try {
-            const result = await getUser(props.user.id);
+            const result = await getUser(id);
             setUser(result.data);
         } catch (error) {
             console.error(error);
         }
     }
 
-    async function removeUser() {
+    async function removeUser(id) {
         try {
-            await deleteUser(props.user.id);
-            findUser(); 
+            await deleteUser(id);
+            navigate('/');
         } catch (error) {
             console.error(error);
         }
@@ -37,12 +38,11 @@ export function Perfil(props) {
     async function editUser(data) {
         try {
             await updateUser({
-                idUser: data.idUser,
+                id: id,
                 emailUser: data.emailUser,
                 passwordUser: data.passwordUser
             });
-            await findUser(); 
-            setIsUpdated(false);
+            await findUser(id);
         } catch (error) {
             console.error(error);
         }
@@ -52,56 +52,19 @@ export function Perfil(props) {
         <Container fluid>
             <NavbarComponent />
             <Header title="Perfil" />
-            <Card className="mb-3 p-3 bg-light">
-                <Card.Title><strong>Email: </strong>{user.email}</Card.Title>
-                <Card.Text><strong>Senha: </strong>{"******"}</Card.Text>
-                <Row xs="auto" className="d-flex justify-content-end">
-                    <Button variant="primary" onClick={() => setIsUpdated(true)}>Editar</Button>
-                    <Button
-                        variant="outline-danger"
-                        className="ms-3"
-                        onClick={removeUser}
-                    >
-                        Apagar
-                    </Button>
-                </Row>
-            </Card>
-
-            <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
-                <Modal.Header>
-                    <Modal.Title>Editar Perfil</Modal.Title>
-                </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(editUser)} validated={!!errors}>
-                    <Modal.Body>
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            defaultValue={user.email}
-                            label='Email'
-                            placeholder='Insira o novo email'
-                            name='emailUser'
-                            {...register('emailUser')}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            defaultValue="******"
-                            label='Senha'
-                            placeholder='Insira a nova senha'
-                            name='passwordUser'
-                            {...register('passwordUser')}
-                        />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="primary" type="submit">
-                            Editar
-                        </Button>
-                        <Button variant="secondary" onClick={() => setIsUpdated(false)}>
-                            Fechar
-                        </Button>
-                    </Modal.Footer>
-                </Form>
-            </Modal>
+            <Col className="w-50 m-auto">
+                {user && user.length > 0 
+                ? user.map((user, index) =>
+                    <User
+                        key={index}
+                        user={user}
+                        removeUser={() => removeUser(id)}
+                        editUser={editUser}
+                    />
+                ) : (
+                    <p className="text-center">Não existe nenhum usuário cadastrado!</p>
+                )}
+            </Col>
         </Container>
     );
 }

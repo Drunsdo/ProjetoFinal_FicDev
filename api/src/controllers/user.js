@@ -54,9 +54,9 @@ class UserController {
     async getUser(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const userId = request.params.id; 
-            const user = await UserModel.findByPk(userId);
-            if (!user) return httpHelper.notFound('Usuário não encontrado!');
+            const { id } = request.params;
+            if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
+            const user = await UserModel.findByPk(id);
             return httpHelper.ok(user);
         } catch (error) {
             return httpHelper.internalError(error);
@@ -66,11 +66,11 @@ class UserController {
     async updateUser(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const userId = request.params.id; 
+            const userId = request.params.id;
             const { email, password } = request.body;
             const user = await UserModel.findByPk(userId);
             if (!user) return httpHelper.notFound('Usuário não encontrado!');
-            
+
             if (email) {
                 user.email = email;
             }
@@ -80,7 +80,7 @@ class UserController {
             }
 
             await user.save();
-            
+
             return httpHelper.ok(user);
         } catch (error) {
             return httpHelper.internalError(error);
@@ -90,12 +90,12 @@ class UserController {
     async deleteUser(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const userId = request.params.id; 
+            const userId = request.params.id;
             const user = await UserModel.findByPk(userId);
             if (!user) return httpHelper.notFound('Usuário não encontrado!');
-            
+
             await user.destroy();
-            
+
             return httpHelper.ok('Usuário excluído com sucesso');
         } catch (error) {
             return httpHelper.internalError(error);

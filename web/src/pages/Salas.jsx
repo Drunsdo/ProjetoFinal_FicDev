@@ -8,13 +8,14 @@ import { Sala } from "../components/Sala";
 import { Header } from "../components/Header";
 import { Input } from '../components/Input';
 
-import { createSala, deleteSala, getSalas, updateSala } from "../services/sala-service";
+import { createSala, deleteSala, getSalas, updateSala, getFiltroSalas } from "../services/sala-service";
 
 export function Salas() {
     const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
     const { handleSubmit, register, formState: { errors } } = useForm();
     const navigate = useNavigate();
+    const [tipoFiltro, setTipoFiltro] = useState("");
 
     useEffect(() => {
         findSalas();
@@ -31,15 +32,19 @@ export function Salas() {
         }
     }
 
-    /*async function findTipoSalas(data) {
+    async function handleFiltrar() {
         try {
-            const result = await getFiltroSalas(data);
+            // Verifique se o campo de filtro não está vazio antes de chamar a API
+            if (tipoFiltro.trim() === "") {
+                return; // Evite chamada à API se o filtro estiver vazio
+            }
+
+            const result = await getFiltroSalas({ tipoSala: tipoFiltro });
             setSalas(result.data);
         } catch (error) {
             console.error(error);
-            navigate('/');
         }
-    }*/
+    }
 
     async function removeSala(id) {
         try {
@@ -82,35 +87,23 @@ export function Salas() {
                     <Button onClick={() => setIsCreated(true)}>Criar nova Sala</Button>
                 </Col>
             </Row>
-            {/*<Row className="w-50 m-auto mb-5 mt-5 ">
-                <Form
-                    noValidate
-                    validated={!errors}
-                    onSubmit={handleSubmit(findTipoSalas)}
-                    autoComplete='off'
-                >
-                    <Modal.Body>
-                        <Input
-                            className="mb-3"
-                            controlId="formGroupFiltroSala"
-                            label='Entre com tipo de sala: Leito ou Cirúrgica'
-                            type='text'
-                            name='filtroSala'
-                            errors={errors.filtroSala}
-                            placeholder='Insira o filtro da sala'
-                            validations={register('filtroSala', {
-                                required: {
-                                    value: true,
-                                }
-                            })}
-                        />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="primary" type="submit" >Filtrar</Button>
 
-                    </Modal.Footer>
-                </Form>
-                        </Row>*/}
+            <Row className="w-50 m-auto mb-2">
+                <Col md='8'>
+                    <Form.Group className="mb-3">
+                        <Form.Control
+                            type="text"
+                            placeholder="Filtrar por tipo"
+                            value={tipoFiltro}
+                            onChange={(e) => setTipoFiltro(e.target.value)}
+                        />
+                    </Form.Group>
+                </Col>
+                <Col md='2'>
+                    <Button onClick={handleFiltrar}>Filtrar</Button>
+                </Col>
+            </Row>
+
             <Col className="w-50 m-auto">
                 {salas && salas.length > 0
                     ? salas.map((sala, index) => (

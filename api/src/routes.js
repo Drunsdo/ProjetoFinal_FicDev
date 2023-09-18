@@ -15,19 +15,19 @@ const reservaController = new ReservaController();
 
 routes.post('/sala', authMiddleware, salaController.create);
 routes.get('/salas', authMiddleware, salaController.getAll);
-routes.get('/sala/:tipo', authMiddleware, salaController.filtro);
+routes.get('/salas/:tipo', authMiddleware, salaController.getByTipo);
 routes.delete('/sala/:id', authMiddleware, salaController.delete);
 routes.put('/sala/:id', authMiddleware, salaController.update);
 
 routes.post('/reserva', authMiddleware, reservaController.create);
 routes.get('/reservas', authMiddleware, reservaController.getAll);
-routes.get('/reserva/:id', authMiddleware, reservaController.getById);
+routes.get('/reservas/:salaId', authMiddleware, reservaController.getBySalaId);
 routes.delete('/reserva/:id', authMiddleware, reservaController.delete);
 routes.put('/reserva/:id', authMiddleware, reservaController.update);
 
 routes.post('/leito', authMiddleware, leitoController.create);
 routes.get('/leitos', authMiddleware, leitoController.getAll);
-routes.get('/leito/:id', leitoController.getById);
+routes.get('/leitos/:status', leitoController.getByStatus);
 routes.delete('/leito/:id', authMiddleware, leitoController.delete);
 routes.put('/leito/:id', authMiddleware, leitoController.update);
 
