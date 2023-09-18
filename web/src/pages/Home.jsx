@@ -18,7 +18,7 @@ export function Home() {
             <Link to="/reservas">
                 <Button type="submit">Reservas</Button>
             </Link>
-            <Link to="/user">
+            <Link to="/perfil">
                 <Button type="submit">Perfil</Button>
             </Link>
 

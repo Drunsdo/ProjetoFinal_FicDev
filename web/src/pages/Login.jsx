@@ -7,7 +7,7 @@ import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 
-import { loginUser } from '../services/user-services';
+import { loginUser } from '../services/user-service';
 
 export function Login() {
     const { handleSubmit, register, formState: { errors } } = useForm();

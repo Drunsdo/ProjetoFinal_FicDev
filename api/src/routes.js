@@ -33,7 +33,7 @@ routes.put('/leito/:id', authMiddleware, leitoController.update);
 
 routes.post('/register', userController.register);
 routes.post('/login', userController.login);
-routes.get('/user/:id', userController.getUser);
+routes.get('/user/:id', authMiddleware, userController.getUser);
 routes.put('/user/:id', authMiddleware, userController.updateUser);
 routes.delete('/user/:id', authMiddleware, userController.deleteUser);
 

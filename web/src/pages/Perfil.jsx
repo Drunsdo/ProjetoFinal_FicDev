@@ -8,12 +8,13 @@ import { Header } from "../components/Header";
 import { deleteUser, getUser, updateUser } from "../services/user-service";
 
 export function Perfil() {
-    const [perfil, setUser] = useState([]);
+    const [user, setUser] = useState([]);
     const { handleSubmit, register, formState: { errors }, setValue } = useForm();
     const navigate = useNavigate();
 
     useEffect(() => {
         findUser();
+        // eslint-disable-next-line
     }, []);
 
     async function findUser() {
@@ -22,7 +23,6 @@ export function Perfil() {
             setUser(result.data);
         } catch (error) {
             console.error(error);
-            navigate('/');
         }
     }
 
@@ -60,8 +60,8 @@ export function Perfil() {
                 </Col>
             </Row>
             <Col className="w-50 m-auto">
-                {perfil && perfil.length > 0
-                    ? perfil.map((user, index) => (
+                {user && user.length > 0
+                    ? user.map((user, index) => (
                         <User
                             key={index}
                             user={user}
@@ -73,7 +73,7 @@ export function Perfil() {
                             errors={errors}
                         />
                     ))
-                    : <p className="text-center">Não existe nenhum perfil cadastrado!</p>}
+                    : <p className="text-center">Não existe nenhum user cadastrado!</p>}
             </Col>
             
         </Container>

@@ -7,7 +7,7 @@ import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 
-import { registerUser } from "../services/user-services";
+import { registerUser } from "../services/user-service";
 
 export function Register() {
     const { handleSubmit, register, formState: { errors } } = useForm();

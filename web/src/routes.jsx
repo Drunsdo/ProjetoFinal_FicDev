@@ -15,8 +15,7 @@ import { isAuthenticated } from './utils/is-authenticated';
  */
 export function PrivateRoute({ children }) {
     if (!isAuthenticated()) {
-        // Pode trocar para renderizar uma página customizada de não autorizada,
-        // nesse caso ele vai voltar para a tela de login
+
         return <Navigate to="/" replace />
     }
     return children;
@@ -67,7 +66,7 @@ export function Navigations() {
                             <Perfil />
                         </PrivateRoute>
                     )}
-                />
+                    />
             </Routes>
         </BrowserRouter>
     )

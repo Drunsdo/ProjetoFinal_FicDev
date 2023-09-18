@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "./Input";
 
 export function User(props) {
-    const { handleSubmit, register, formState: { errors }, setValue } = useForm();
+    const { handleSubmit, register, formState: { errors }} = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
 
     async function editUser(data) {
@@ -17,7 +17,6 @@ export function User(props) {
         <>
             <Card className="mb-3 p-3 bg-light">
                 <Card.Title><strong>Email: </strong>{props.user.email}</Card.Title>
-
                 <Card.Text><strong>Id: </strong>{props.user.id}</Card.Text>
                 <Row xs="auto" className="d-flex justify-content-end">
                     <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>

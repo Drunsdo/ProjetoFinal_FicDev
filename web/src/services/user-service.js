@@ -11,13 +11,13 @@ export async function loginUser(data) {
 }
 
 
-export async function getUser() {
+export async function getUser(id) {
     try {
         const token = JSON.parse(sessionStorage.getItem('token'));
         if (!token) {
             return null;
         }
-        const result = await api.get(`/user/${data.id}`, {
+        const result = await api.get(`/user`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -48,13 +48,13 @@ export async function updateUser(data) {
     }
 }
 
-export async function deleteUser() {
+export async function deleteUser(id) {
     try {
         const token = JSON.parse(sessionStorage.getItem('token'));
         if (!token) {
             return false;
         }
-        await api.delete(`/user/${data.id}`, {
+        await api.delete(`/user/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
