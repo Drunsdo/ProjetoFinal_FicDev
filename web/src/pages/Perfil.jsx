@@ -8,7 +8,7 @@ import { Header } from "../components/Header";
 import { deleteUser, getUser, updateUser } from "../services/user-service";
 
 export function Perfil() {
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState(null);
     const { handleSubmit, register, formState: { errors }, setValue } = useForm();
     const navigate = useNavigate();
 
@@ -61,11 +61,11 @@ export function Perfil() {
             </Row>
             <Col className="w-50 m-auto">
                 {user && user.length > 0
-                    ? user.map((user, index) => (
+                    ? user.map((userData, index) => (
                         <User
                             key={index}
-                            user={user}
-                            removeUser={() => removeUser(user.id)} // Removed async/await here
+                            user={userData}
+                            removeUser={() => removeUser(userData.id)}
                             editUser={editUser}
                             register={register}
                             setValue={setValue}
@@ -73,9 +73,10 @@ export function Perfil() {
                             errors={errors}
                         />
                     ))
+
                     : <p className="text-center">Não existe nenhum user cadastrado!</p>}
             </Col>
-            
+
         </Container>
     );
 }

@@ -15,7 +15,7 @@ const reservaController = new ReservaController();
 
 routes.post('/sala', authMiddleware, salaController.create);
 routes.get('/salas', authMiddleware, salaController.getAll);
-routes.get('/sala/:id', authMiddleware, salaController.getById);
+routes.get('/sala/:tipo', authMiddleware, salaController.filtro);
 routes.delete('/sala/:id', authMiddleware, salaController.delete);
 routes.put('/sala/:id', authMiddleware, salaController.update);
 

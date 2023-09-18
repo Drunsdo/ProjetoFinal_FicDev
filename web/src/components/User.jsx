@@ -9,9 +9,10 @@ export function User(props) {
     const [isUpdated, setIsUpdated] = useState(false);
 
     async function editUser(data) {
-        await props.editUser({ ...data, idUser: props.user.id });
+        await props.editUser({ idUser: props.user.id, emailUser: data.emailUser, passwordUser: data.passwordUser });
         setIsUpdated(false);
     }
+    
 
     return (
         <>

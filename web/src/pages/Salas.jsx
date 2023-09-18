@@ -7,7 +7,7 @@ import { Sala } from "../components/Sala";
 import { Header } from "../components/Header";
 import { Input } from '../components/Input';
 
-import { createSala, deleteSala, getSalas, updateSala } from "../services/sala-service";
+import { createSala, deleteSala, getSalas, updateSala, getFiltroSalas } from "../services/sala-service";
 
 export function Salas() {
     const [salas, setSalas] = useState([]);
@@ -23,6 +23,16 @@ export function Salas() {
     async function findSalas() {
         try {
             const result = await getSalas();
+            setSalas(result.data);
+        } catch (error) {
+            console.error(error);
+            navigate('/');
+        }
+    }
+
+    async function findTipoSalas(data) {
+        try {
+            const result = await getFiltroSalas(data);
             setSalas(result.data);
         } catch (error) {
             console.error(error);
@@ -75,6 +85,35 @@ export function Salas() {
                         navigate('/');
                     }}>Sair</Button>
                 </Col>
+            </Row>
+            <Row className="w-50 m-auto mb-5 mt-5 ">
+                <Form
+                    noValidate
+                    validated={!errors}
+                    onSubmit={handleSubmit(findTipoSalas)}
+                    autoComplete='off'
+                >
+                    <Modal.Body>
+                        <Input
+                            className="mb-3"
+                            controlId="formGroupFiltroSala"
+                            label='Entre com tipo de sala: Leito ou Cirúrgica'
+                            type='text'
+                            name='filtroSala'
+                            errors={errors.filtroSala}
+                            placeholder='Insira o filtro da sala'
+                            validations={register('filtroSala', {
+                                required: {
+                                    value: true,
+                                }
+                            })}
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" type="submit" >Filtrar</Button>
+
+                    </Modal.Footer>
+                </Form>
             </Row>
             <Col className="w-50 m-auto">
                 {salas && salas.length > 0
