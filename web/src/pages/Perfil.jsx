@@ -16,7 +16,7 @@ export function Perfil(props) {
     const [isUpdated, setIsUpdated] = useState(false);
     const navigate = useNavigate();
 
-    const id = sessionStorage.getItem('idUser')
+    const id = sessionStorage.getItem('userId')
 
     useEffect(() => {
         findUser(id);
@@ -27,7 +27,7 @@ export function Perfil(props) {
         try {
             const result = await getUser(id);
             setUser(result.data);
-            console.log(result.data)
+            console.log("teste")
         } catch (error) {
             console.error(error);
 

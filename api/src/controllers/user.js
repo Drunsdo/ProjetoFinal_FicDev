@@ -25,7 +25,7 @@ class UserController {
                 `${process.env.TOKEN_SECRET}`,
                 { expiresIn: "10h" }
             );
-            return httpHelper.created({ accessToken });
+            return httpHelper.created({ accessToken,userId: userExists.id });
         } catch (error) {
             return httpHelper.internalError(error);
         }
@@ -45,7 +45,8 @@ class UserController {
                 `${process.env.TOKEN_SECRET}`,
                 { expiresIn: "10h" }
             );
-            return httpHelper.ok({ accessToken });
+            return httpHelper.ok({ accessToken,
+            userId: userExists.id });
         } catch (error) {
             return httpHelper.internalError(error);
         }
