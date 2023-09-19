@@ -62,26 +62,35 @@ class UserController {
             return httpHelper.internalError(error);
         }
     }
+    
 
     async updateUser(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const userId = request.params.id;
-            const { email, password } = request.body;
-            const user = await UserModel.findByPk(userId);
-            if (!user) return httpHelper.notFound('Usuário não encontrado!');
+            const { id } = request.params;
+            const { email, password} = request.body;
 
-            if (email) {
-                user.email = email;
-            }
-            if (password) {
-                const passwordHashed = await bcrypt.hash(password, Number(process.env.SALT));
-                user.password = passwordHashed;
-            }
+            if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
+            if (!email) return httpHelper.badRequest('Parâmetros inválidos!');
+            if (!password) return httpHelper.badRequest('Parâmetros inválidos!');
+           
 
-            await user.save();
+            const passwordHashed = await bcrypt.hash(
+                password,
+                Number(process.env.SALT)
+            );
 
-            return httpHelper.ok(user);
+            const userExists = await UserModel.findByPk(id);
+            if (!userExists) return httpHelper.notFound('Usuario não encontrado');
+            await UserModel.update({
+                email, 
+                password:passwordHashed, 
+            }, {
+                where: { id }
+            });
+            return httpHelper.ok({
+                message: 'Usuario atualizado com sucesso!'
+            });
         } catch (error) {
             return httpHelper.internalError(error);
         }
@@ -90,13 +99,14 @@ class UserController {
     async deleteUser(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const userId = request.params.id;
-            const user = await UserModel.findByPk(userId);
-            if (!user) return httpHelper.notFound('Usuário não encontrado!');
-
-            await user.destroy();
-
-            return httpHelper.ok('Usuário excluído com sucesso');
+            const { id } = request.params;
+            if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
+            const UserExists = await UserModel.findOne({ where: { id } });
+            if (!UserExists) return httpHelper.notFound('Usuario não encontrado!');
+            await UserModel.destroy({ where: { id } });
+            return httpHelper.ok({
+                message: 'Usuario deletado com sucesso!'
+            })
         } catch (error) {
             return httpHelper.internalError(error);
         }

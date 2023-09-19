@@ -35,19 +35,11 @@ export async function updateUser(data) {
 }
 
 export async function deleteUser(id) {
-    try {
-        const token = JSON.parse(sessionStorage.getItem('token'));
-        if (!token) {
-            return false;
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.delete(`/user/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }
-        await api.delete(`/user/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        sessionStorage.removeItem('token');
-        return true;
-    } catch (error) {
-        return false;
-    }
+    });
+    return result;
 }
