@@ -25,7 +25,10 @@ class UserController {
                 `${process.env.TOKEN_SECRET}`,
                 { expiresIn: "10h" }
             );
-            return httpHelper.created({ accessToken,userId: userExists.id });
+            return httpHelper.created({
+                accessToken
+                ,userId: user.id
+            });
         } catch (error) {
             return httpHelper.internalError(error);
         }
@@ -45,8 +48,10 @@ class UserController {
                 `${process.env.TOKEN_SECRET}`,
                 { expiresIn: "10h" }
             );
-            return httpHelper.ok({ accessToken,
-            userId: userExists.id });
+            return httpHelper.ok({
+                accessToken,
+                userId: userExists.id
+            });
         } catch (error) {
             return httpHelper.internalError(error);
         }
@@ -63,18 +68,18 @@ class UserController {
             return httpHelper.internalError(error);
         }
     }
-    
+
 
     async updateUser(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
             const { id } = request.params;
-            const { email, password} = request.body;
+            const { email, password } = request.body;
 
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
             if (!email) return httpHelper.badRequest('Parâmetros inválidos!');
             if (!password) return httpHelper.badRequest('Parâmetros inválidos!');
-           
+
 
             const passwordHashed = await bcrypt.hash(
                 password,
@@ -84,8 +89,8 @@ class UserController {
             const userExists = await UserModel.findByPk(id);
             if (!userExists) return httpHelper.notFound('Usuario não encontrado');
             await UserModel.update({
-                email, 
-                password:passwordHashed, 
+                email,
+                password: passwordHashed,
             }, {
                 where: { id }
             });
