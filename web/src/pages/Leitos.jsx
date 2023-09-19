@@ -12,7 +12,7 @@ import {
     getLeitos,
     updateLeito,
     getFiltroLeito,
-    
+
 } from "../services/leito-service";
 
 export function Leitos() {
@@ -43,20 +43,20 @@ export function Leitos() {
             if (statusFiltro.trim() === "") {
                 return; // Evite chamada à API se o filtro estiver vazio
             }
-    
+
             // Verifique se o filtro é "Disponível" ou "Ocupado" e defina o valor correto
             let filtro = statusFiltro.toLowerCase();
             if (filtro === "disponível" || filtro === "disponivel" || filtro === "ocupado") {
                 filtro = filtro === "disponível" || filtro === "disponivel" ? true : false;
             }
-    
+
             const result = await getFiltroLeito({ statusLeito: filtro });
             setLeitos(result.data);
         } catch (error) {
             console.error(error);
         }
     }
-    
+
 
     async function removeLeito(id) {
         try {
@@ -91,12 +91,13 @@ export function Leitos() {
         }
     }
 
-    
+
 
     async function editLeito(data) {
         try {
+            console.log(data.id)
             await updateLeito({
-                idLeito: data.idLeito,
+                id: data.id,
                 statusLeito: data.statusLeito,
                 dataLeito: data.dataLeito,
                 pacienteatualLeito: data.pacienteatualLeito,
@@ -142,7 +143,7 @@ export function Leitos() {
                             leito={leito}
                             removeLeito={async () => await removeLeito(leito.id)}
                             editLeito={editLeito}
-                            reservaLeito={editLeito}
+                            //reservaLeito={editLeito}
                         />
                     ))
                     : <p className="text-center">Não existe nenhum leito cadastrado!</p>}

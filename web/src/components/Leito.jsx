@@ -7,13 +7,9 @@ export function Leito(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
 
-    async function handleEditLeito(data) {
-        try {
+    async function editLeito(data) {
             await props.editLeito({ ...data, id: props.leito.id });
             setIsUpdated(false);
-        } catch (error) {
-            console.error("Erro ao editar leito:", error);
-        }
     }
 
     return (
@@ -50,7 +46,7 @@ export function Leito(props) {
                 <Modal.Header>
                     <Modal.Title>Editar leito: {props.leito.id}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(handleEditLeito)} validated={!!errors}>
+                <Form noValidate onSubmit={handleSubmit(editLeito)} validated={!!errors}>
                     <Modal.Body>
                         <Input
                             className="mb-3"

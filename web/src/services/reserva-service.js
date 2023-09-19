@@ -50,6 +50,7 @@ export async function createReserva(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.post('/reserva', {
         salaId: data.salaIdReserva,
+        responsavel: data.responsavelReserva,
         data: data.dataReserva,
         horainicio: data.horainicioReserva,
         horafim: data.horafimReserva

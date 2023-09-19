@@ -53,7 +53,7 @@ export function Reservas() {
     async function editReserva(data) {
         try {
             await updateReserva({
-                idReserva: data.idReserva,
+                id: data.id,
                 responsavelReserva: data.responsavelReserva,
                 horainicioReserva: data.horainicioReserva,
                 horafimReserva: data.horafimReserva,
@@ -96,7 +96,7 @@ export function Reservas() {
                     <Modal.Body>
                         <Input
                             className="mb-3"
-                            type='integer'
+                            type='number'
                             label='Id da sala'
                             placeholder='Insira o id da salaaa que pertence'
                             required={true}

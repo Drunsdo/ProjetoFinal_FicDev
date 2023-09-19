@@ -20,7 +20,7 @@ export function Reserva(props) {
                 <Card.Text><strong>Responsável: </strong>{props.reserva.responsavel}</Card.Text>
                 <Card.Text><strong>Data: </strong>{props.reserva.data}</Card.Text>
                 <Card.Text><strong>Hora inicio: </strong>{props.reserva.horainicio}</Card.Text>
-                <Card.Text><strong>Responsável: </strong>{props.reserva.horafim}</Card.Text>
+                <Card.Text><strong>Horam fim: </strong>{props.reserva.horafim}</Card.Text>
 
                 <Row xs="auto" className="d-flex justify-content-end">
                     <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
@@ -35,13 +35,13 @@ export function Reserva(props) {
             </Card>
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
-                    <Modal.Title>Editar reserva: {props.reserva.nome}</Modal.Title>
+                    <Modal.Title>Editar reserva: {props.reserva.id}</Modal.Title>
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(editReserva)} validated={!!errors}>
                     <Modal.Body>
                         <Input
                             className="mb-3"
-                            type='integer'
+                            type='number'
                             defaultValue={props.reserva.salaId}
                             label='Id da sala'
                             placeholder='Insira o id da sala que pertence'
