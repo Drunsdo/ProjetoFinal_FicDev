@@ -7,7 +7,7 @@ class ReservaController {
         const httpHelper = new HttpHelper(response);
         try {
             const { horainicio, data, responsavel, horafim, salaId } = request.body;
-            if (horainicio === undefined || data === undefined || responsavel === undefined || salaId === undefined) {
+            if (horainicio === undefined || data === undefined || responsavel === undefined || salaId === undefined || horafim === undefined) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
             

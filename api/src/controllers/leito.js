@@ -2,19 +2,17 @@ const { LeitoModel } = require('../models/leito-model');
 const { HttpHelper } = require('../utils/http-helper');
 
 class LeitoController {
-    // Cria um novo leito
     async create(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const { statusLeito, salaIdLeito } = request.body;
+            const { status, salaId } = request.body;
             
-            if (!statusLeito || !salaIdLeito) {
+            if (status === undefined || salaId === undefined) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
             
             const leito = await LeitoModel.create({
-                status: statusLeito,
-                salaId: salaIdLeito
+                status, salaId
             });
             
             return httpHelper.created(leito);
@@ -90,7 +88,7 @@ class LeitoController {
         const httpHelper = new HttpHelper(response);
         try {
             const { id } = request.params;
-            const { statusLeito, dataLeito, pacienteatualLeito, salaIdLeito } = request.body;
+            const { status, data, pacienteatual, salaId } = request.body;
             
             if (!id) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
@@ -103,10 +101,10 @@ class LeitoController {
             }
             
             await LeitoModel.update({
-                status: statusLeito,
-                data: dataLeito,
-                pacienteatual: pacienteatualLeito,
-                salaId: salaIdLeito
+                status,
+                data,
+                pacienteatual,
+                salaId
             }, {
                 where: { id }
             });

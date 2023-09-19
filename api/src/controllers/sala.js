@@ -1,4 +1,3 @@
-const { Sequelize } = require("sequelize");
 const { HttpHelper } = require('../utils/http-helper');
 const { SalaModel } = require('../models/sala-model');
 

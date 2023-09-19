@@ -8,13 +8,14 @@ import { Reserva } from "../components/Reserva";
 import { Header } from "../components/Header";
 import { Input } from '../components/Input';
 
-import { createReserva, deleteReserva, getReservas, updateReserva } from "../services/reserva-service";
+import { createReserva, deleteReserva, getReservas, updateReserva, getFiltroReservas } from "../services/reserva-service";
 
 export function Reservas() {
     const [reservas, setReservas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
     const { handleSubmit, register, formState: { errors } } = useForm();
     const navigate = useNavigate();
+    const [salaIdFiltro, setSalaIdFiltro] = useState("");
 
     useEffect(() => {
         findReservas();
@@ -28,6 +29,20 @@ export function Reservas() {
         } catch (error) {
             console.error(error);
             navigate('/');
+        }
+    }
+
+    async function handleFiltrar() {
+        try {
+            // Verifique se o campo de filtro não está vazio antes de chamar a API
+            if (salaIdFiltro.trim() === "") {
+                return; // Evite chamada à API se o filtro estiver vazio
+            }
+
+            const result = await getFiltroReservas({ salaIdReserva: salaIdFiltro });
+            setReservas(result.data);
+        } catch (error) {
+            console.error(error);
         }
     }
 
@@ -75,6 +90,23 @@ export function Reservas() {
                     <Button onClick={() => setIsCreated(true)}>Criar nova Reserva</Button>
                 </Col>
             </Row>
+
+            <Row className="w-50 m-auto mb-2">
+                <Col md='8'>
+                    <Form.Group className="mb-3">
+                        <Form.Control
+                            type="integer"
+                            placeholder="Filtrar por Id da sala"
+                            value={salaIdFiltro}
+                            onChange={(e) => setSalaIdFiltro(e.target.value)}
+                        />
+                    </Form.Group>
+                </Col>
+                <Col md='2'>
+                    <Button onClick={handleFiltrar}>Filtrar</Button>
+                </Col>
+            </Row>
+
             <Col className="w-50 m-auto">
                 {reservas && reservas.length > 0
                     ? reservas.map((reserva, index) => (

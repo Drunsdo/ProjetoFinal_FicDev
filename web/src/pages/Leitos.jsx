@@ -69,7 +69,6 @@ export function Leitos() {
 
     async function addLeito(data) {
         try {
-            // Verifique o valor do campo "statusLeito" e defina o valor de status com base nele
             const status = data.statusLeito === 'Disponível' || data.statusLeito === 'Disponivel' || data.statusLeito === 'disponivel' ? true : data.statusLeito === 'Ocupado' || data.statusLeito === 'ocupado' ? false : null;
 
             if (status === null) {
@@ -77,7 +76,6 @@ export function Leitos() {
                 return;
             }
 
-            // Crie um novo objeto de dados com o status resolvido
             const leitoData = {
                 salaIdLeito: data.salaIdLeito,
                 statusLeito: status
