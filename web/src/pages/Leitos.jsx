@@ -5,18 +5,12 @@ import { useForm } from 'react-hook-form';
 import { NavbarComponent } from "../components/Navbar";
 import { Leito } from "../components/Leito";
 import { Header } from "../components/Header";
-import { Input } from '../components/Input';
-import {
-    createLeito,
-    deleteLeito,
-    getLeitos,
-    updateLeito,
-    getFiltroLeito,
-
-} from "../services/leito-service";
+import { createLeito, deleteLeito, getLeitos, updateLeito, getFiltroLeito } from "../services/leito-service";
+import { getSalas } from "../services/sala-service";
 
 export function Leitos() {
     const [leitos, setLeitos] = useState([]);
+    const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
     const { handleSubmit, register, formState: { errors } } = useForm();
     const navigate = useNavigate();
@@ -24,8 +18,19 @@ export function Leitos() {
 
     useEffect(() => {
         findLeitos();
+        findSalas();
         // eslint-disable-next-line
     }, []);
+
+    async function findSalas() {
+        try {
+            const result = await getSalas();
+            setSalas(result.data);
+        } catch (error) {
+            console.error(error);
+            navigate('/');
+        }
+    }
 
     async function findLeitos() {
         try {
@@ -93,14 +98,22 @@ export function Leitos() {
 
     async function editLeito(data) {
         try {
-            console.log(data.id)
-            await updateLeito({
+            const status = data.statusLeito === 'Disponível' ? true : data.statusLeito === 'Ocupado' ? false : null;
+
+            if (status === null) {
+                console.error('Status inválido. Use "Disponível" ou "Ocupado".');
+                return;
+            }
+
+            const leitoData = {
                 id: data.id,
-                statusLeito: data.statusLeito,
+                statusLeito: status,
                 dataLeito: data.dataLeito,
                 pacienteatualLeito: data.pacienteatualLeito,
                 salaIdLeito: data.salaIdLeito
-            });
+            }
+
+            await updateLeito(leitoData);
             await findLeitos();
         } catch (error) {
             console.error("Erro ao editar leito:", error);
@@ -121,13 +134,18 @@ export function Leitos() {
                 <Col md='8'>
                     <Form.Group className="mb-3">
                         <Form.Control
-                            type="text"
-                            placeholder="Filtrar por status"
+                            as="select"
+                            name="statusLeito"
                             value={statusFiltro}
                             onChange={(e) => setStatusFiltro(e.target.value)}
-                        />
+                        >
+                            <option value="">Filtrar por tipo</option>
+                            <option value="Disponível">Disponível</option>
+                            <option value="Ocupado">Ocupado</option>
+                        </Form.Control>
                     </Form.Group>
                 </Col>
+
                 <Col md='2'>
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
@@ -141,7 +159,6 @@ export function Leitos() {
                             leito={leito}
                             removeLeito={async () => await removeLeito(leito.id)}
                             editLeito={editLeito}
-                            //reservaLeito={editLeito}
                         />
                     ))
                     : <p className="text-center">Não existe nenhum leito cadastrado!</p>}
@@ -153,36 +170,38 @@ export function Leitos() {
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(addLeito)} validated={!!errors}>
                     <Modal.Body>
-                        <Input
-                            className="mb-3"
-                            type='number'
-                            label='Id da sala'
-                            placeholder='Insira o id da sala à qual pertence'
-                            required={true}
-                            name='salaIdLeito'
-                            error={errors.salaIdLeito}
-                            validations={register('salaIdLeito', {
-                                required: {
-                                    value: true,
-                                    message: 'A sala à qual o leito pertence é obrigatória.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            label='Status do Leito'
-                            placeholder='Insira o status do leito'
-                            required={true}
-                            name='statusLeito'
-                            error={errors.statusLeito}
-                            validations={register('statusLeito', {
-                                required: {
-                                    value: true,
-                                    message: 'O status do leito é obrigatório.'
-                                }
-                            })}
-                        />
+                        <Form.Group controlId="formIdSala">
+                            <Form.Label>Número da sala</Form.Label>
+                            <Form.Select
+                                name="salaIdLeito"
+                                {...register('salaIdLeito')}
+                            >
+                                <option disabled>Clique para selecionar</option>
+                                {salas && salas.length > 0
+                                    ? salas
+                                        .filter((sala) => sala.tipo === "Leito")
+                                        .sort((a, b) => a.id - b.id)
+                                        .map((sala) => (
+                                            <option key={sala.id} value={sala.id}>
+                                                {sala.id}
+                                            </option>
+                                        ))
+                                    : <p className="text-center">Não existe nenhuma sala do tipo "Leito" cadastrada!</p>}
+                            </Form.Select>
+                        </Form.Group>
+
+
+                        <Form.Group>
+                            <Form.Label>Status do Leito</Form.Label>
+                            <Form.Select
+                                name="statusLeito"
+                                {...register('statusLeito')}
+                            >
+                                <option disabled>Clique para selecionar</option>
+                                <option value='Disponível'>Disponível</option>
+                                <option value='Ocupado'>Ocupado</option>
+                            </Form.Select>
+                        </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

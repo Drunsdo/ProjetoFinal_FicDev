@@ -17,8 +17,12 @@ export function Sala(props) {
         <>
             <Card className="mb-3 p-3 bg-light">
                 <Card.Title><strong>Tipo: </strong>{props.sala.tipo}</Card.Title>
-                <Card.Text><strong>Id: </strong>{props.sala.id}</Card.Text>
-                <Card.Text><strong>Quantidade de leitos: </strong>{props.sala.quantidadeleitos}</Card.Text>
+                <Card.Text><strong>Número da sala: </strong>{props.sala.id}</Card.Text>
+                {props.sala.tipo === "Leito" && (
+                    <>
+                        <Card.Text><strong>Quantidade de leitos: </strong>{props.sala.quantidadeleitos}</Card.Text>
+                    </>
+                )}
                 <Row xs="auto" className="d-flex justify-content-end">
                     <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
                     <Button
@@ -36,38 +40,35 @@ export function Sala(props) {
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(editSala)} validated={!!errors}>
                     <Modal.Body>
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            defaultValue={props.sala.tipo}
-                            label='Tipo da Sala'
-                            placeholder='Insira o tipo da sala'
-                            required={true}
-                            name='tipoSala'
-                            error={errors.tipoSala}
-                            validations={register('tipoSala', {
-                                required: {
-                                    value: true,
-                                    message: 'Tipo da sala é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='integer'
-                            defaultValue={props.sala.quantidadeleitos}
-                            label='Quantidade de leitos'
-                            placeholder='Insira a quantidade de leitos'
-                            required={true}
-                            name='quantidadeleitosSala'
-                            error={errors.quantidadeleitosSala}
-                            validations={register('quantidadeleitosSala', {
-                                required: {
-                                    value: true,
-                                    message: 'Quantidade de leitos é obrigatório.'
-                                }
-                            })}
-                        />
+                        <Form.Group>
+                            <Form.Label>Tipo da Sala</Form.Label>
+                            <Form.Select
+                                name="tipoSala"
+                                {...register('tipoSala')}
+                            >
+                                <option disabled>Clique para selecionar</option>
+                                <option value='Leito'>Leito</option>
+                                <option value='Cirúrgica'>Cirúrgica</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <div>
+                            <label>Quantidade de Leitos</label>
+                            <Input
+                                className="mb-3"
+                                type='integer'
+                                defaultValue={props.sala.quantidadeleitos}
+                                placeholder='Insira a quantidade de leitos da sala'
+                                required={true}
+                                name='quantidadeleitosSala'
+                                error={errors.quantidadeleitosSala}
+                                validations={register('quantidadeleitosSala', {
+                                    required: {
+                                        value: true,
+                                        message: 'quantidade de leitos é obrigatório.'
+                                    }
+                                })}
+                            />
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

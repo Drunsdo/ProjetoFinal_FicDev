@@ -93,13 +93,18 @@ export function Salas() {
                 <Col md='8'>
                     <Form.Group className="mb-3">
                         <Form.Control
-                            type="text"
-                            placeholder="Filtrar por tipo"
+                            as="select"
+                            name="tipoSala"
                             value={tipoFiltro}
                             onChange={(e) => setTipoFiltro(e.target.value)}
-                        />
+                        >
+                            <option disabled>Filtrar por tipo</option>
+                            <option value="Leito">Leito</option>
+                            <option value="Cirúrgica">Cirúrgica</option>
+                        </Form.Control>
                     </Form.Group>
                 </Col>
+
                 <Col md='2'>
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
@@ -124,36 +129,34 @@ export function Salas() {
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(addSala)} validated={!!errors}>
                     <Modal.Body>
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            label='Tipo da sala'
-                            placeholder='Insira o tipo da sala'
-                            required={true}
-                            name='tipoSala'
-                            error={errors.tipoSala}
-                            validations={register('tipoSala', {
-                                required: {
-                                    value: true,
-                                    message: 'tipo da sala é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='integer'
-                            label='Quantidade de Leitos da Sala'
-                            placeholder='Insira a quantidade de leitos da sala'
-                            required={true}
-                            name='quantidadeleitosSala'
-                            error={errors.quantidadeleitosSala}
-                            validations={register('quantidadeleitosSala', {
-                                required: {
-                                    value: true,
-                                    message: 'quantidade de leitos é obrigatório.'
-                                }
-                            })}
-                        />
+                        <Form.Group>
+                            <Form.Label>Tipo da Sala</Form.Label>
+                            <Form.Select
+                                name="tipoSala"
+                                {...register('tipoSala')}
+                            >
+                                <option disabled>Clique para selecionar</option>
+                                <option value='Leito'>Leito</option>
+                                <option value='Cirúrgica'>Cirúrgica</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <div>
+                            <label>Quantidade de Leitos</label>
+                            <Input
+                                className="mb-3"
+                                type='integer'
+                                placeholder='Insira a quantidade de leitos da sala'
+                                required={true}
+                                name='quantidadeleitosSala'
+                                error={errors.quantidadeleitosSala}
+                                validations={register('quantidadeleitosSala', {
+                                    required: {
+                                        value: true,
+                                        message: 'quantidade de leitos é obrigatório.'
+                                    }
+                                })}
+                            />
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

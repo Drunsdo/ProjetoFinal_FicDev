@@ -7,11 +7,13 @@ import { NavbarComponent } from "../components/Navbar";
 import { Reserva } from "../components/Reserva";
 import { Header } from "../components/Header";
 import { Input } from '../components/Input';
+import { getSalas } from "../services/sala-service";
 
 import { createReserva, deleteReserva, getReservas, updateReserva, getFiltroReservas } from "../services/reserva-service";
 
 export function Reservas() {
     const [reservas, setReservas] = useState([]);
+    const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
     const { handleSubmit, register, formState: { errors } } = useForm();
     const navigate = useNavigate();
@@ -19,8 +21,19 @@ export function Reservas() {
 
     useEffect(() => {
         findReservas();
+        findSalas();
         // eslint-disable-next-line
     }, []);
+
+    async function findSalas() {
+        try {
+            const result = await getSalas();
+            setSalas(result.data);
+        } catch (error) {
+            console.error(error);
+            navigate('/');
+        }
+    }
 
     async function findReservas() {
         try {
@@ -94,14 +107,26 @@ export function Reservas() {
             <Row className="w-50 m-auto mb-2">
                 <Col md='8'>
                     <Form.Group className="mb-3">
-                        <Form.Control
-                            type="integer"
-                            placeholder="Filtrar por Id da sala"
+                        <Form.Select
+                            name="salaIdLeito"
                             value={salaIdFiltro}
                             onChange={(e) => setSalaIdFiltro(e.target.value)}
-                        />
+                        >
+                            <option>Filtrar por sala</option>
+                            {salas && salas.length > 0
+                                ? salas
+                                    .filter((sala) => sala.tipo === "Cirúrgica")
+                                    .sort((a, b) => a.id - b.id)
+                                    .map((sala) => (
+                                        <option key={sala.id} value={sala.id}>
+                                            {sala.id}
+                                        </option>
+                                    ))
+                                : <option value="" disabled>Não existe nenhuma sala do tipo "Cirúrgica" cadastrada!</option>}
+                        </Form.Select>
                     </Form.Group>
                 </Col>
+
                 <Col md='2'>
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
@@ -130,7 +155,7 @@ export function Reservas() {
                             className="mb-3"
                             type='number'
                             label='Id da sala'
-                            placeholder='Insira o id da salaaa que pertence'
+                            placeholder='Insira o id da sala que pertence'
                             required={true}
                             name='salaIdReserva'
                             error={errors.salaIdReserva}

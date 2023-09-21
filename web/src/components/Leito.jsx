@@ -1,23 +1,48 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Input } from "./Input";
+import { useEffect } from "react";
+import { getSalas } from "../services/sala-service"
 
 export function Leito(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
+    const [isReservado, setIsReservado] = useState(false);
+    const [salas, setSalas] = useState([]);
+
+    useEffect(() => {
+        findSalas();
+        // eslint-disable-next-line
+    }, []);
 
     async function editLeito(data) {
-            await props.editLeito({ ...data, id: props.leito.id });
-            setIsUpdated(false);
+        await props.editLeito({ ...data, id: props.leito.id });
+        setIsUpdated(false);
+    }
+
+
+
+    function handleReservar() {
+        setIsReservado(true);
+        setIsUpdated(true);
+    }
+
+    async function findSalas() {
+        try {
+            const result = await getSalas();
+            setSalas(result.data);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
         <>
             <Card className="mb-3 p-3 bg-light">
                 <Card.Title><strong>Status: </strong>{props.leito.status ? "Disponível" : "Ocupado"}</Card.Title>
-                <Card.Text><strong>Id do leito: </strong>{props.leito.id}</Card.Text>
-                <Card.Text><strong>Id da sala: </strong>{props.leito.salaId}</Card.Text>
+                <Card.Text><strong>Número do leito: </strong>{props.leito.id}</Card.Text>
+                <Card.Text><strong>Número da sala: </strong>{props.leito.salaId}</Card.Text>
                 {props.leito.status === false && (
                     <>
                         <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
@@ -26,7 +51,7 @@ export function Leito(props) {
                 )}
                 <Row xs="auto" className="d-flex justify-content-end">
                     {props.leito.status === true && (
-                        <Button variant="primary" onClick={() => setIsUpdated(true)}>
+                        <Button variant="primary" onClick={handleReservar}>
                             Reservar
                         </Button>
                     )}
@@ -48,64 +73,64 @@ export function Leito(props) {
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(editLeito)} validated={!!errors}>
                     <Modal.Body>
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            defaultValue={props.leito.pacienteatual}
-                            label='Nome do paciente'
-                            placeholder='Insira o nome do paciente'
-                            required={true}
-                            name='pacienteatualLeito'
-                            error={errors.pacienteatualLeito}
-                            validations={register('pacienteatualLeito', {
-                                required: {
-                                    value: true,
-                                    message: 'Nome do cliente é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='boolean'
-                            defaultValue={props.leito.status}
-                            label='Status do Leito'
-                            placeholder='Insira o status do leito'
-                            required={true}
-                            name='statusLeito'
-                            error={errors.statusLeito}
-                            validations={register('statusLeito', {
-                                required: {
-                                    value: true,
-                                    message: 'Status do leito é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='date'
-                            defaultValue={props.leito.data}
-                            label='Data'
-                            placeholder='Insira a data'
-                            name='dataLeito'
-                            error={errors.dataLeito}
-                            validations={register('dataLeito')}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='number'
-                            defaultValue={props.leito.salaId}
-                            label='Id da sala'
-                            placeholder='Insira o id da sala à qual pertence'
-                            required={true}
-                            name='salaIdLeito'
-                            error={errors.salaIdLeito}
-                            validations={register('salaIdLeito', {
-                                required: {
-                                    value: true,
-                                    message: 'Id da sala é obrigatório.'
-                                }
-                            })}
-                        />
+                        <div>
+                            <label>Nome do paciente</label>
+                            <Input
+                                className="mb-3"
+                                type="text"
+                                defaultValue={props.leito.pacienteatual}
+                                placeholder="Insira o nome do paciente"
+                                required={true}
+                                name="pacienteatualLeito"
+                                error={errors.pacienteatualLeito}
+                                validations={register("pacienteatualLeito", {
+                                    required: {
+                                        value: true,
+                                        message: "Nome do cliente é obrigatório.",
+                                    },
+                                })}
+                            />
+                        </div>
+                        <Form.Group>
+                            <Form.Label>Status do Leito</Form.Label>
+                            <Form.Select name="statusLeito" {...register("statusLeito")}>
+                                <option disabled>Clique para selecionar</option>
+                                <option value="Disponível">Disponível</option>
+                                <option value="Ocupado">Ocupado</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <div>
+                            <label>Data</label>
+                            <Input
+                                className="mb-3"
+                                type="date"
+                                defaultValue={props.leito.data}
+                                placeholder="Insira a data"
+                                name="dataLeito"
+                                error={errors.dataLeito}
+                                validations={register("dataLeito")}
+                            />
+                        </div>
+                        <Form.Group controlId="formIdSala">
+                            <Form.Label>Número da Sala</Form.Label>
+                            <Form.Select
+                                name="salaIdLeito"
+                                {...register('salaIdLeito')}
+                                disabled={isReservado && props.leito.status === true}
+                            >
+                                <option disabled>Clique para selecionar</option>
+                                {salas && salas.length > 0
+                                    ? salas
+                                        .filter((sala) => sala.tipo === "Leito")
+                                        .sort((a, b) => a.id - b.id)
+                                        .map((sala) => (
+                                            <option key={sala.id} value={sala.id}>
+                                                {sala.id}
+                                            </option>
+                                        ))
+                                    : <p className="text-center">Não existe nenhuma sala cadastrada!</p>}
+                            </Form.Select>
+                        </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

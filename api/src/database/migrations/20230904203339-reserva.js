@@ -28,7 +28,7 @@ module.exports = {
             },
             salaId: { 
                 type: Sequelize.INTEGER,
-                allowNull: true,
+                allowNull: false,
                 references: {
                     model: 'sala',
                     key: 'id'
