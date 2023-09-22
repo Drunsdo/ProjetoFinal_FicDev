@@ -1,16 +1,41 @@
 import { useState } from "react";
 import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { getSalas } from "../services/sala-service"
+
 
 import { Input } from "./Input";
 
 export function Reserva(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
+    const [salas, setSalas] = useState([]);
 
     async function editReserva(data) {
         await props.editReserva({ ...data, id: props.reserva.id });
         setIsUpdated(false);
+    }
+
+    useEffect(() => {
+        findSalas();
+        // eslint-disable-next-line
+    }, []);
+
+    async function findSalas() {
+        try {
+            const result = await getSalas();
+            setSalas(result.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('pt-BR', options);
     }
 
     return (
@@ -18,7 +43,7 @@ export function Reserva(props) {
             <Card className="mb-3 p-3 bg-light">
                 <Card.Title><strong>Sala: </strong>{props.reserva.salaId}</Card.Title>
                 <Card.Text><strong>Responsável: </strong>{props.reserva.responsavel}</Card.Text>
-                <Card.Text><strong>Data: </strong>{props.reserva.data}</Card.Text>
+                <Card.Text><strong>Data: </strong>{formatDate(props.reserva.data)}</Card.Text>
                 <Card.Text><strong>Hora inicio: </strong>{props.reserva.horainicio}</Card.Text>
                 <Card.Text><strong>Horam fim: </strong>{props.reserva.horafim}</Card.Text>
 
@@ -39,85 +64,98 @@ export function Reserva(props) {
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(editReserva)} validated={!!errors}>
                     <Modal.Body>
-                        <Input
-                            className="mb-3"
-                            type='number'
-                            defaultValue={props.reserva.salaId}
-                            label='Id da sala'
-                            placeholder='Insira o id da sala que pertence'
-                            required={true}
-                            name='salaIdReserva'
-                            error={errors.salaIdReserva}
-                            validations={register('salaIdReserva', {
-                                required: {
-                                    value: true,
-                                    message: 'sala da reserva é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            defaultValue={props.reserva.responsavel}
-                            label='Responsável da reserva'
-                            placeholder='Insira o nome do responsavel'
-                            required={true}
-                            name='responsavelReserva'
-                            error={errors.responsavelReserva}
-                            validations={register('responsavelReserva', {
-                                required: {
-                                    value: true,
-                                    message: 'Nome do responsavel é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='date'
-                            defaultValue={props.reserva.data}
-                            placeholder='Insira a data da reserva'
-                            required={true}
-                            name='dataReserva'
-                            error={errors.dataReserva}
-                            validations={register('dataReserva', {
-                                required: {
-                                    value: true,
-                                    message: 'data da reserva é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='time'
-                            defaultValue={props.reserva.horainicio}
-                            label='Hora inicio'
-                            placeholder='Insira o horário de inicio'
-                            required={true}
-                            name='horainicioReserva'
-                            error={errors.horainicioReserva}
-                            validations={register('horainicioReserva', {
-                                required: {
-                                    value: true,
-                                    message: 'Hora inicio da reserva é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='time'
-                            defaultValue={props.reserva.horafim}
-                            label='Hora fim'
-                            placeholder='Insira o horário final'
-                            required={true}
-                            name='horafimReserva'
-                            error={errors.horafimReserva}
-                            validations={register('horafimReserva', {
-                                required: {
-                                    value: true,
-                                    message: 'Hora do fim da reserva é obrigatório.'
-                                }
-                            })}
-                        />
+                    <Form.Group controlId="formIdSala">
+                            <Form.Label>Número da sala</Form.Label>
+                            <Form.Select
+                                name="salaIdLeito"
+                                {...register('salaIdLeito')}
+                            >
+                                <option disabled>Clique para selecionar</option>
+                                {salas && salas.length > 0
+                                    ? salas
+                                        .filter((sala) => sala.tipo === "Cirúrgica")
+                                        .sort((a, b) => a.id - b.id)
+                                        .map((sala) => (
+                                            <option key={sala.id} value={sala.id}>
+                                                {sala.id}
+                                            </option>
+                                        ))
+                                    : <p className="text-center">Não existe nenhuma sala do tipo "Leito" cadastrada!</p>}
+                            </Form.Select>
+                        </Form.Group>
+
+                        <div>
+                            <label>Responsável da Reserva</label>
+                            <Input
+                                className="mb-3"
+                                type='text'
+                                defaultValue={props.reserva.responsavel}
+                                required={true}
+                                name='responsavelReserva'
+                                error={errors.responsavelReserva}
+                                validations={register('responsavelReserva', {
+                                    required: {
+                                        value: true,
+                                        message: 'Nome do responsavel é obrigatório.'
+                                    }
+                                })}
+                            />
+                        </div>
+
+                        <div>
+                            <label>Data da Reserva</label>
+                            <Input
+                                className="mb-3"
+                                type='date'
+                                defaultValue={props.reserva.data}
+                                required={true}
+                                name='dataReserva'
+                                error={errors.dataReserva}
+                                validations={register('dataReserva', {
+                                    required: {
+                                        value: true,
+                                        message: 'data da reserva é obrigatório.'
+                                    }
+                                })}
+                            />
+                        </div>
+
+                        <div>
+                            <label>Hora de Inicio</label>
+                            <Input
+                                className="mb-3"
+                                type='time'
+                                defaultValue={props.reserva.horainicio}
+                                required={true}
+                                name='horainicioReserva'
+                                error={errors.horainicioReserva}
+                                validations={register('horainicioReserva', {
+                                    required: {
+                                        value: true,
+                                        message: 'Hora inicio da reserva é obrigatório.'
+                                    }
+                                })}
+                            />
+                        </div>
+
+                        <div>
+                            <label>Hora de Fim</label>
+                            <Input
+                                className="mb-3"
+                                type='time'
+                                defaultValue={props.reserva.horafim}
+                                required={true}
+                                name='horafimReserva'
+                                error={errors.horafimReserva}
+                                validations={register('horafimReserva', {
+                                    required: {
+                                        value: true,
+                                        message: 'Hora do fim da reserva é obrigatório.'
+                                    }
+                                })}
+                            />
+                        </div>
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">
@@ -128,7 +166,7 @@ export function Reserva(props) {
                         </Button>
                     </Modal.Footer>
                 </Form>
-            </Modal>
+            </Modal >
         </>
     );
 }

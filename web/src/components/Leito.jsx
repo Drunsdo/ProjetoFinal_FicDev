@@ -23,9 +23,15 @@ export function Leito(props) {
 
 
 
-    function handleReservar() {
+    async function handleReservar() {
         setIsReservado(true);
         setIsUpdated(true);
+    }
+
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('pt-BR', options);
     }
 
     async function findSalas() {
@@ -46,7 +52,7 @@ export function Leito(props) {
                 {props.leito.status === false && (
                     <>
                         <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
-                        <Card.Text><strong>Data: </strong>{props.leito.data}</Card.Text>
+                        <Card.Text><strong>Data: </strong>{formatDate(props.leito.data)}</Card.Text>
                     </>
                 )}
                 <Row xs="auto" className="d-flex justify-content-end">
@@ -105,7 +111,6 @@ export function Leito(props) {
                                 className="mb-3"
                                 type="date"
                                 defaultValue={props.leito.data}
-                                placeholder="Insira a data"
                                 name="dataLeito"
                                 error={errors.dataLeito}
                                 validations={register("dataLeito")}
