@@ -30,6 +30,7 @@ routes.get('/leitos', authMiddleware, leitoController.getAll);
 routes.get('/leitos/:status', leitoController.getByStatus);
 routes.delete('/leito/:id', authMiddleware, leitoController.delete);
 routes.put('/leito/:id', authMiddleware, leitoController.update);
+routes.put('/leito/:id', authMiddleware, leitoController.reserva);
 
 routes.post('/register', userController.register);
 routes.post('/login', userController.login);

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { NavbarComponent } from "../components/Navbar";
 import { Leito } from "../components/Leito";
 import { Header } from "../components/Header";
-import { createLeito, deleteLeito, getLeitos, updateLeito, getFiltroLeito } from "../services/leito-service";
+import { createLeito, deleteLeito, getLeitos, updateLeito, getFiltroLeito, reservaLeito } from "../services/leito-service";
 import { getSalas } from "../services/sala-service";
 
 export function Leitos() {
@@ -94,6 +94,29 @@ export function Leitos() {
         }
     }
 
+    async function reservarLeito(data) {
+        try {
+            const status = data.statusLeito === 'Disponível' ? true : data.statusLeito === 'Ocupado' ? false : null;
+
+            if (status === null) {
+                console.error('Status inválido. Use "Disponível" ou "Ocupado".');
+                return;
+            }
+
+            const leitoData = {
+                id: data.id,
+                statusLeito: status,
+                dataLeito: data.dataLeito,
+                pacienteatualLeito: data.pacienteatualLeito,
+            }
+
+            await reservaLeito(leitoData);
+            await findLeitos();
+        } catch (error) {
+            console.error("Erro ao editar leito:", error);
+        }
+    }
+
 
 
     async function editLeito(data) {
@@ -158,6 +181,7 @@ export function Leitos() {
                             key={index}
                             leito={leito}
                             removeLeito={async () => await removeLeito(leito.id)}
+                            reservarLeito={reservarLeito}
                             editLeito={editLeito}
                         />
                     ))
@@ -208,7 +232,7 @@ export function Leitos() {
                             Criar
                         </Button>
                         <Button variant="secondary" onClick={() => setIsCreated(false)}>
-                            Fechar
+                            FecharsalaIdLeito: data.salaIdLeito
                         </Button>
                     </Modal.Footer>
                 </Form>

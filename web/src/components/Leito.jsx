@@ -8,6 +8,7 @@ import { getSalas } from "../services/sala-service"
 export function Leito(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
+    const [isReserva, setIsReserva] = useState(false);
     const [salas, setSalas] = useState([]);
 
     useEffect(() => {
@@ -18,6 +19,11 @@ export function Leito(props) {
     async function editLeito(data) {
         await props.editLeito({ ...data, id: props.leito.id });
         setIsUpdated(false);
+    }
+
+    async function reservarLeito(data) {
+        await props.reservarLeito({ ...data, id: props.leito.id });
+        setIsReserva(false);
     }
 
 
@@ -51,7 +57,7 @@ export function Leito(props) {
                 )}
                 <Row xs="auto" className="d-flex justify-content-end">
                     {props.leito.status === true && (
-                        <Button variant="primary" onClick={() => setIsUpdated(true)}>
+                        <Button variant="primary" onClick={() => setIsReserva(true)}>
                             Reservar
                         </Button>
                     )}
@@ -72,6 +78,72 @@ export function Leito(props) {
                     <Modal.Title>Editar leito: {props.leito.id}</Modal.Title>
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(editLeito)} validated={!!errors}>
+                    <Modal.Body>
+                        <div>
+                            <label>Nome do paciente</label>
+                            <Input
+                                className="mb-3"
+                                type="text"
+                                defaultValue={props.leito.pacienteatual}
+                                name="pacienteatualLeito"
+                                {...register("pacienteatualLeito")}
+                            />
+                        </div>
+                        <Form.Group>
+                            <Form.Label>Status do Leito</Form.Label>
+                            <Form.Select name="statusLeito" {...register("statusLeito")}>
+                                <option disabled>Clique para selecionar</option>
+                                <option value="Disponível">Disponível</option>
+                                <option value="Ocupado">Ocupado</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <div>
+                            <label>Data</label>
+                            <Input
+                                className="mb-3"
+                                type="date"
+                                defaultValue={props.leito.data}
+                                name="dataLeito"
+                                validations={register("dataLeito")}
+                            />
+                        </div>
+
+                        <Form.Group controlId="formIdSala">
+                            <Form.Label>Número da Sala</Form.Label>
+                            <Form.Select
+                                name="salaIdLeito"
+                                {...register('salaIdLeito')}
+                            >
+                                <option disabled>Clique para selecionar</option>
+                                {salas && salas.length > 0
+                                    ? salas
+                                        .filter((sala) => sala.tipo === "Leito")
+                                        .sort((a, b) => a.id - b.id)
+                                        .map((sala) => (
+                                            <option key={sala.id} value={sala.id}>
+                                                {sala.id}
+                                            </option>
+                                        ))
+                                    : <p className="text-center">Não existe nenhuma sala cadastrada!</p>}
+                            </Form.Select>
+                        </Form.Group>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" type="submit">
+                            Editar
+                        </Button>
+                        <Button variant="secondary" onClick={() => setIsUpdated(false)}>
+                            Fechar
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal>
+
+            <Modal show={isReserva} onHide={() => setIsReserva(false)}>
+                <Modal.Header>
+                    <Modal.Title>Reserva leito: {props.leito.id}</Modal.Title>
+                </Modal.Header>
+                <Form noValidate onSubmit={handleSubmit(reservarLeito)} validated={!!errors}>
                     <Modal.Body>
                         <div>
                             <label>Nome do paciente</label>
@@ -110,31 +182,14 @@ export function Leito(props) {
                                 validations={register("dataLeito")}
                             />
                         </div>
-                        <Form.Group controlId="formIdSala">
-                            <Form.Label>Número da Sala</Form.Label>
-                            <Form.Select
-                                name="salaIdLeito"
-                                {...register('salaIdLeito')}
-                            >
-                                <option disabled>Clique para selecionar</option>
-                                {salas && salas.length > 0
-                                    ? salas
-                                        .filter((sala) => sala.tipo === "Leito")
-                                        .sort((a, b) => a.id - b.id)
-                                        .map((sala) => (
-                                            <option key={sala.id} value={sala.id}>
-                                                {sala.id}
-                                            </option>
-                                        ))
-                                    : <p className="text-center">Não existe nenhuma sala cadastrada!</p>}
-                            </Form.Select>
-                        </Form.Group>
+
+                        
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">
-                            Editar
+                            Reservar
                         </Button>
-                        <Button variant="secondary" onClick={() => setIsUpdated(false)}>
+                        <Button variant="secondary" onClick={() => setIsReserva(false)}>
                             Fechar
                         </Button>
                     </Modal.Footer>

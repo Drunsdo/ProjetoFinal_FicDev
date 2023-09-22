@@ -58,9 +58,6 @@ export function Salas() {
 
     async function addSala(data) {
         try {
-            if (data.tipoSala === "Cirúrgica") {
-                data.quantidadeleitosSala = 0; // Defina a quantidade de leitos como 0 para salas cirúrgicas
-            }
 
             await createSala(data);
             setIsCreated(false);

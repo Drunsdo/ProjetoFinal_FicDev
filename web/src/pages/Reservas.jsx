@@ -156,8 +156,8 @@ export function Reservas() {
                         <Form.Group controlId="formIdSala">
                             <Form.Label>Número da sala</Form.Label>
                             <Form.Select
-                                name="salaIdLeito"
-                                {...register('salaIdLeito')}
+                                name="salaIdReserva"
+                                {...register('salaIdReserva')}
                             >
                                 <option disabled>Clique para selecionar</option>
                                 {salas && salas.length > 0
