@@ -34,13 +34,14 @@ export function Salas() {
 
     async function handleFiltrar() {
         try {
-            // Verifique se o campo de filtro não está vazio antes de chamar a API
-            if (tipoFiltro.trim() === "") {
-                return; // Evite chamada à API se o filtro estiver vazio
-            }
+            let filtro = tipoFiltro;
 
-            const result = await getFiltroSalas({ tipoSala: tipoFiltro });
-            setSalas(result.data);
+            if (tipoFiltro === "todos") {
+                await findSalas();
+            } else {
+                const result = await getFiltroSalas({ tipoSala: filtro }); // Corrigido aqui
+                setSalas(result.data);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -57,6 +58,10 @@ export function Salas() {
 
     async function addSala(data) {
         try {
+            if (data.tipoSala === "Cirúrgica") {
+                data.quantidadeleitosSala = 0; // Defina a quantidade de leitos como 0 para salas cirúrgicas
+            }
+
             await createSala(data);
             setIsCreated(false);
             await findSalas();
@@ -98,7 +103,7 @@ export function Salas() {
                             value={tipoFiltro}
                             onChange={(e) => setTipoFiltro(e.target.value)}
                         >
-                            <option disabled>Filtrar por tipo</option>
+                            <option value="todos">Todos</option>
                             <option value="Leito">Leito</option>
                             <option value="Cirúrgica">Cirúrgica</option>
                         </Form.Control>
@@ -145,7 +150,6 @@ export function Salas() {
                             <Input
                                 className="mb-3"
                                 type='integer'
-                                placeholder='Insira a quantidade de leitos da sala'
                                 required={true}
                                 name='quantidadeleitosSala'
                                 error={errors.quantidadeleitosSala}

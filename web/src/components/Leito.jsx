@@ -8,7 +8,6 @@ import { getSalas } from "../services/sala-service"
 export function Leito(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
-    const [isReservado, setIsReservado] = useState(false);
     const [salas, setSalas] = useState([]);
 
     useEffect(() => {
@@ -22,11 +21,6 @@ export function Leito(props) {
     }
 
 
-
-    async function handleReservar() {
-        setIsReservado(true);
-        setIsUpdated(true);
-    }
 
     function formatDate(dateString) {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -57,7 +51,7 @@ export function Leito(props) {
                 )}
                 <Row xs="auto" className="d-flex justify-content-end">
                     {props.leito.status === true && (
-                        <Button variant="primary" onClick={handleReservar}>
+                        <Button variant="primary" onClick={() => setIsUpdated(true)}>
                             Reservar
                         </Button>
                     )}
@@ -121,7 +115,6 @@ export function Leito(props) {
                             <Form.Select
                                 name="salaIdLeito"
                                 {...register('salaIdLeito')}
-                                disabled={isReservado && props.leito.status === true}
                             >
                                 <option disabled>Clique para selecionar</option>
                                 {salas && salas.length > 0

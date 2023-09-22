@@ -44,19 +44,19 @@ export function Leitos() {
 
     async function handleFiltrar() {
         try {
-            // Verifique se o campo de filtro não está vazio antes de chamar a API
-            if (statusFiltro.trim() === "") {
-                return; // Evite chamada à API se o filtro estiver vazio
-            }
-
-            // Verifique se o filtro é "Disponível" ou "Ocupado" e defina o valor correto
             let filtro = statusFiltro.toLowerCase();
             if (filtro === "disponível" || filtro === "disponivel" || filtro === "ocupado") {
                 filtro = filtro === "disponível" || filtro === "disponivel" ? true : false;
             }
 
-            const result = await getFiltroLeito({ statusLeito: filtro });
-            setLeitos(result.data);
+            if (filtro === "todos") {
+                // Se a opção for "todos", não aplique filtro e retorne todos os leitos
+                await findLeitos();
+            } else {
+                // Caso contrário, aplique o filtro de acordo com o status selecionado
+                const result = await getFiltroLeito({ statusLeito: filtro });
+                setLeitos(result.data);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -139,7 +139,7 @@ export function Leitos() {
                             value={statusFiltro}
                             onChange={(e) => setStatusFiltro(e.target.value)}
                         >
-                            <option value="">Filtrar por tipo</option>
+                            <option value="todos">Todos</option>
                             <option value="Disponível">Disponível</option>
                             <option value="Ocupado">Ocupado</option>
                         </Form.Control>

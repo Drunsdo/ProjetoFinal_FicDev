@@ -47,13 +47,15 @@ export function Reservas() {
 
     async function handleFiltrar() {
         try {
-            // Verifique se o campo de filtro não está vazio antes de chamar a API
-            if (salaIdFiltro.trim() === "") {
-                return; // Evite chamada à API se o filtro estiver vazio
+            let filtro = salaIdFiltro;
+            if (salaIdFiltro === "todos") {
+                // Se a opção for "todos", não aplique filtro e retorne todas as reservas
+                await findReservas();
+            } else {
+                // Caso contrário, aplique o filtro de acordo com o ID da sala selecionada
+                const result = await getFiltroReservas({ salaIdReserva: filtro });
+                setReservas(result.data);
             }
-
-            const result = await getFiltroReservas({ salaIdReserva: salaIdFiltro });
-            setReservas(result.data);
         } catch (error) {
             console.error(error);
         }
@@ -112,7 +114,7 @@ export function Reservas() {
                             value={salaIdFiltro}
                             onChange={(e) => setSalaIdFiltro(e.target.value)}
                         >
-                            <option>Filtrar por sala</option>
+                            <option value="todos">Todos</option>
                             {salas && salas.length > 0
                                 ? salas
                                     .filter((sala) => sala.tipo === "Cirúrgica")
@@ -175,7 +177,7 @@ export function Reservas() {
                             <Input
                                 className="mb-3"
                                 type='text'
-                               
+
                                 required={true}
                                 name='responsavelReserva'
                                 error={errors.responsavelReserva}
@@ -227,7 +229,7 @@ export function Reservas() {
                             <Input
                                 className="mb-3"
                                 type='time'
-                               
+
                                 required={true}
                                 name='horafimReserva'
                                 error={errors.horafimReserva}
