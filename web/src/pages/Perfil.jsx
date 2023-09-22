@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { NavbarComponent } from "../components/Navbar";
-import { Input } from "../components/Input"
+import { Input } from "../components/Input";
+import '../styles/perfil.css';
+
 
 import { Header } from "../components/Header";
 
@@ -42,9 +44,9 @@ export function Perfil(props) {
             console.error(error);
         }
     }
-    
+
     async function editUser(data) {
-        try {   
+        try {
             await updateUser({
                 id: id,
                 emailUser: data.emailUser,
@@ -57,23 +59,23 @@ export function Perfil(props) {
     }
 
     return (
-        <Container fluid>
+        <Container fluid className="perfil-container">
             <NavbarComponent />
-            <Header title="Perfil" />
-            <Card className="mb-3 p-3 bg-light">
+            <Header title="Perfil" className="perfil-header" />
+            <Card className="mb-3 p-3 bg-light perfil-card">
                 <Card.Text><strong>Email: </strong>{user.email}</Card.Text>
                 <Row xs="auto" className="d-flex justify-content-end">
-                    <Button variant="primary" onClick={() => setIsUpdated(true)}>Editar</Button>
+                    <Button variant="primary" className="" onClick={() => setIsUpdated(true)}>Editar</Button>
                     <Button
                         variant="outline-danger"
-                        className="ms-3"
+                        className="perfil-button-delete"
                         onClick={removeUser}
                     >
                         Apagar
                     </Button>
                 </Row>
             </Card>
-           
+
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
                     <Modal.Title>Editar perfil: {user.email}</Modal.Title>
@@ -100,10 +102,9 @@ export function Perfil(props) {
                                 }
                             })}
                         />
-                    
-                    <Input
+
+                        <Input
                             className="mb-3"
-                            //controlId="formGroupPassword"
                             label='Senha'
                             type='password'
                             name='passwordUser'
@@ -123,7 +124,7 @@ export function Perfil(props) {
                     </Modal.Footer>
                 </Form>
             </Modal>
-                
+
         </Container>
     );
 }

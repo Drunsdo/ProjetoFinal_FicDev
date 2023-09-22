@@ -10,11 +10,22 @@ class ReservaController {
             if (horainicio === undefined || data === undefined || responsavel === undefined || salaId === undefined || horafim === undefined) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
-            
+            if (horafim === horainicio) return httpHelper.badRequest('Parâmetros inválidos!');
+            const verificarReservas = await ReservaModel.findAll();
+
+
+            for (const reserva of verificarReservas) {
+                if (reserva.data === data && reserva.salaId === salaId) {
+                    if (horafim > reserva.horainicio && horainicio < reserva.horafim) {
+                        return httpHelper.badRequest('Horário já reservado!');
+                    }
+                }
+            }
+
             const reserva = await ReservaModel.create({
                 horainicio, data, responsavel, horafim, salaId
             });
-            
+
             return httpHelper.created(reserva);
         } catch (error) {
             return httpHelper.internalError(error);
@@ -36,17 +47,17 @@ class ReservaController {
         try {
             const { salaId } = request.params;
             if (!salaId) return httpHelper.badRequest('Parâmetros inválidos!');
-            
+
             const reservas = await ReservaModel.findAll({
-                where: {salaId}
+                where: { salaId }
             });
-            
+
             return httpHelper.ok(reservas);
         } catch (error) {
             return httpHelper.internalError(error);
         }
     }
-    
+
 
     async delete(request, response) {
         const httpHelper = new HttpHelper(response);
@@ -68,17 +79,31 @@ class ReservaController {
         const httpHelper = new HttpHelper(response);
         try {
             const { id } = request.params;
-            const { horainicio, data, responsavel,horafim, salaId } = request.body;
+            const { horainicio, data, responsavel, horafim, salaId } = request.body;
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
             const reservaExists = await ReservaModel.findByPk(id);
             if (!reservaExists) return httpHelper.notFound('reserva não encontrado!');
-            
+
+            if (horafim === horainicio) {
+                return this.httpHelper.badRequest('Parâmetros inválidos!');
+            }
+
+            const verificarReservas = await ReservaModel.findAll
+
+            for (const reserva of verificarReservas) {
+                if (reserva.data === data && reserva.salaId === salaId) {
+                    if (horafim > reserva.horainicio && horainicio < reserva.horafim) {
+                        return httpHelper.badRequest('Horário já reservado!');
+                    }
+                }
+            }
+
             await ReservaModel.update({
                 horainicio, data, responsavel, horafim, salaId
             }, {
                 where: { id }
             });
-            
+
             return httpHelper.ok({
                 message: 'Reserva atualizada com sucesso!'
             });

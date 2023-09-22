@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 import { NavbarComponent } from "../components/Navbar";
+import Select from 'react-select';
+import "../styles/reservas.css"
+
+
 
 import { Reserva } from "../components/Reserva";
 import { Header } from "../components/Header";
@@ -48,7 +52,7 @@ export function Reservas() {
     async function handleFiltrar() {
         try {
             let filtro = salaIdFiltro;
-            if (salaIdFiltro === "todos") {
+            if (salaIdFiltro === "Todos") {
                 // Se a opção for "todos", não aplique filtro e retorne todas as reservas
                 await findReservas();
             } else {
@@ -97,7 +101,7 @@ export function Reservas() {
     }
 
     return (
-        <Container fluid>
+        <Container fluid className="reservas-container">
             <NavbarComponent />
             <Header title="Reservas" />
             <Row className="w-50 m-auto mb-5 mt-5 ">
@@ -108,25 +112,29 @@ export function Reservas() {
 
             <Row className="w-50 m-auto mb-2">
                 <Col md='8'>
-                    <Form.Group className="mb-3">
-                        <Form.Select
-                            name="salaIdLeito"
-                            value={salaIdFiltro}
-                            onChange={(e) => setSalaIdFiltro(e.target.value)}
-                        >
-                            <option value="todos">Todos</option>
-                            {salas && salas.length > 0
+                    <Select
+                        name="salaIdLeito"
+                        options={[
+                            { value: 'Todos', label: 'Todos' },
+                            ...(salas && salas.length > 0
                                 ? salas
                                     .filter((sala) => sala.tipo === "Cirúrgica")
                                     .sort((a, b) => a.id - b.id)
-                                    .map((sala) => (
-                                        <option key={sala.id} value={sala.id}>
-                                            {sala.id}
-                                        </option>
-                                    ))
-                                : <option value="" disabled>Não existe nenhuma sala do tipo "Cirúrgica" cadastrada!</option>}
-                        </Form.Select>
-                    </Form.Group>
+                                    .map((sala) => ({
+                                        value: sala.id,
+                                        label: sala.id.toString(),
+                                    }))
+                                : [{ value: '', label: 'Não existe nenhuma sala do tipo "Cirúrgica" cadastrada!' }]
+                            )
+                        ]}
+                        value={{ value: salaIdFiltro, label: salaIdFiltro.toString() }}
+                        onChange={(selectedOption) => setSalaIdFiltro(selectedOption.value)}
+                        className="salas-select-filter"
+                        isSearchable={false} // Para desativar a pesquisa
+                        styles={{
+                            indicatorSeparator: () => { }, // Para remover a linha vertical entre o seletor e a seta
+                        }}
+                    />
                 </Col>
 
                 <Col md='2'>

@@ -3,10 +3,11 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Home } from "./pages/Home"
-import {Salas} from "./pages/Salas";
+import { Salas } from "./pages/Salas";
 import { Leitos } from "./pages/Leitos";
-import {Reservas} from "./pages/Reservas";
+import { Reservas } from "./pages/Reservas";
 import { Perfil } from "./pages/Perfil";
+import { Dashboard} from "./pages/Dashboard";
 
 import { isAuthenticated } from './utils/is-authenticated';
 
@@ -23,7 +24,7 @@ export function PrivateRoute({ children }) {
 
 export function Navigations() {
     return (
-        <BrowserRouter> 
+        <BrowserRouter>
             <Routes>
                 <Route index path="/" element={<Login />} />
                 <Route path="/register" element={<Register />} />
@@ -66,8 +67,17 @@ export function Navigations() {
                             <Perfil />
                         </PrivateRoute>
                     )}
-                    />
+                />
+                <Route
+                    path="/dashboard"
+                    element={(
+                        <PrivateRoute>
+                            <Dashboard />
+                        </PrivateRoute>
+                    )}
+                />
             </Routes>
+
         </BrowserRouter>
     )
 }

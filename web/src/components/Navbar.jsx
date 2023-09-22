@@ -1,10 +1,12 @@
 import { Container, Nav, Navbar } from 'react-bootstrap';
 
+import '../styles/navbar.css'; // Importe seu arquivo CSS
+
+
 export function NavbarComponent(props) {
     return (
-        <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+        <Navbar collapseOnSelect expand="lg" className="custom-navbar">
             <Container fluid>
-
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">

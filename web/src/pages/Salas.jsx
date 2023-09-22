@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 import { NavbarComponent } from "../components/Navbar";
-
+import "../styles/salas.css"
 import { Sala } from "../components/Sala";
 import { Header } from "../components/Header";
 import { Input } from '../components/Input';
+import Select from 'react-select';
 
 import { createSala, deleteSala, getSalas, updateSala, getFiltroSalas } from "../services/sala-service";
 
@@ -36,10 +37,10 @@ export function Salas() {
         try {
             let filtro = tipoFiltro;
 
-            if (tipoFiltro === "todos") {
+            if (tipoFiltro === "Todos") {
                 await findSalas();
             } else {
-                const result = await getFiltroSalas({ tipoSala: filtro }); // Corrigido aqui
+                const result = await getFiltroSalas({ tipoSala: filtro });
                 setSalas(result.data);
             }
         } catch (error) {
@@ -82,7 +83,7 @@ export function Salas() {
     }
 
     return (
-        <Container fluid>
+        <Container fluid className="salas-container">
             <NavbarComponent />
             <Header title="Salas" />
             <Row className="w-50 m-auto mb-5 mt-5 ">
@@ -93,18 +94,21 @@ export function Salas() {
 
             <Row className="w-50 m-auto mb-2">
                 <Col md='8'>
-                    <Form.Group className="mb-3">
-                        <Form.Control
-                            as="select"
-                            name="tipoSala"
-                            value={tipoFiltro}
-                            onChange={(e) => setTipoFiltro(e.target.value)}
-                        >
-                            <option value="todos">Todos</option>
-                            <option value="Leito">Leito</option>
-                            <option value="Cirúrgica">Cirúrgica</option>
-                        </Form.Control>
-                    </Form.Group>
+                    <Select
+                        name="tipoSala"
+                        options={[
+                            { value: 'todos', label: 'Todos' },
+                            { value: 'Leito', label: 'Leito' },
+                            { value: 'Cirúrgica', label: 'Cirúrgica' },
+                        ]}
+                        value={{ value: tipoFiltro, label: tipoFiltro }}
+                        onChange={(selectedOption) => setTipoFiltro(selectedOption.value)}
+                        className="salas-select-filter"
+                        isSearchable={false} // Para desativar a pesquisa
+                        styles={{
+                            indicatorSeparator: () => { }, // Para remover a linha vertical entre o seletor e a seta
+                        }}
+                    />
                 </Col>
 
                 <Col md='2'>

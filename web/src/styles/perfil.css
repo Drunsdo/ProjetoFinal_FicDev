@@ -1,0 +1,48 @@
+/* perfil.css */
+
+/* Estilize o contêiner principal */
+.perfil-container {
+    padding: 0px;
+    /* Deixe espaço para o Navbar personalizado */
+}
+
+/* Estilize o cabeçalho */
+.perfil-header {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilize o cartão de perfil */
+.perfil-card {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Estilize o texto dentro do cartão de perfil */
+.perfil-card-text {
+    font-size: 18px;
+    color: #333;
+}
+
+/* Estilize os botões de editar e apagar */
+.perfil-button-edit {
+    margin-right: 10px;
+}
+
+.perfil-button-delete {
+    margin-left: 10px;
+    color: #dc3545;
+    /* Cor vermelha para o botão de apagar */
+}
+
+/* Estilize os inputs no modal de edição */
+.perfil-modal-input {
+    margin-bottom: 15px;
+}

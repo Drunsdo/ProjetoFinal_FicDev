@@ -7,6 +7,9 @@ import { Leito } from "../components/Leito";
 import { Header } from "../components/Header";
 import { createLeito, deleteLeito, getLeitos, updateLeito, getFiltroLeito, reservaLeito } from "../services/leito-service";
 import { getSalas } from "../services/sala-service";
+import Select from 'react-select';
+import "../styles/leitos.css"
+
 
 export function Leitos() {
     const [leitos, setLeitos] = useState([]);
@@ -144,7 +147,7 @@ export function Leitos() {
     }
 
     return (
-        <Container fluid>
+        <Container fluid className="leitos-container">
             <NavbarComponent />
             <Header title="Leitos" />
             <Row className="w-50 m-auto mb-5 mt-5 ">
@@ -155,18 +158,21 @@ export function Leitos() {
 
             <Row className="w-50 m-auto mb-2">
                 <Col md='8'>
-                    <Form.Group className="mb-3">
-                        <Form.Control
-                            as="select"
-                            name="statusLeito"
-                            value={statusFiltro}
-                            onChange={(e) => setStatusFiltro(e.target.value)}
-                        >
-                            <option value="todos">Todos</option>
-                            <option value="Disponível">Disponível</option>
-                            <option value="Ocupado">Ocupado</option>
-                        </Form.Control>
-                    </Form.Group>
+                    <Select
+                        name="statusLeito"
+                        options={[
+                            { value: 'Todos', label: 'Todos' },
+                            { value: 'Disponível', label: 'Disponível' },
+                            { value: 'Ocupado', label: 'Ocupado' },
+                        ]}
+                        value={{ value: statusFiltro, label: statusFiltro }}
+                        onChange={(selectedOption) => setStatusFiltro(selectedOption.value)}
+                        className="salas-select-filter"
+                        isSearchable={false} // Para desativar a pesquisa
+                        styles={{
+                            indicatorSeparator: () => { }, // Para remover a linha vertical entre o seletor e a seta
+                        }}
+                    />
                 </Col>
 
                 <Col md='2'>
@@ -203,14 +209,14 @@ export function Leitos() {
                                 <option disabled>Clique para selecionar</option>
                                 {salas && salas.length > 0
                                     ? salas
-                                        .filter((sala) => sala.tipo === "Leito")
+                                        .filter((sala) => sala.status === "Leito")
                                         .sort((a, b) => a.id - b.id)
                                         .map((sala) => (
                                             <option key={sala.id} value={sala.id}>
                                                 {sala.id}
                                             </option>
                                         ))
-                                    : <p className="text-center">Não existe nenhuma sala do tipo "Leito" cadastrada!</p>}
+                                    : <p className="text-center">Não existe nenhuma sala do status "Leito" cadastrada!</p>}
                             </Form.Select>
                         </Form.Group>
 

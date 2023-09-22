@@ -1,0 +1,36 @@
+/* home.css */
+
+.home-container {
+  padding: 0px;
+}
+
+
+/* Estilize o cabeçalho */
+
+.home-header {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Estilize as colunas de cartões */
+.home-card {
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilize o texto dentro dos cartões */
+.home-card-text {
+  font-size: 18px;
+  color: #333;
+}
+
+/* Estilize o título dentro dos cartões */
+.home-card-title {
+  font-size: 20px;
+  color: #1e395c;
+  /* Cor de destaque */
+}
