@@ -16,8 +16,7 @@ module.exports = {
             },
             quantidadeleitos: {
                 type: Sequelize.INTEGER,
-                allowNull: false,
-                defaultValue: 0
+                allowNull: true,
             }
         });
     },

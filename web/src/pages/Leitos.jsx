@@ -209,7 +209,7 @@ export function Leitos() {
                                 <option disabled>Clique para selecionar</option>
                                 {salas && salas.length > 0
                                     ? salas
-                                        .filter((sala) => sala.status === "Leito")
+                                        .filter((sala) => sala.tipo === "Leito")
                                         .sort((a, b) => a.id - b.id)
                                         .map((sala) => (
                                             <option key={sala.id} value={sala.id}>
@@ -238,7 +238,7 @@ export function Leitos() {
                             Criar
                         </Button>
                         <Button variant="secondary" onClick={() => setIsCreated(false)}>
-                            FecharsalaIdLeito: data.salaIdLeito
+                            Fechar
                         </Button>
                     </Modal.Footer>
                 </Form>

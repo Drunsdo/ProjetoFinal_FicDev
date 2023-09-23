@@ -146,22 +146,27 @@ export function Salas() {
                                 <option value='Cirúrgica'>Cirúrgica</option>
                             </Form.Select>
                         </Form.Group>
+
+
                         <div>
-                            <label>Quantidade de Leitos</label>
-                            <Input
-                                className="mb-3"
-                                type='integer'
-                                required={true}
-                                name='quantidadeleitosSala'
-                                error={errors.quantidadeleitosSala}
-                                validations={register('quantidadeleitosSala', {
-                                    required: {
-                                        value: true,
-                                        message: 'quantidade de leitos é obrigatório.'
-                                    }
-                                })}
-                            />
+                            <Form.Group>
+                                <Form.Label>Quantidade de Leitos</Form.Label>
+                                <Input
+                                    className="mb-3"
+                                    type='number' /* Corrigi o tipo para 'number' */
+                                    required={true}
+                                    name='quantidadeleitosSala'
+                                    error={errors.quantidadeleitosSala}
+                                    validations={register('quantidadeleitosSala', {
+                                        required: {
+                                            value: true,
+                                            message: 'Quantidade de leitos é obrigatório.'
+                                        }
+                                    })}
+                                />
+                            </Form.Group>
                         </div>
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">
@@ -174,6 +179,6 @@ export function Salas() {
                     </Modal.Footer>
                 </Form>
             </Modal>
-        </Container>
+        </Container >
     );
 }

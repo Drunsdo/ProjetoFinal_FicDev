@@ -1,5 +1,6 @@
 const { ReservaModel } = require('../models/reserva-model');
 const { HttpHelper } = require('../utils/http-helper');
+const { Op } = require('sequelize');
 
 
 class ReservaController {
@@ -10,16 +11,19 @@ class ReservaController {
             if (horainicio === undefined || data === undefined || responsavel === undefined || salaId === undefined || horafim === undefined) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
-            if (horafim === horainicio) return httpHelper.badRequest('Parâmetros inválidos!');
-            const verificarReservas = await ReservaModel.findAll();
+            if (horafim == horainicio) return httpHelper.badRequest('Parâmetros inválidos!');
 
-
-            for (const reserva of verificarReservas) {
-                if (reserva.data === data && reserva.salaId === salaId) {
-                    if (horafim > reserva.horainicio && horainicio < reserva.horafim) {
-                        return httpHelper.badRequest('Horário já reservado!');
-                    }
+            const reservaConflitante = await ReservaModel.findOne({
+                where: {
+                    data: data,
+                    salaId: salaId,
+                    horafim: { [Op.gte]: horainicio },
+                    horainicio: { [Op.lte]: horafim }
                 }
+            });
+
+            if (reservaConflitante) {
+                return httpHelper.badRequest('Horário já reservado!');
             }
 
             const reserva = await ReservaModel.create({

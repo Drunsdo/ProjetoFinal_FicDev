@@ -22,7 +22,7 @@ export function Leito(props) {
     }
 
     async function reservarLeito(data) {
-        await props.reservarLeito({ ...data, id: props.leito.id });
+        await props.reservarLeito({ ...data, id: props.leito.id, statusLeito: "Ocupado" });
         setIsReserva(false);
     }
 
@@ -163,6 +163,7 @@ export function Leito(props) {
                                 })}
                             />
                         </div>
+                        {/*}
                         <Form.Group>
                             <Form.Label>Status do Leito</Form.Label>
                             <Form.Select name="statusLeito" {...register("statusLeito")}>
@@ -170,7 +171,7 @@ export function Leito(props) {
                                 <option value="Disponível">Disponível</option>
                                 <option value="Ocupado">Ocupado</option>
                             </Form.Select>
-                        </Form.Group>
+                            </Form.Group>*/}
                         <div>
                             <label>Data</label>
                             <Input
