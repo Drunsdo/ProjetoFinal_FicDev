@@ -3,10 +3,12 @@ import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Input } from "./Input";
 import { useEffect } from "react";
-import { getSalas } from "../services/sala-service"
+import { getSalas } from "../services/sala-service";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export function Leito(props) {
-    const { handleSubmit, register, formState: { errors } } = useForm();
+    const { handleSubmit, register, formState: { errors }, setValue, watch } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
     const [isReserva, setIsReserva] = useState(false);
     const [salas, setSalas] = useState([]);
@@ -28,11 +30,7 @@ export function Leito(props) {
 
 
 
-    function formatDate(dateString) {
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        const date = new Date(dateString);
-        return date.toLocaleDateString('pt-BR', options);
-    }
+
 
     async function findSalas() {
         try {
@@ -52,7 +50,7 @@ export function Leito(props) {
                 {props.leito.status === false && (
                     <>
                         <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
-                        <Card.Text><strong>Data: </strong>{formatDate(props.leito.data)}</Card.Text>
+                        <Card.Text><strong>Data: </strong>{new Date(props.leito.data).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
                     </>
                 )}
                 <Row xs="auto" className="d-flex justify-content-end">
@@ -97,14 +95,20 @@ export function Leito(props) {
                                 <option value="Ocupado">Ocupado</option>
                             </Form.Select>
                         </Form.Group>
+                        <br />
                         <div>
                             <label>Data</label>
-                            <Input
-                                className="mb-3"
-                                type="date"
-                                defaultValue={props.leito.data}
+                            <br />
+                            <DatePicker
+                                selected={watch('dataLeito') || new Date(props.leito.data)}
+                                onChange={(date) => setValue('dataLeito', date, { shouldValidate: true })}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={15}
+                                dateFormat="dd/MM/yyyy HH:mm"
+                                className="mb-3 form-control"
                                 name="dataLeito"
-                                validations={register("dataLeito")}
+                                required={false}
                             />
                         </div>
 
@@ -163,28 +167,23 @@ export function Leito(props) {
                                 })}
                             />
                         </div>
-                        {/*}
-                        <Form.Group>
-                            <Form.Label>Status do Leito</Form.Label>
-                            <Form.Select name="statusLeito" {...register("statusLeito")}>
-                                <option disabled>Clique para selecionar</option>
-                                <option value="Disponível">Disponível</option>
-                                <option value="Ocupado">Ocupado</option>
-                            </Form.Select>
-                            </Form.Group>*/}
+                       
                         <div>
                             <label>Data</label>
-                            <Input
-                                className="mb-3"
-                                type="date"
-                                defaultValue={props.leito.data}
+                            <br />
+                            <DatePicker
+                                selected={watch('dataLeito') || new Date(props.leito.data)}
+                                onChange={(date) => setValue('dataLeito', date, { shouldValidate: true })}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={15}
+                                dateFormat="dd/MM/yyyy HH:mm"
+                                className="mb-3 form-control"
                                 name="dataLeito"
-                                error={errors.dataLeito}
-                                validations={register("dataLeito")}
+                                required={true}
                             />
                         </div>
 
-                        
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

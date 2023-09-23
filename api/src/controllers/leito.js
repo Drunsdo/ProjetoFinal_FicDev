@@ -1,5 +1,6 @@
 const { LeitoModel } = require('../models/leito-model');
 const { HttpHelper } = require('../utils/http-helper');
+const { Sequelize } = require('sequelize'); 
 
 class LeitoController {
     async create(request, response) {
@@ -33,6 +34,32 @@ class LeitoController {
             return httpHelper.internalError(error);
         }
     }
+
+    async getQuantidade(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const roomCount = await LeitoModel.count();
+            return httpHelper.ok({ roomCount });
+        } catch (error) {
+            console.error('Erro ao obter a quantidade total de leitos:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidadeStatus(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const roomCounts = await LeitoModel.findAll({
+                attributes: ['status', [Sequelize.fn('count', Sequelize.col('status')), 'count']],
+                group: ['status']
+            });
+            return httpHelper.ok(roomCounts);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade de leitos por status:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
 
     // Obtém leitos por status
     async getByStatus(request, response) {

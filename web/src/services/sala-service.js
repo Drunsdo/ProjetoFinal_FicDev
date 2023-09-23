@@ -20,6 +20,26 @@ export async function getSalas() {
     return result;
 }
 
+export async function getQuantidadeSalas() {
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/salas/quantidade', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    return result;
+}
+
+export async function getQuantidadeTipoSalas() {
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/salas/tipo', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    return result;
+}
+
 export async function deleteSala(id) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.delete(`/sala/${id}`, {

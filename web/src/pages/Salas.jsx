@@ -16,7 +16,8 @@ export function Salas() {
     const [isCreated, setIsCreated] = useState(false);
     const { handleSubmit, register, formState: { errors } } = useForm();
     const navigate = useNavigate();
-    const [tipoFiltro, setTipoFiltro] = useState("");
+    const valorPadraoTipoFiltro = 'Todos';
+    const [tipoFiltro, setTipoFiltro] = useState(valorPadraoTipoFiltro);
 
     useEffect(() => {
         findSalas();
@@ -97,7 +98,7 @@ export function Salas() {
                     <Select
                         name="tipoSala"
                         options={[
-                            { value: 'todos', label: 'Todos' },
+                            { value: 'Todos', label: 'Todos' },
                             { value: 'Leito', label: 'Leito' },
                             { value: 'Cirúrgica', label: 'Cirúrgica' },
                         ]}

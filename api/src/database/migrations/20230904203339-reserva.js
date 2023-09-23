@@ -14,16 +14,12 @@ module.exports = {
                 type: Sequelize.TEXT,
                 allowNull: false,
             },
-            data: {
+            datainicio: {
                 type: Sequelize.DATE,
                 allowNull: false,
             },
-            horainicio: {
-                type: Sequelize.TIME,
-                allowNull: false,
-            },
-            horafim: {
-                type: Sequelize.TIME,
+            datafim: {
+                type: Sequelize.DATE,
                 allowNull: false,
             },
             salaId: { 

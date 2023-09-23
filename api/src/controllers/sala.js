@@ -1,5 +1,6 @@
 const { HttpHelper } = require('../utils/http-helper');
 const { SalaModel } = require('../models/sala-model');
+const { Sequelize } = require('sequelize');
 
 
 class SalaController {
@@ -27,6 +28,31 @@ class SalaController {
             const salas = await SalaModel.findAll();
             return httpHelper.ok(salas);
         } catch (error) {
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidade(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await SalaModel.count();
+            return httpHelper.ok(quantidade);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade total de salas:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidadeTipo(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await SalaModel.findAll({
+                attributes: ['tipo', [Sequelize.fn('count', Sequelize.col('tipo')), 'count']],
+                group: ['tipo']
+            });
+            return httpHelper.ok(quantidade);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade de salas por tipo:', error);
             return httpHelper.internalError(error);
         }
     }

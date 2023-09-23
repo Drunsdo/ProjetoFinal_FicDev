@@ -2,14 +2,18 @@ import { useState } from "react";
 import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { getSalas } from "../services/sala-service"
+import { getSalas } from "../services/sala-service";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 import { Input } from "./Input";
 
 export function Reserva(props) {
-    const { handleSubmit, register, formState: { errors } } = useForm();
+    const { handleSubmit, register, formState: { errors }, setValue, watch } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
+    //const [dataInicioReserva, setDataInicioReserva] = useState(new Date());
+    //const [dataFimReserva, setDataFimReserva] = useState(new Date());
     const [salas, setSalas] = useState([]);
 
     async function editReserva(data) {
@@ -32,20 +36,14 @@ export function Reserva(props) {
     }
 
 
-    function formatDate(dateString) {
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        const date = new Date(dateString);
-        return date.toLocaleDateString('pt-BR', options);
-    }
-
     return (
         <>
             <Card className="mb-3 p-3 bg-light">
                 <Card.Title><strong>Sala: </strong>{props.reserva.salaId}</Card.Title>
                 <Card.Text><strong>Responsável: </strong>{props.reserva.responsavel}</Card.Text>
-                <Card.Text><strong>Data: </strong>{formatDate(props.reserva.data)}</Card.Text>
-                <Card.Text><strong>Hora inicio: </strong>{props.reserva.horainicio}</Card.Text>
-                <Card.Text><strong>Horam fim: </strong>{props.reserva.horafim}</Card.Text>
+                <Card.Text><strong>Inicio: </strong>{new Date(props.reserva.datainicio).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</Card.Text>
+                <Card.Text><strong>Fim: </strong>{new Date(props.reserva.datafim).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</Card.Text>
+
 
                 <Row xs="auto" className="d-flex justify-content-end">
                     <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
@@ -64,7 +62,7 @@ export function Reserva(props) {
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(editReserva)} validated={!!errors}>
                     <Modal.Body>
-                    <Form.Group controlId="formIdSala">
+                        <Form.Group controlId="formIdSala">
                             <Form.Label>Número da sala</Form.Label>
                             <Form.Select
                                 name="salaIdReserva"
@@ -103,56 +101,32 @@ export function Reserva(props) {
                         </div>
 
                         <div>
-                            <label>Data da Reserva</label>
-                            <Input
-                                className="mb-3"
-                                type='date'
-                                defaultValue={props.reserva.data}
+                            <label>Data de Início da Reserva</label>
+                            <DatePicker
+                                selected={watch('datainicioReserva') || new Date(props.reserva.datainicio)}
+                                onChange={(date) => setValue('datainicioReserva', date, { shouldValidate: true })}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={15}
+                                dateFormat="dd/MM/yyyy HH:mm"
+                                className="mb-3 form-control"
+                                name="datainicioReserva"
                                 required={true}
-                                name='dataReserva'
-                                error={errors.dataReserva}
-                                validations={register('dataReserva', {
-                                    required: {
-                                        value: true,
-                                        message: 'data da reserva é obrigatório.'
-                                    }
-                                })}
                             />
                         </div>
 
                         <div>
-                            <label>Hora de Inicio</label>
-                            <Input
-                                className="mb-3"
-                                type='time'
-                                defaultValue={props.reserva.horainicio}
+                            <label>Data de Fim da Reserva</label>
+                            <DatePicker
+                                selected={watch('datafimReserva') || new Date(props.reserva.datafim)}
+                                onChange={(date) => setValue('datafimReserva', date, { shouldValidate: true })}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={15}
+                                dateFormat="dd/MM/yyyy HH:mm"
+                                className="mb-3 form-control"
+                                name="datafimReserva"
                                 required={true}
-                                name='horainicioReserva'
-                                error={errors.horainicioReserva}
-                                validations={register('horainicioReserva', {
-                                    required: {
-                                        value: true,
-                                        message: 'Hora inicio da reserva é obrigatório.'
-                                    }
-                                })}
-                            />
-                        </div>
-
-                        <div>
-                            <label>Hora de Fim</label>
-                            <Input
-                                className="mb-3"
-                                type='time'
-                                defaultValue={props.reserva.horafim}
-                                required={true}
-                                name='horafimReserva'
-                                error={errors.horafimReserva}
-                                validations={register('horafimReserva', {
-                                    required: {
-                                        value: true,
-                                        message: 'Hora do fim da reserva é obrigatório.'
-                                    }
-                                })}
                             />
                         </div>
 

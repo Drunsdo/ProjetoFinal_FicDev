@@ -16,18 +16,23 @@ const reservaController = new ReservaController();
 routes.post('/sala', authMiddleware, salaController.create);
 routes.get('/salas', authMiddleware, salaController.getAll);
 routes.get('/salas/:tipo', authMiddleware, salaController.getByTipo);
+routes.get('/salas/tipo', authMiddleware, salaController.getQuantidadeTipo);
+routes.get('/salas/quantidade', authMiddleware, salaController.getQuantidade);
 routes.delete('/sala/:id', authMiddleware, salaController.delete);
 routes.put('/sala/:id', authMiddleware, salaController.update);
 
 routes.post('/reserva', authMiddleware, reservaController.create);
 routes.get('/reservas', authMiddleware, reservaController.getAll);
 routes.get('/reservas/:salaId', authMiddleware, reservaController.getBySalaId);
+routes.get('/reservas/quantidade', authMiddleware, reservaController.getQuantidade);
 routes.delete('/reserva/:id', authMiddleware, reservaController.delete);
 routes.put('/reserva/:id', authMiddleware, reservaController.update);
 
 routes.post('/leito', authMiddleware, leitoController.create);
 routes.get('/leitos', authMiddleware, leitoController.getAll);
 routes.get('/leitos/:status', leitoController.getByStatus);
+routes.get('/leitos/quantidade', leitoController.getQuantidade);
+routes.get('/leitos/status', leitoController.getQuantidadeStatus);
 routes.delete('/leito/:id', authMiddleware, leitoController.delete);
 routes.put('/leito/:id', authMiddleware, leitoController.update);
 routes.put('/leito/:id', authMiddleware, leitoController.reserva);

@@ -1,11 +1,12 @@
 import { Container, Col, Modal, Form, Button, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useForm } from 'react-hook-form';
+import { useForm} from 'react-hook-form';
 import { NavbarComponent } from "../components/Navbar";
 import Select from 'react-select';
-import "../styles/reservas.css"
-
+import "../styles/reservas.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 import { Reserva } from "../components/Reserva";
@@ -17,11 +18,13 @@ import { createReserva, deleteReserva, getReservas, updateReserva, getFiltroRese
 
 export function Reservas() {
     const [reservas, setReservas] = useState([]);
+    //const [dataInicioReserva, setDataInicioReserva] = useState(new Date());
+    //const [dataFimReserva, setDataFimReserva] = useState(new Date());
     const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
-    const { handleSubmit, register, formState: { errors } } = useForm();
+    const { handleSubmit, register,  formState: { errors }, setValue, watch } = useForm();
     const navigate = useNavigate();
-    const [salaIdFiltro, setSalaIdFiltro] = useState("");
+    const [salaIdFiltro, setSalaIdFiltro] = useState('Todos');
 
     useEffect(() => {
         findReservas();
@@ -89,9 +92,8 @@ export function Reservas() {
             await updateReserva({
                 id: data.id,
                 responsavelReserva: data.responsavelReserva,
-                horainicioReserva: data.horainicioReserva,
-                horafimReserva: data.horafimReserva,
-                dataReserva: data.dataReserva,
+                datainicioReserva: data.datainicioReserva,
+                datafimReserva: data.datafimReserva,
                 salaIdReserva: data.salaIdReserva
             });
             await findReservas();
@@ -199,56 +201,36 @@ export function Reservas() {
                         </div>
 
                         <div>
-                            <label>Data da Reserva</label>
-                            <Input
-                                className="mb-3"
-                                type='date'
+                            <label>Data de Início da Reserva</label>
+                            <DatePicker
+                                selected={watch('datainicioReserva') || null}
+                                onChange={(date) => setValue('datainicioReserva', date, { shouldValidate: true })}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={15}
+                                dateFormat="dd/MM/yyyy HH:mm"
+                                className="mb-3 form-control"
+                                name="datainicioReserva"
                                 required={true}
-                                name='dataReserva'
-                                error={errors.dataReserva}
-                                validations={register('dataReserva', {
-                                    required: {
-                                        value: true,
-                                        message: 'data da reserva é obrigatório.'
-                                    }
-                                })}
                             />
                         </div>
 
                         <div>
-                            <label>Hora de Inicio</label>
-                            <Input
-                                className="mb-3"
-                                type='time'
+                            <label>Data de Fim da Reserva</label>
+                            <DatePicker
+                                selected={watch('datafimReserva') || null}
+                                onChange={(date) => setValue('datafimReserva', date, { shouldValidate: true })}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={15}
+                                dateFormat="dd/MM/yyyy HH:mm"
+                                className="mb-3 form-control"
+                                name="datafimReserva"
                                 required={true}
-                                name='horainicioReserva'
-                                error={errors.horainicioReserva}
-                                validations={register('horainicioReserva', {
-                                    required: {
-                                        value: true,
-                                        message: 'Hora inicio da reserva é obrigatório.'
-                                    }
-                                })}
                             />
                         </div>
 
-                        <div>
-                            <label>Hora de Fim</label>
-                            <Input
-                                className="mb-3"
-                                type='time'
 
-                                required={true}
-                                name='horafimReserva'
-                                error={errors.horafimReserva}
-                                validations={register('horafimReserva', {
-                                    required: {
-                                        value: true,
-                                        message: 'Hora do fim da reserva é obrigatório.'
-                                    }
-                                })}
-                            />
-                        </div>
 
                     </Modal.Body>
                     <Modal.Footer>

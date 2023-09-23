@@ -4,9 +4,8 @@ class ReservaModel extends Model {
     static init(sequelize) {
         super.init({
             responsavel: DataTypes.TEXT,
-            data: DataTypes.DATE,
-            horainicio: DataTypes.TIME,
-            horafim: DataTypes.TIME,
+            datainicio: DataTypes.DATE,
+            datafim: DataTypes.DATE,
             salaId: DataTypes.INTEGER
         }, {
             sequelize,

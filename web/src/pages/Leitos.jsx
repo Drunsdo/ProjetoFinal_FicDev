@@ -8,7 +8,8 @@ import { Header } from "../components/Header";
 import { createLeito, deleteLeito, getLeitos, updateLeito, getFiltroLeito, reservaLeito } from "../services/leito-service";
 import { getSalas } from "../services/sala-service";
 import Select from 'react-select';
-import "../styles/leitos.css"
+import "../styles/leitos.css";
+
 
 
 export function Leitos() {
@@ -17,7 +18,7 @@ export function Leitos() {
     const [isCreated, setIsCreated] = useState(false);
     const { handleSubmit, register, formState: { errors } } = useForm();
     const navigate = useNavigate();
-    const [statusFiltro, setStatusFiltro] = useState("");
+    const [statusFiltro, setStatusFiltro] = useState('Todos');
 
     useEffect(() => {
         findLeitos();

@@ -10,7 +10,7 @@ import { Modal } from '../components/Modal';
 import { loginUser } from '../services/user-service';
 
 export function Login() {
-    const { handleSubmit, register, formState: { errors } } = useForm();
+    const { handleSubmit, register, formState: { errors, isSubmitted } } = useForm();
     const [result, setResult] = useState(null);
     const navigate = useNavigate();
 
@@ -35,10 +35,10 @@ export function Login() {
                 message={result?.message}
                 handleClose={() => setResult(null)}
             />
-            <Header title="Entre na sua conta" />
+            <Header title="Gestão de Leitos e Salas" />
             <Form
                 noValidate
-                validated={!!errors}
+                validated={isSubmitted} // Apenas ativar a validação após o envio
                 onSubmit={handleSubmit(onSubmit)}
                 className="bg-light rounded p-5 shadow w-50 m-auto"
             >

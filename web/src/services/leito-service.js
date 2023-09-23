@@ -10,6 +10,26 @@ export async function getLeitos() {
     return result;
 }
 
+export async function getQuantidadeLeitos() {
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/leitos/quantidade', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    return result;
+}
+
+export async function getQuantidadeStatusLeitos() {
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/leitos/status', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    return result;
+}
+
 export async function getFiltroLeito(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.get(`/leitos/${data.statusLeito}`, {

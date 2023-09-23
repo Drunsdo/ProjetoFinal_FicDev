@@ -6,28 +6,33 @@ const { Op } = require('sequelize');
 class ReservaController {
     async create(request, response) {
         const httpHelper = new HttpHelper(response);
+
         try {
-            const { horainicio, data, responsavel, horafim, salaId } = request.body;
-            if (horainicio === undefined || data === undefined || responsavel === undefined || salaId === undefined || horafim === undefined) {
+            const { datainicio, datafim, responsavel, salaId } = request.body;
+
+            if (datainicio === undefined || datafim === undefined || responsavel === undefined || salaId === undefined) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
-            if (horafim == horainicio) return httpHelper.badRequest('Parâmetros inválidos!');
 
-            const reservaConflitante = await ReservaModel.findOne({
+            if (datainicio === datafim) {
+                return httpHelper.badRequest('Parâmetros inválidos!');
+            }
+
+            // Consulta todas as reservas existentes na mesma sala que têm conflito de horário
+            const verificarReservas = await ReservaModel.findAll({
                 where: {
-                    data: data,
                     salaId: salaId,
-                    horafim: { [Op.gte]: horainicio },
-                    horainicio: { [Op.lte]: horafim }
+                    datainicio: { [Op.lt]: datafim },
+                    datafim: { [Op.gt]: datainicio }
                 }
             });
 
-            if (reservaConflitante) {
+            if (verificarReservas.length > 0) {
                 return httpHelper.badRequest('Horário já reservado!');
             }
 
             const reserva = await ReservaModel.create({
-                horainicio, data, responsavel, horafim, salaId
+                datainicio, datafim, responsavel, salaId
             });
 
             return httpHelper.created(reserva);
@@ -36,12 +41,24 @@ class ReservaController {
         }
     }
 
+
     async getAll(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
             const reservas = await ReservaModel.findAll();
             return httpHelper.ok(reservas);
         } catch (error) {
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidade(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await ReservaModel.count();
+            return httpHelper.ok(quantidade);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade total de reservas:', error);
             return httpHelper.internalError(error);
         }
     }
@@ -81,33 +98,44 @@ class ReservaController {
 
     async update(request, response) {
         const httpHelper = new HttpHelper(response);
+    
         try {
             const { id } = request.params;
-            const { horainicio, data, responsavel, horafim, salaId } = request.body;
-            if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
+            const { datainicio, datafim, responsavel, salaId } = request.body;
+    
+            if (!id || datainicio === undefined || datafim === undefined || responsavel === undefined || salaId === undefined) {
+                return httpHelper.badRequest('Parâmetros inválidos!');
+            }
+    
             const reservaExists = await ReservaModel.findByPk(id);
-            if (!reservaExists) return httpHelper.notFound('reserva não encontrado!');
-
-            if (horafim === horainicio) {
-                return this.httpHelper.badRequest('Parâmetros inválidos!');
+            if (!reservaExists) {
+                return httpHelper.notFound('Reserva não encontrado!');
             }
-
-            const verificarReservas = await ReservaModel.findAll
-
-            for (const reserva of verificarReservas) {
-                if (reserva.data === data && reserva.salaId === salaId) {
-                    if (horafim > reserva.horainicio && horainicio < reserva.horafim) {
-                        return httpHelper.badRequest('Horário já reservado!');
-                    }
+    
+            if (datainicio === datafim) {
+                return httpHelper.badRequest('Parâmetros inválidos!');
+            }
+    
+            // Consulta todas as reservas existentes na mesma sala que têm conflito de horário, excluindo a própria reserva que está sendo atualizada
+            const verificarReservas = await ReservaModel.findAll({
+                where: {
+                    salaId: salaId,
+                    datainicio: { [Op.lt]: datafim },
+                    datafim: { [Op.gt]: datainicio },
+                    id: { [Op.ne]: id } // Exclui a própria reserva que está sendo atualizada
                 }
+            });
+    
+            if (verificarReservas.length > 0) {
+                return httpHelper.badRequest('Horário já reservado!');
             }
-
+    
             await ReservaModel.update({
-                horainicio, data, responsavel, horafim, salaId
+                datainicio, datafim, responsavel, salaId
             }, {
                 where: { id }
             });
-
+    
             return httpHelper.ok({
                 message: 'Reserva atualizada com sucesso!'
             });
@@ -115,6 +143,7 @@ class ReservaController {
             return httpHelper.internalError(error);
         }
     }
+    
 }
 
 module.exports = { ReservaController };
