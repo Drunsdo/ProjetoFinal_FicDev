@@ -74,6 +74,19 @@ export async function reservaLeito(data){
     return result;
 }
 
+export async function desocupaLeito(data){
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.put(`/leito/desocupa/${data.id}`, {
+       
+        status: data.statusLeito
+    }, {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    return result;
+}
+
 export async function updateLeito(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.put(`/leito/update/${data.id}`, {

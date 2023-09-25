@@ -37,6 +37,7 @@ routes.get('/leitos/get/disponivel', leitoController.getQuantidadeDisponivel);
 routes.get('/leitos/get/ocupado', leitoController.getQuantidadeOcupado);
 routes.delete('/leito/:id', authMiddleware, leitoController.delete);
 routes.put('/leito/update/:id', authMiddleware, leitoController.update);
+routes.put('/leito/desocupa/:id', authMiddleware, leitoController.desocupar);
 routes.put('/leito/reserva/:id', authMiddleware, leitoController.reserva);
 
 routes.post('/register', userController.register);

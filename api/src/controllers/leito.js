@@ -158,6 +158,37 @@ class LeitoController {
         }
     }
 
+    async desocupar(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const { id } = request.params;
+            const { status } = request.body;
+            
+            if (!id) {
+                return httpHelper.badRequest('Parâmetros inválidos!');
+            }
+
+            const leitoExists = await LeitoModel.findByPk(id);
+            
+            if (!leitoExists) {
+                return httpHelper.notFound('Leito não encontrado!');
+            }
+            
+            await LeitoModel.update({
+                status
+            }, {
+                where: { id }
+            });
+            
+            return httpHelper.ok({
+                message: 'Leito desocupado com sucesso!'
+            });
+        } catch (error) {
+            console.error('Erro ao atualizar um leito:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
 
     // Atualiza um leito por ID
     async update(request, response) {

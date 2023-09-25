@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Input } from "./Input";
@@ -11,6 +11,7 @@ export function Leito(props) {
     const { handleSubmit, register, formState: { errors }, setValue, watch } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
     const [isReserva, setIsReserva] = useState(false);
+    const [isDesocupa, setIsDesocupa] = useState(false);
     const [salas, setSalas] = useState([]);
 
     useEffect(() => {
@@ -26,6 +27,11 @@ export function Leito(props) {
     async function reservarLeito(data) {
         await props.reservarLeito({ ...data, id: props.leito.id, statusLeito: "Ocupado" });
         setIsReserva(false);
+    }
+
+    async function desocupaLeito(data) {
+        await props.desocupaLeito({ ...data, id: props.leito.id, statusLeito: "Disponível" });
+        setIsDesocupa(false);
     }
 
 
@@ -45,20 +51,26 @@ export function Leito(props) {
                 <Card.Text><strong>Número do leito: </strong>{props.leito.id}</Card.Text>
                 <Card.Text><strong>Número da sala: </strong>{props.leito.salaId}</Card.Text>
                 {props.leito.status === false && (
-                    <>
-                        <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
-                    </>
+                    <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
                 )}
-                {props.leito.pacienteatual !== null && (
-                    <>
-                        <Card.Text><strong>Data: </strong>{new Date(props.leito.data).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
+                {(props.leito.pacienteatual !== null && (props.leito.status === true && props.leito.pacienteatual === null)) && (
+                    <Card.Text><strong>Data: </strong>{new Date(props.leito.data).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
+                )}
 
-                    </>
-                )}
                 <Row xs="auto" className="d-flex justify-content-end">
                     {props.leito.status === true && (
                         <Button variant="primary" onClick={() => setIsReserva(true)}>
                             Reservar
+                        </Button>
+                    )}
+                    {props.leito.status === false && (
+                        < Button
+                            variant="success"
+                            className="ms-3"
+                            
+                            onClick={() => setIsDesocupa(true)}
+                        >
+                            Desocupar
                         </Button>
                     )}
                     <Button variant="secondary" className="ms-3" onClick={() => setIsUpdated(true)}>
@@ -72,7 +84,7 @@ export function Leito(props) {
                         Apagar
                     </Button>
                 </Row>
-            </Card>
+            </Card >
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
                     <Modal.Title>Editar leito: {props.leito.id}</Modal.Title>
@@ -86,7 +98,7 @@ export function Leito(props) {
                                 type="text"
                                 defaultValue={props.leito.pacienteatual}
                                 name="pacienteatualLeito"
-                                {...register("pacienteatualLeito")}
+                                validations={register("pacienteatualLeito")}
                             />
                         </div>
                         <Form.Group>
@@ -102,7 +114,7 @@ export function Leito(props) {
                             <label>Data</label>
                             <br />
                             <DatePicker
-                                selected={watch('dataLeito') || new Date()}
+                                selected={watch('dataLeito') || null}
                                 onChange={(date) => setValue('dataLeito', date, { shouldValidate: true })}
                                 showTimeSelect
                                 timeFormat="HH:mm"
@@ -207,6 +219,21 @@ export function Leito(props) {
                     </Modal.Footer>
                 </Form>
             </Modal>
+
+            <Modal show={isDesocupa} onHide={() => setIsDesocupa(false)}>
+                <Modal.Header>
+                    <Modal.Title>Desocupar Leito: {props.leito.id}</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={desocupaLeito}>
+                        Desocupar
+                    </Button>
+                    <Button variant="secondary" onClick={() => setIsDesocupa(false)}>
+                        Fechar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </>
     );
 }
