@@ -20,9 +20,19 @@ export async function getQuantidadeLeitos() {
     return result;
 }
 
-export async function getQuantidadeStatusLeitos() {
+export async function getQuantidadeDisponivelLeitos() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/leitos/get/status', {
+    const result = await api.get('/leitos/get/disponivel', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    return result;
+}
+
+export async function getQuantidadeOcupadoLeitos() {
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/leitos/get/ocupado', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }

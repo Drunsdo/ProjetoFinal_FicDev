@@ -31,9 +31,20 @@ export async function getQuantidadeSalas() {
     return result;
 }
 
-export async function getQuantidadeTipoSalas() {
+export async function getQuantidadeLeitoSalas() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/salas/get/tipo', {
+    const result = await api.get('/salas/get/tipo/leito', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    console.log(result.data)
+    return result;
+}
+
+export async function getQuantidadeCirurgicaSalas() {
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/salas/get/tipo/cirurgica', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }

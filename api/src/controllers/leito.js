@@ -46,16 +46,32 @@ class LeitoController {
         }
     }
 
-    async getQuantidadeStatus(request, response) {
+    async getQuantidadeDisponivel(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const quantidades = await LeitoModel.findAll({
-                attributes: ['status', [Sequelize.fn('count', Sequelize.col('status')), 'count']],
-                group: ['status']
-            });
+            const quantidades = await LeitoModel.count({
+                where: {
+                    status: true
+                }
+            })
             return httpHelper.ok(quantidades);
         } catch (error) {
-            console.error('Erro ao obter a quantidade de leitos por status:', error);
+            console.error('Erro ao obter a quantidade de leitos por status disponiveis:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidadeOcupado(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidades = await LeitoModel.count({
+                where: {
+                    status: false
+                }
+            })
+            return httpHelper.ok(quantidades);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade de leitos por status ocupados:', error);
             return httpHelper.internalError(error);
         }
     }

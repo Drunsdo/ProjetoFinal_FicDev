@@ -43,19 +43,36 @@ class SalaController {
         }
     }
 
-    async getQuantidadeTipo(request, response) {
+    async getQuantidadeTipoLeito(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const quantidade = await SalaModel.findAll({
-                attributes: ['tipo', [Sequelize.fn('count', Sequelize.col('tipo')), 'count']],
-                group: ['tipo']
+            const quantidade = await SalaModel.count({
+                where: {
+                    tipo: 'Leito' 
+                }
             });
-            return httpHelper.ok(quantidade);
+            return httpHelper.ok( quantidade );
         } catch (error) {
-            console.error('Erro ao obter a quantidade de salas por tipo:', error);
+            console.error('Erro ao obter a quantidade:', error);
             return httpHelper.internalError(error);
         }
     }
+
+    async getQuantidadeTipoCirurgica(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await SalaModel.count({
+                where: {
+                    tipo: 'Cirúrgica' 
+                }
+            });
+            return httpHelper.ok( quantidade );
+        } catch (error) {
+            console.error('Erro ao obter a quantidade:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+    
 
     async getByTipo(request, response) {
         const httpHelper = new HttpHelper(response);

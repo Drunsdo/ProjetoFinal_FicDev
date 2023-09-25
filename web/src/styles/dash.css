@@ -1,3 +1,45 @@
 .dash-container{
     padding: 0px;
 }
+
+/* Estilos para os cards */
+.custom-card {
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .custom-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .custom-card .card-body {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .custom-card .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .custom-card .card-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  /* Estilos para o container do dashboard */
+  .dash-container {
+    padding: 0px;
+  }
+  
+  /* Estilos para o header */
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
