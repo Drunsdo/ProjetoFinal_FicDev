@@ -199,7 +199,7 @@ export function Leitos() {
                 <Modal.Header>
                     <Modal.Title>Cadastrar novo leito</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(addLeito)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(addLeito)} validated={!!errors}>
                     <Modal.Body>
                         <Form.Group controlId="formIdSala">
                             <Form.Label>Número da sala</Form.Label>

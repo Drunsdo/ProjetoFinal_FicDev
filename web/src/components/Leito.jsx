@@ -147,7 +147,7 @@ export function Leito(props) {
                 <Modal.Header>
                     <Modal.Title>Reserva leito: {props.leito.id}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(reservarLeito)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(reservarLeito)} validated={!!errors}>
                     <Modal.Body>
                         <div>
                             <label>Nome do paciente</label>

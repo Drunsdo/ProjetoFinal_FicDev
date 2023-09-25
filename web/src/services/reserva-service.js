@@ -12,7 +12,7 @@ export async function getReservas() {
 
 export async function getQuantidadeReservas() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/reservas/quantidade', {
+    const result = await api.get('/reservas/get/quantidade', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }

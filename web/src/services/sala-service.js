@@ -22,21 +22,23 @@ export async function getSalas() {
 
 export async function getQuantidadeSalas() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/salas/quantidade', {
+    const result = await api.get('/salas/get/quantidade', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }
     });
+    console.log('Dados de salas:', result.data);
     return result;
 }
 
 export async function getQuantidadeTipoSalas() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/salas/tipo', {
+    const result = await api.get('/salas/get/tipo', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }
     });
+    console.log(result.data)
     return result;
 }
 

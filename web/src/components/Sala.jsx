@@ -38,7 +38,7 @@ export function Sala(props) {
                 <Modal.Header>
                     <Modal.Title>Editar sala: {props.sala.tipo}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(editSala)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(editSala)} validated={!!errors}>
                     <Modal.Body>
                         <Form.Group>
                             <Form.Label>Tipo da Sala</Form.Label>

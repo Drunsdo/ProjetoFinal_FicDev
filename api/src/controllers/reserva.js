@@ -18,7 +18,6 @@ class ReservaController {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
 
-            // Consulta todas as reservas existentes na mesma sala que têm conflito de horário
             const verificarReservas = await ReservaModel.findAll({
                 where: {
                     salaId: salaId,

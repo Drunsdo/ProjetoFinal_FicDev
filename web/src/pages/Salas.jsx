@@ -134,7 +134,12 @@ export function Salas() {
                 <Modal.Header>
                     <Modal.Title>Cadastrar nova sala</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(addSala)} validated={!!errors}>
+                <Form
+                    noValidate
+                    
+                    autoComplete="off"
+                    onSubmit={handleSubmit(addSala)}
+                    validated={!!errors}>
                     <Modal.Body>
                         <Form.Group>
                             <Form.Label>Tipo da Sala</Form.Label>

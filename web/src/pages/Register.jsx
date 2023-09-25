@@ -39,6 +39,7 @@ export function Register() {
             <Form
                 noValidate
                 validated={isSubmitted} // Apenas ativar a validação após o envio
+                autoComplete="off"
                 onSubmit={handleSubmit(onSubmit)}
                 className="bg-light rounded p-5 shadow w-50 m-auto"
             >

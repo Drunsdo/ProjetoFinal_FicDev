@@ -60,7 +60,7 @@ export function Reserva(props) {
                 <Modal.Header>
                     <Modal.Title>Editar reserva: {props.reserva.id}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(editReserva)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(editReserva)} validated={!!errors}>
                     <Modal.Body>
                         <Form.Group controlId="formIdSala">
                             <Form.Label>Número da sala</Form.Label>

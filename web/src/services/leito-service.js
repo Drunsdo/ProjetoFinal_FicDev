@@ -12,7 +12,7 @@ export async function getLeitos() {
 
 export async function getQuantidadeLeitos() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/leitos/quantidade', {
+    const result = await api.get('/leitos/get/quantidade', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }
@@ -22,7 +22,7 @@ export async function getQuantidadeLeitos() {
 
 export async function getQuantidadeStatusLeitos() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/leitos/status', {
+    const result = await api.get('/leitos/get/status', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }
