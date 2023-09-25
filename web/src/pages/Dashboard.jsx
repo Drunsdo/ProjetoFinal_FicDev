@@ -108,7 +108,6 @@ export function Dashboard() {
                 <Col lg={6} md={12}> 
                     <Card className="custom-card">
                         <Card.Body>
-                            
                             <Chart
                                 type='donut'
                                 width='100%' /* Use 100% de largura para tornar o gráfico responsivo */

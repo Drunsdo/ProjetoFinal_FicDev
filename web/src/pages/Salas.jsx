@@ -14,7 +14,7 @@ import { createSala, deleteSala, getSalas, updateSala, getFiltroSalas } from "..
 export function Salas() {
     const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
-    const { handleSubmit, register, formState: { errors } } = useForm();
+    const { handleSubmit, register, formState: { errors, isSubmitted } } = useForm();
     const navigate = useNavigate();
     const valorPadraoTipoFiltro = 'Todos';
     const [tipoFiltro, setTipoFiltro] = useState(valorPadraoTipoFiltro);
@@ -136,10 +136,9 @@ export function Salas() {
                 </Modal.Header>
                 <Form
                     noValidate
-                    
                     autoComplete="off"
                     onSubmit={handleSubmit(addSala)}
-                    validated={!!errors}>
+                    validated={isSubmitted}>
                     <Modal.Body>
                         <Form.Group>
                             <Form.Label>Tipo da Sala</Form.Label>

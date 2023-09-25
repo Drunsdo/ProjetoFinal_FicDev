@@ -29,9 +29,6 @@ export function Leito(props) {
     }
 
 
-
-
-
     async function findSalas() {
         try {
             const result = await getSalas();
@@ -50,7 +47,12 @@ export function Leito(props) {
                 {props.leito.status === false && (
                     <>
                         <Card.Text><strong>Paciente atual: </strong>{props.leito.pacienteatual}</Card.Text>
+                    </>
+                )}
+                {props.leito.pacienteatual !== null && (
+                    <>
                         <Card.Text><strong>Data: </strong>{new Date(props.leito.data).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
+
                     </>
                 )}
                 <Row xs="auto" className="d-flex justify-content-end">
@@ -75,7 +77,7 @@ export function Leito(props) {
                 <Modal.Header>
                     <Modal.Title>Editar leito: {props.leito.id}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(editLeito)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(editLeito)} validated={!!errors}>
                     <Modal.Body>
                         <div>
                             <label>Nome do paciente</label>
@@ -100,7 +102,7 @@ export function Leito(props) {
                             <label>Data</label>
                             <br />
                             <DatePicker
-                                selected={watch('dataLeito') || new Date(props.leito.data)}
+                                selected={watch('dataLeito') || new Date()}
                                 onChange={(date) => setValue('dataLeito', date, { shouldValidate: true })}
                                 showTimeSelect
                                 timeFormat="HH:mm"
@@ -120,17 +122,27 @@ export function Leito(props) {
                             >
                                 <option disabled>Clique para selecionar</option>
                                 {salas && salas.length > 0
-                                    ? salas
-                                        .filter((sala) => sala.tipo === "Leito")
-                                        .sort((a, b) => a.id - b.id)
-                                        .map((sala) => (
+                                    ? [
+                                        // Coloque a sala correspondente a salaIdLeito no topo da lista
+                                        ...salas.filter((sala) => sala.id === props.leito.salaId).map((sala) => (
                                             <option key={sala.id} value={sala.id}>
                                                 {sala.id}
                                             </option>
-                                        ))
+                                        )),
+                                        // Em seguida, adicione as outras salas que atendem aos critérios
+                                        ...salas
+                                            .filter((sala) => sala.tipo === "Leito" && sala.id !== props.leito.salaId)
+                                            .sort((a, b) => a.id - b.id)
+                                            .map((sala) => (
+                                                <option key={sala.id} value={sala.id}>
+                                                    {sala.id}
+                                                </option>
+                                            ))
+                                    ]
                                     : <p className="text-center">Não existe nenhuma sala cadastrada!</p>}
                             </Form.Select>
                         </Form.Group>
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">
@@ -167,12 +179,12 @@ export function Leito(props) {
                                 })}
                             />
                         </div>
-                       
+
                         <div>
                             <label>Data</label>
                             <br />
                             <DatePicker
-                                selected={watch('dataLeito') || new Date(props.leito.data)}
+                                selected={watch('dataLeito') || new Date()}
                                 onChange={(date) => setValue('dataLeito', date, { shouldValidate: true })}
                                 showTimeSelect
                                 timeFormat="HH:mm"

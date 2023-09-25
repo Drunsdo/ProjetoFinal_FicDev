@@ -41,8 +41,8 @@ export function Reserva(props) {
             <Card className="mb-3 p-3 bg-light">
                 <Card.Title><strong>Sala: </strong>{props.reserva.salaId}</Card.Title>
                 <Card.Text><strong>Responsável: </strong>{props.reserva.responsavel}</Card.Text>
-                <Card.Text><strong>Inicio: </strong>{new Date(props.reserva.datainicio).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</Card.Text>
-                <Card.Text><strong>Fim: </strong>{new Date(props.reserva.datafim).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</Card.Text>
+                <Card.Text><strong>Inicio: </strong>{new Date(props.reserva.datainicio).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
+                <Card.Text><strong>Fim: </strong>{new Date(props.reserva.datafim).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
 
 
                 <Row xs="auto" className="d-flex justify-content-end">
@@ -58,7 +58,7 @@ export function Reserva(props) {
             </Card>
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
-                    <Modal.Title>Editar reserva: {props.reserva.id}</Modal.Title>
+                    <Modal.Title>Editar Reserva: {props.reserva.id}</Modal.Title>
                 </Modal.Header>
                 <Form noValidate autoComplete="off" onSubmit={handleSubmit(editReserva)} validated={!!errors}>
                     <Modal.Body>
@@ -70,14 +70,23 @@ export function Reserva(props) {
                             >
                                 <option disabled>Clique para selecionar</option>
                                 {salas && salas.length > 0
-                                    ? salas
-                                        .filter((sala) => sala.tipo === "Cirúrgica")
-                                        .sort((a, b) => a.id - b.id)
-                                        .map((sala) => (
+                                    ? [
+                                        // Coloque a sala correspondente a salaIdLeito no topo da lista
+                                        ...salas.filter((sala) => sala.id === props.reserva.salaId).map((sala) => (
                                             <option key={sala.id} value={sala.id}>
                                                 {sala.id}
                                             </option>
-                                        ))
+                                        )),
+                                        // Em seguida, adicione as outras salas que atendem aos critérios
+                                        ...salas
+                                            .filter((sala) => sala.tipo === "Cirúrgica" && sala.id !== props.reserva.salaId)
+                                            .sort((a, b) => a.id - b.id)
+                                            .map((sala) => (
+                                                <option key={sala.id} value={sala.id}>
+                                                    {sala.id}
+                                                </option>
+                                            ))
+                                    ]
                                     : <p className="text-center">Não existe nenhuma sala do tipo "Leito" cadastrada!</p>}
                             </Form.Select>
                         </Form.Group>
@@ -87,7 +96,7 @@ export function Reserva(props) {
                             <Input
                                 className="mb-3"
                                 type='text'
-                                defaultValue={props.reserva.responsavel}
+                                //defaultValue={props.reserva.responsavel}
                                 required={true}
                                 name='responsavelReserva'
                                 error={errors.responsavelReserva}
@@ -103,7 +112,7 @@ export function Reserva(props) {
                         <div>
                             <label>Data de Início da Reserva</label>
                             <DatePicker
-                                selected={watch('datainicioReserva') || new Date(props.reserva.datainicio)}
+                                selected={watch('datainicioReserva') || null}
                                 onChange={(date) => setValue('datainicioReserva', date, { shouldValidate: true })}
                                 showTimeSelect
                                 timeFormat="HH:mm"
@@ -118,7 +127,7 @@ export function Reserva(props) {
                         <div>
                             <label>Data de Fim da Reserva</label>
                             <DatePicker
-                                selected={watch('datafimReserva') || new Date(props.reserva.datafim)}
+                                selected={watch('datafimReserva') || null}
                                 onChange={(date) => setValue('datafimReserva', date, { shouldValidate: true })}
                                 showTimeSelect
                                 timeFormat="HH:mm"

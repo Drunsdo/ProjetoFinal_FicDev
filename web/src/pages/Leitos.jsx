@@ -16,7 +16,7 @@ export function Leitos() {
     const [leitos, setLeitos] = useState([]);
     const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
-    const { handleSubmit, register, formState: { errors } } = useForm();
+    const { handleSubmit, register, formState: { errors, /*isSubmitted*/ } } = useForm();
     const navigate = useNavigate();
     const [statusFiltro, setStatusFiltro] = useState('Todos');
 

@@ -62,7 +62,7 @@ export async function deleteLeito(id) {
 
 export async function reservaLeito(data){
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.put(`/leito/${data.id}`, {
+    const result = await api.put(`/leito/reserva/${data.id}`, {
         data: data.dataLeito,
         pacienteatual: data.pacienteatualLeito,
         status: data.statusLeito
@@ -76,7 +76,7 @@ export async function reservaLeito(data){
 
 export async function updateLeito(data) {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.put(`/leito/${data.id}`, {
+    const result = await api.put(`/leito/update/${data.id}`, {
         salaId: data.salaIdLeito,
         data: data.dataLeito,
         pacienteatual: data.pacienteatualLeito,

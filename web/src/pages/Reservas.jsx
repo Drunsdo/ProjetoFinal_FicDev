@@ -22,7 +22,7 @@ export function Reservas() {
     //const [dataFimReserva, setDataFimReserva] = useState(new Date());
     const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
-    const { handleSubmit, register,  formState: { errors,  }, setValue, watch } = useForm();
+    const { handleSubmit, register,  formState: { errors, isSubmitted  }, setValue, watch } = useForm();
     const navigate = useNavigate();
     const [salaIdFiltro, setSalaIdFiltro] = useState('Todos');
 
@@ -161,7 +161,7 @@ export function Reservas() {
                 <Modal.Header>
                     <Modal.Title>Cadastrar nova reserva</Modal.Title>
                 </Modal.Header>
-                <Form noValidate autoComplete="off" onSubmit={handleSubmit(addReserva)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(addReserva)} validated={isSubmitted}>
                     <Modal.Body>
                         <Form.Group controlId="formIdSala">
                             <Form.Label>Número da sala</Form.Label>
@@ -202,6 +202,7 @@ export function Reservas() {
 
                         <div>
                             <label>Data de Início da Reserva</label>
+                            <br />
                             <DatePicker
                                 selected={watch('datainicioReserva') || null}
                                 onChange={(date) => setValue('datainicioReserva', date, { shouldValidate: true })}
@@ -217,6 +218,7 @@ export function Reservas() {
 
                         <div>
                             <label>Data de Fim da Reserva</label>
+                            <br />
                             <DatePicker
                                 selected={watch('datafimReserva') || null}
                                 onChange={(date) => setValue('datafimReserva', date, { shouldValidate: true })}
