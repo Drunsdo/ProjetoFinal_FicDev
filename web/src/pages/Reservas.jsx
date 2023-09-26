@@ -1,12 +1,13 @@
 import { Container, Col, Modal, Form, Button, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { NavbarComponent } from "../components/Navbar";
 import Select from 'react-select';
 import "../styles/reservas.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { ModalComponent } from '../components/Modal';
 
 
 import { Reserva } from "../components/Reserva";
@@ -22,8 +23,9 @@ export function Reservas() {
     //const [dataFimReserva, setDataFimReserva] = useState(new Date());
     const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
-    const { handleSubmit, register,  formState: { errors, isSubmitted  }, setValue, watch } = useForm();
+    const { handleSubmit, register, formState: { errors, isSubmitted }, setValue, watch } = useForm();
     const navigate = useNavigate();
+    const [result, setResult] = useState(null);
     const [salaIdFiltro, setSalaIdFiltro] = useState('Todos');
 
     useEffect(() => {
@@ -73,7 +75,10 @@ export function Reservas() {
             await deleteReserva(id);
             await findReservas();
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na deletação!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -83,7 +88,10 @@ export function Reservas() {
             setIsCreated(false);
             await findReservas();
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na criação!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -104,6 +112,12 @@ export function Reservas() {
 
     return (
         <Container fluid className="reservas-container">
+            <ModalComponent
+                show={result}
+                title={result?.title}
+                message={result?.message}
+                handleClose={() => setResult(null)}
+            />
             <NavbarComponent />
             <Header title="Reservas" />
             <Row className="w-50 m-auto mb-3 mt-5 ">

@@ -1,21 +1,21 @@
-import { Modal as ModalComponent, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 
-export function Modal(props) {
+export function ModalComponent(props) {
     return (
-        <ModalComponent show={props.show} onHide={props.handleClose}>
-            <ModalComponent.Header closeButton>
-                <ModalComponent.Title>
+        <Modal show={props.show} onHide={props.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>
                     {props.title}
-                </ModalComponent.Title>
-            </ModalComponent.Header>
-            <ModalComponent.Body>
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
                 {props.message}
-            </ModalComponent.Body>
-            <ModalComponent.Footer>
+            </Modal.Body>
+            <Modal.Footer>
                 <Button variant="secondary" onClick={props.handleClose}>
                     Fechar
                 </Button>
-            </ModalComponent.Footer>
-        </ModalComponent>
+            </Modal.Footer>
+        </Modal>
     );
 }

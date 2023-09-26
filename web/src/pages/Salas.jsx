@@ -8,6 +8,8 @@ import { Sala } from "../components/Sala";
 import { Header } from "../components/Header";
 import { Input } from '../components/Input';
 import Select from 'react-select';
+import { ModalComponent } from '../components/Modal';
+
 
 import { createSala, deleteSala, getSalas, updateSala, getFiltroSalas } from "../services/sala-service";
 
@@ -17,6 +19,7 @@ export function Salas() {
     const { handleSubmit, register, formState: { errors, isSubmitted } } = useForm();
     const navigate = useNavigate();
     const valorPadraoTipoFiltro = 'Todos';
+    const [result, setResult] = useState(null);
     const [tipoFiltro, setTipoFiltro] = useState(valorPadraoTipoFiltro);
 
     useEffect(() => {
@@ -54,7 +57,10 @@ export function Salas() {
             await deleteSala(id);
             await findSalas();
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na deletação!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -65,7 +71,10 @@ export function Salas() {
             setIsCreated(false);
             await findSalas();
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na criação!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -85,6 +94,12 @@ export function Salas() {
 
     return (
         <Container fluid className="salas-container">
+            <ModalComponent
+                show={result}
+                title={result?.title}
+                message={result?.message}
+                handleClose={() => setResult(null)}
+            />
             <NavbarComponent />
             <Header title="Salas" />
             <Row className="w-50 m-auto mb-3 mt-5 ">

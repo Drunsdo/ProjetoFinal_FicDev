@@ -16,6 +16,7 @@ export function Perfil(props) {
     const [user, setUser] = useState([]);
     const { register, handleSubmit, formState: { errors, isValid } } = useForm({ mode: 'all' });
     const [isUpdated, setIsUpdated] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
     const navigate = useNavigate();
 
     const id = sessionStorage.getItem('userId')
@@ -69,7 +70,7 @@ export function Perfil(props) {
                     <Button
                         variant="outline-danger"
                         className="perfil-button-delete"
-                        onClick={removeUser}
+                        onClick={() => setIsDeleted(true)} 
                     >
                         Apagar
                     </Button>
@@ -123,6 +124,19 @@ export function Perfil(props) {
                         <Button variant="secondary" onClick={() => setIsUpdated(false)}>Fechar</Button>
                     </Modal.Footer>
                 </Form>
+            </Modal>
+
+            <Modal show={isDeleted} onHide={() => setIsDeleted(false)}>
+                <Modal.Header>
+                    <Modal.Title>Deseja deletar o usuário {user.email}?</Modal.Title>
+                </Modal.Header>
+
+
+                <Modal.Footer>
+                    <Button variant="danger" onClick={() => removeUser()}>Deletar</Button>
+                    <Button variant="secondary" onClick={() => setIsDeleted(false)}>Fechar</Button>
+                </Modal.Footer>
+
             </Modal>
 
         </Container>

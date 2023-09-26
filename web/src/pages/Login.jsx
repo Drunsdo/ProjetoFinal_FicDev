@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Input } from "../components/Input";
 import { Header } from '../components/Header';
-import { Modal } from '../components/Modal';
+import { ModalComponent } from '../components/Modal';
 
 import { loginUser } from '../services/user-service';
 
@@ -29,7 +29,7 @@ export function Login() {
 
     return (
         <Container>
-            <Modal
+            <ModalComponent
                 show={result}
                 title={result?.title}
                 message={result?.message}

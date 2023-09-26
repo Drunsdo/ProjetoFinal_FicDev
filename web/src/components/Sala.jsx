@@ -7,10 +7,18 @@ import { Input } from "./Input";
 export function Sala(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
+    
+
 
     async function editSala(data) {
         await props.editSala({ ...data, id: props.sala.id });
         setIsUpdated(false);
+    }
+
+    async function removeSala(data) {
+        await props.removeSala({ ...data, id: props.sala.id });
+        setIsDeleted(false);
     }
 
     return (
@@ -28,12 +36,24 @@ export function Sala(props) {
                     <Button
                         variant="outline-danger"
                         className="ms-3"
-                        onClick={props.removeSala}
+                        onClick={() => setIsDeleted(true)} 
                     >
                         Apagar
                     </Button>
                 </Row>
             </Card>
+            <Modal show={isDeleted} onHide={() => setIsDeleted(false)}>
+                <Modal.Header>
+                    <Modal.Title>Deseja deletar a sala {props.sala.id}?</Modal.Title>
+                </Modal.Header>
+
+
+                <Modal.Footer>
+                    <Button variant="danger" onClick={() => removeSala()}>Deletar</Button>
+                    <Button variant="secondary" onClick={() => setIsDeleted(false)}>Fechar</Button>
+                </Modal.Footer>
+
+            </Modal>
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
                     <Modal.Title>Editar sala: {props.sala.tipo}</Modal.Title>

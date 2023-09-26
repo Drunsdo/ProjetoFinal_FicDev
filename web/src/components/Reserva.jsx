@@ -12,11 +12,17 @@ import { Input } from "./Input";
 export function Reserva(props) {
     const { handleSubmit, register, formState: { errors }, setValue, watch } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
     const [salas, setSalas] = useState([]);
 
     async function editReserva(data) {
         await props.editReserva({ ...data, id: props.reserva.id });
         setIsUpdated(false);
+    }
+
+    async function removeReserva(data) {
+        await props.removeReserva({ ...data, id: props.reserva.id });
+        setIsDeleted(false);
     }
 
     useEffect(() => {
@@ -39,6 +45,8 @@ export function Reserva(props) {
             <Card className="mb-3 p-3 bg-light">
                 <Card.Title><strong>Sala: </strong>{props.reserva.salaId}</Card.Title>
                 <Card.Text><strong>Responsável: </strong>{props.reserva.responsavel}</Card.Text>
+                <Card.Text><strong>Número da reserva: </strong>{props.reserva.id}</Card.Text>
+
                 <Card.Text><strong>Inicio: </strong>{new Date(props.reserva.datainicio).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
                 <Card.Text><strong>Fim: </strong>{new Date(props.reserva.datafim).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
 
@@ -48,12 +56,24 @@ export function Reserva(props) {
                     <Button
                         variant="outline-danger"
                         className="ms-3"
-                        onClick={props.removeReserva}
+                        onClick={() => setIsDeleted(true)} 
                     >
                         Apagar
                     </Button>
                 </Row>
             </Card>
+            <Modal show={isDeleted} onHide={() => setIsDeleted(false)}>
+                <Modal.Header>
+                    <Modal.Title>Deseja deletar a reserva {props.reserva.id}?</Modal.Title>
+                </Modal.Header>
+
+
+                <Modal.Footer>
+                    <Button variant="danger" onClick={() => removeReserva()}>Deletar</Button>
+                    <Button variant="secondary" onClick={() => setIsDeleted(false)}>Fechar</Button>
+                </Modal.Footer>
+
+            </Modal>
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
                     <Modal.Title>Editar Reserva: {props.reserva.id}</Modal.Title>

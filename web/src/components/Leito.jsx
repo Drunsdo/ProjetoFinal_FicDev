@@ -12,6 +12,7 @@ export function Leito(props) {
     const [isUpdated, setIsUpdated] = useState(false);
     const [isReserva, setIsReserva] = useState(false);
     const [isDesocupa, setIsDesocupa] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
     const [salas, setSalas] = useState([]);
 
     useEffect(() => {
@@ -38,6 +39,10 @@ export function Leito(props) {
         setIsDesocupa(false);
     }
 
+    async function removeLeito(data) {
+        await props.removeLeito({ ...data, id: props.leito.id });
+        setIsDeleted(false);
+    }
 
 
     async function findSalas() {
@@ -64,13 +69,13 @@ export function Leito(props) {
 
                 <Row xs="auto" className="d-flex justify-content-end">
                     {props.leito.status === true && (
-                        <Button variant="primary" onClick={() => setIsReserva(true)}>
+                        <Button variant="success" onClick={() => setIsReserva(true)}>
                             Reservar
                         </Button>
                     )}
                     {props.leito.status === false && (
                         < Button
-                            variant="success"
+                            variant="primary"
                             className="ms-3"
 
                             onClick={() => setIsDesocupa(true)}
@@ -84,12 +89,24 @@ export function Leito(props) {
                     <Button
                         variant="outline-danger"
                         className="ms-3"
-                        onClick={props.removeLeito}
+                        onClick={() => setIsDeleted(true)} 
                     >
                         Apagar
                     </Button>
                 </Row>
             </Card >
+            <Modal show={isDeleted} onHide={() => setIsDeleted(false)}>
+                <Modal.Header>
+                    <Modal.Title>Deseja deletar o leito {props.leito.id}?</Modal.Title>
+                </Modal.Header>
+
+
+                <Modal.Footer>
+                    <Button variant="danger" onClick={() => removeLeito()}>Deletar</Button>
+                    <Button variant="secondary" onClick={() => setIsDeleted(false)}>Fechar</Button>
+                </Modal.Footer>
+
+            </Modal>
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
                     <Modal.Title>Editar leito: {props.leito.id}</Modal.Title>

@@ -9,6 +9,8 @@ import { createLeito, deleteLeito, getLeitos, updateLeito, getFiltroLeito, reser
 import { getSalas } from "../services/sala-service";
 import Select from 'react-select';
 import "../styles/leitos.css";
+import { ModalComponent } from '../components/Modal';
+
 
 
 
@@ -18,6 +20,7 @@ export function Leitos() {
     const [isCreated, setIsCreated] = useState(false);
     const { handleSubmit, register, formState: { errors, /*isSubmitted*/ } } = useForm();
     const navigate = useNavigate();
+    const [result, setResult] = useState(null);
     const [statusFiltro, setStatusFiltro] = useState('Todos');
 
     useEffect(() => {
@@ -72,7 +75,10 @@ export function Leitos() {
             await deleteLeito(id);
             await findLeitos();
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na deletação!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -94,7 +100,10 @@ export function Leitos() {
             setIsCreated(false);
             await findLeitos();
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na criação!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -171,6 +180,12 @@ export function Leitos() {
 
     return (
         <Container fluid className="leitos-container">
+            <ModalComponent
+                show={result}
+                title={result?.title}
+                message={result?.message}
+                handleClose={() => setResult(null)}
+            />
             <NavbarComponent />
             <Header title="Leitos" />
             <Row className="w-50 m-auto mb-3 mt-5 ">
