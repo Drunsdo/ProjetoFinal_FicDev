@@ -46,9 +46,19 @@ export function Sala(props) {
                                 name="tipoSala"
                                 {...register('tipoSala')}
                             >
-                                <option disabled>Clique para selecionar</option>
-                                <option value='Leito'>Leito</option>
-                                <option value='Cirúrgica'>Cirúrgica</option>
+                                {props.sala.tipo === 'Leito' && (
+                                    <>
+                                        <option value='Leito'>Leito</option>
+                                        <option value='Cirúrgica'>Cirúrgica</option>
+                                    </>
+                                )}
+                                {props.sala.tipo === 'Cirúrgica' && (
+                                    <>
+                                        <option value='Cirúrgica'>Cirúrgica</option>
+                                        <option value='Leito'>Leito</option>
+                                    </>
+                                )}
+
                             </Form.Select>
                         </Form.Group>
                         <div>

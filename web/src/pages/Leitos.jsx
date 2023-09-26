@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { NavbarComponent } from "../components/Navbar";
 import { Leito } from "../components/Leito";
 import { Header } from "../components/Header";
-import { createLeito, deleteLeito, getLeitos, updateLeito, getFiltroLeito, reservaLeito, desocupaLeito } from "../services/leito-service";
+import { createLeito, deleteLeito, getLeitos, updateLeito, getFiltroLeito, reservaLeito, desocuparLeito } from "../services/leito-service";
 import { getSalas } from "../services/sala-service";
 import Select from 'react-select';
 import "../styles/leitos.css";
@@ -121,22 +121,21 @@ export function Leitos() {
         }
     }
 
-    async function desocuparLeito(data) {
+    async function desocupaLeito(data) {
         try {
             const status = data.statusLeito === 'Disponível' ? true : data.statusLeito === 'Ocupado' ? false : null;
 
-            /*if (status === null) {
+            if (status === null) {
                 console.error('Status inválido. Use "Disponível" ou "Ocupado".');
                 return;
-            }*/
-
-            const leitoData = {
-                
-                statusLeito: status,
-                
             }
 
-            await desocupaLeito(leitoData);
+            const leitoData = {
+                id: data.id,
+                statusLeito: status
+            }
+
+            await desocuparLeito(leitoData);
             await findLeitos();
         } catch (error) {
             console.error("Erro ao editar leito:", error);
@@ -174,7 +173,7 @@ export function Leitos() {
         <Container fluid className="leitos-container">
             <NavbarComponent />
             <Header title="Leitos" />
-            <Row className="w-50 m-auto mb-5 mt-5 ">
+            <Row className="w-50 m-auto mb-3 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar novo Leito</Button>
                 </Col>
@@ -212,7 +211,7 @@ export function Leitos() {
                             leito={leito}
                             removeLeito={async () => await removeLeito(leito.id)}
                             reservarLeito={reservarLeito}
-                            desocuparLeito={desocuparLeito}
+                            desocupaLeito={desocupaLeito}
                             editLeito={editLeito}
                         />
                     ))

@@ -106,7 +106,7 @@ export function Reservas() {
         <Container fluid className="reservas-container">
             <NavbarComponent />
             <Header title="Reservas" />
-            <Row className="w-50 m-auto mb-5 mt-5 ">
+            <Row className="w-50 m-auto mb-3 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar nova Reserva</Button>
                 </Col>

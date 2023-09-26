@@ -74,7 +74,7 @@ export async function reservaLeito(data){
     return result;
 }
 
-export async function desocupaLeito(data){
+export async function desocuparLeito(data){
     const accessToken = sessionStorage.getItem('token');
     const result = await api.put(`/leito/desocupa/${data.id}`, {
        

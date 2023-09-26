@@ -30,9 +30,14 @@ export function Leito(props) {
     }
 
     async function desocupaLeito(data) {
-        await props.desocupaLeito({ ...data, id: props.leito.id, statusLeito: "Disponível" });
+        if (props.desocupaLeito) {
+            await props.desocupaLeito({ ...data, id: props.leito.id, statusLeito: "Disponível" });
+        } else {
+            console.error("props.desocupaLeito não está definido.");
+        }
         setIsDesocupa(false);
     }
+
 
 
     async function findSalas() {
@@ -67,7 +72,7 @@ export function Leito(props) {
                         < Button
                             variant="success"
                             className="ms-3"
-                            
+
                             onClick={() => setIsDesocupa(true)}
                         >
                             Desocupar

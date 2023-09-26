@@ -12,8 +12,6 @@ import { Input } from "./Input";
 export function Reserva(props) {
     const { handleSubmit, register, formState: { errors }, setValue, watch } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
-    //const [dataInicioReserva, setDataInicioReserva] = useState(new Date());
-    //const [dataFimReserva, setDataFimReserva] = useState(new Date());
     const [salas, setSalas] = useState([]);
 
     async function editReserva(data) {

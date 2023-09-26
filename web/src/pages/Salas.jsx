@@ -87,7 +87,7 @@ export function Salas() {
         <Container fluid className="salas-container">
             <NavbarComponent />
             <Header title="Salas" />
-            <Row className="w-50 m-auto mb-5 mt-5 ">
+            <Row className="w-50 m-auto mb-3 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar nova Sala</Button>
                 </Col>
@@ -140,7 +140,7 @@ export function Salas() {
                     onSubmit={handleSubmit(addSala)}
                     validated={isSubmitted}>
                     <Modal.Body>
-                        <Form.Group>
+                        <Form.Group >
                             <Form.Label>Tipo da Sala</Form.Label>
                             <Form.Select
                                 name="tipoSala"
@@ -157,7 +157,7 @@ export function Salas() {
                             <Form.Group>
                                 <Form.Label>Quantidade de Leitos</Form.Label>
                                 <Input
-                                    className="mb-3"
+                                    className="mb-3 "
                                     type='number' /* Corrigi o tipo para 'number' */
                                     required={true}
                                     name='quantidadeleitosSala'
