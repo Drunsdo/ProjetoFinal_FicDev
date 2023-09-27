@@ -9,6 +9,8 @@ import { ModalComponent } from '../components/Modal';
 
 import { loginUser } from '../services/user-service';
 
+import "../styles/login.css"; // Import your custom CSS for styling
+
 export function Login() {
     const { handleSubmit, register, formState: { errors, isSubmitted } } = useForm();
     const [result, setResult] = useState(null);
@@ -38,9 +40,9 @@ export function Login() {
             <Header title="Gestão de Leitos e Salas" />
             <Form
                 noValidate
-                validated={isSubmitted} // Apenas ativar a validação após o envio
+                validated={isSubmitted}
                 onSubmit={handleSubmit(onSubmit)}
-                className="bg-light rounded p-5 shadow w-50 m-auto"
+                className="login-form" // Add a custom CSS class for styling
             >
                 <Col>
                     <Input

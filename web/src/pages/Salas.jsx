@@ -173,10 +173,11 @@ export function Salas() {
                                 <Form.Label>Quantidade de Leitos</Form.Label>
                                 <Input
                                     className="mb-3 "
-                                    type='number' /* Corrigi o tipo para 'number' */
+                                    type='number' 
                                     required={true}
                                     name='quantidadeleitosSala'
                                     error={errors.quantidadeleitosSala}
+                                    defaultValue={0}
                                     validations={register('quantidadeleitosSala', {
                                         required: {
                                             value: true,

@@ -128,7 +128,7 @@ export function Perfil(props) {
 
             <Modal show={isDeleted} onHide={() => setIsDeleted(false)}>
                 <Modal.Header>
-                    <Modal.Title>Deseja deletar o usuário {user.email}?</Modal.Title>
+                    <Modal.Title>Deseja deletar o usuário?</Modal.Title>
                 </Modal.Header>
 
 

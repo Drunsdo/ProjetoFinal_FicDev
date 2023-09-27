@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { ModalComponent } from '../components/Modal';
+import '../styles/register.css';
 
 import { registerUser } from "../services/user-service";
 
@@ -41,7 +42,7 @@ export function Register() {
                 validated={isSubmitted} // Apenas ativar a validação após o envio
                 autoComplete="off"
                 onSubmit={handleSubmit(onSubmit)}
-                className="bg-light rounded p-5 shadow w-50 m-auto"
+                className="register-form"
             >
                 <Col>
                     <Input
