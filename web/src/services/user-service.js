@@ -26,7 +26,7 @@ export async function getUser(id) {
 
 export async function updateUser(data) {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.put(`/user/${data.id}`, {
+    const result = await api.put(`/user/update/${data.id}`, {
         email: data.emailUser,
         password: data.passwordUser
     }, {

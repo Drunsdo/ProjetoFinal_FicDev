@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Form, Modal, Row } from "react-bootstrap";
+import { Button, Card, Form, Modal, Row} from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
 import { Input } from "./Input";
@@ -8,7 +8,7 @@ export function Sala(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
-    
+
 
 
     async function editSala(data) {
@@ -36,7 +36,7 @@ export function Sala(props) {
                     <Button
                         variant="outline-danger"
                         className="ms-3"
-                        onClick={() => setIsDeleted(true)} 
+                        onClick={() => setIsDeleted(true)}
                     >
                         Apagar
                     </Button>

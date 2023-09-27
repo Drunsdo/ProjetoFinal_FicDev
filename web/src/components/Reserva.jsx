@@ -56,7 +56,7 @@ export function Reserva(props) {
                     <Button
                         variant="outline-danger"
                         className="ms-3"
-                        onClick={() => setIsDeleted(true)} 
+                        onClick={() => setIsDeleted(true)}
                     >
                         Apagar
                     </Button>

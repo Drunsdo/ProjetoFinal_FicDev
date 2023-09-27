@@ -43,7 +43,7 @@ routes.put('/leito/reserva/:id', authMiddleware, leitoController.reserva);
 routes.post('/register', userController.register);
 routes.post('/login', userController.login);
 routes.get('/user/:id', authMiddleware, userController.getUser);
-routes.put('/user/:id', authMiddleware, userController.updateUser);
+routes.put('/user/update/:id', authMiddleware, userController.updateUser);
 routes.delete('/user/:id', authMiddleware, userController.deleteUser);
 
 module.exports = { routes };

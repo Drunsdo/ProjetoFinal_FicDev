@@ -30,7 +30,6 @@ export function Perfil(props) {
         try {
             const result = await getUser(id);
             setUser(result.data);
-            console.log("teste")
         } catch (error) {
             console.error(error);
 
@@ -54,6 +53,7 @@ export function Perfil(props) {
                 passwordUser: data.passwordUser
             });
             await findUser();
+            setIsUpdated(false);
         } catch (error) {
             console.error(error);
         }
