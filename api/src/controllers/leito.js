@@ -1,21 +1,42 @@
 const { LeitoModel } = require('../models/leito-model');
 const { HttpHelper } = require('../utils/http-helper');
-const { Sequelize } = require('sequelize'); 
+const { SalaModel } = require('../models/sala-model');
+const { Sequelize } = require('sequelize');
 
 class LeitoController {
     async create(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
             const { status, salaId } = request.body;
-            
+
             if (status === undefined || salaId === undefined) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
-            
+
+            // Obtenha informações sobre a sala relacionada ao leito
+            const sala = await SalaModel.findByPk(salaId);
+
+            if (!sala) {
+                return httpHelper.notFound('Sala não encontrada!');
+            }
+
+            if (sala.tipo === 'Leito') {
+                
+                const maxLeitos = sala.quantidadeleitos;
+
+                // Conte quantos leitos já foram criados para essa sala
+                const leitosCount = await LeitoModel.count({ where: { salaId } });
+
+                if (leitosCount >= maxLeitos) {
+                    return httpHelper.badRequest('A sala de leitos atingiu a quantidade máxima de leitos permitida.');
+                }
+            }
+
+            // Crie o leito se todas as verificações passarem
             const leito = await LeitoModel.create({
                 status, salaId
             });
-            
+
             return httpHelper.created(leito);
         } catch (error) {
             console.error('Erro ao criar um leito:', error);
@@ -39,7 +60,7 @@ class LeitoController {
         const httpHelper = new HttpHelper(response);
         try {
             const quantidade = await LeitoModel.count();
-            return httpHelper.ok( quantidade );
+            return httpHelper.ok(quantidade);
         } catch (error) {
             console.error('Erro ao obter a quantidade total de leitos:', error);
             return httpHelper.internalError(error);
@@ -82,7 +103,7 @@ class LeitoController {
         const httpHelper = new HttpHelper(response);
         try {
             const { status } = request.params;
-            
+
             if (!status) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
@@ -103,19 +124,19 @@ class LeitoController {
         const httpHelper = new HttpHelper(response);
         try {
             const { id } = request.params;
-            
+
             if (!id) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
 
             const leitoExists = await LeitoModel.findByPk(id);
-            
+
             if (!leitoExists) {
                 return httpHelper.notFound('Leito não encontrado!');
             }
-            
+
             await LeitoModel.destroy({ where: { id } });
-            
+
             return httpHelper.ok({
                 message: 'Leito deletado com sucesso!'
             });
@@ -129,18 +150,18 @@ class LeitoController {
         const httpHelper = new HttpHelper(response);
         try {
             const { id } = request.params;
-            const { status, data, pacienteatual} = request.body;
-            
+            const { status, data, pacienteatual } = request.body;
+
             if (!id) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
 
             const leitoExists = await LeitoModel.findByPk(id);
-            
+
             if (!leitoExists) {
                 return httpHelper.notFound('Leito não encontrado!');
             }
-            
+
             await LeitoModel.update({
                 status,
                 data,
@@ -148,7 +169,7 @@ class LeitoController {
             }, {
                 where: { id }
             });
-            
+
             return httpHelper.ok({
                 message: 'Leito atualizado com sucesso!'
             });
@@ -163,23 +184,23 @@ class LeitoController {
         try {
             const { id } = request.params;
             const { status } = request.body;
-            
+
             if (!id) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
 
             const leitoExists = await LeitoModel.findByPk(id);
-            
+
             if (!leitoExists) {
                 return httpHelper.notFound('Leito não encontrado!');
             }
-            
+
             await LeitoModel.update({
                 status
             }, {
                 where: { id }
             });
-            
+
             return httpHelper.ok({
                 message: 'Leito desocupado com sucesso!'
             });
@@ -196,17 +217,35 @@ class LeitoController {
         try {
             const { id } = request.params;
             const { status, data, pacienteatual, salaId } = request.body;
-            
+
             if (!id) {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
 
             const leitoExists = await LeitoModel.findByPk(id);
-            
+
             if (!leitoExists) {
                 return httpHelper.notFound('Leito não encontrado!');
             }
-            
+
+            const sala = await SalaModel.findByPk(salaId);
+
+            if (!sala) {
+                return httpHelper.notFound('Sala não encontrada!');
+            }
+
+            if (sala.tipo === 'Leito') {
+                // Verifique a quantidade máxima de leitos permitidos
+                const maxLeitos = sala.quantidadeleitos;
+
+                // Conte quantos leitos já foram criados para essa sala
+                const leitosCount = await LeitoModel.count({ where: { salaId } });
+
+                if (leitosCount >= maxLeitos) {
+                    return httpHelper.badRequest('A sala de leitos atingiu a quantidade máxima de leitos permitida.');
+                }
+            }
+
             await LeitoModel.update({
                 status,
                 data,
@@ -215,7 +254,7 @@ class LeitoController {
             }, {
                 where: { id }
             });
-            
+
             return httpHelper.ok({
                 message: 'Leito atualizado com sucesso!'
             });
