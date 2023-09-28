@@ -27,7 +27,7 @@ class UserController {
             );
             return httpHelper.created({
                 accessToken
-                ,userId: user.id
+                , userId: user.id
             });
         } catch (error) {
             return httpHelper.internalError(error);
@@ -79,6 +79,9 @@ class UserController {
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
             if (!email) return httpHelper.badRequest('Parâmetros inválidos!');
             if (!password) return httpHelper.badRequest('Parâmetros inválidos!');
+
+            const userAlreadyExists = await UserModel.findOne({ where: { email } });
+            if (userAlreadyExists) return httpHelper.badRequest('E-mail de usuário já cadastrado!');
 
 
             const passwordHashed = await bcrypt.hash(

@@ -20,6 +20,8 @@ export function Salas() {
     const navigate = useNavigate();
     const valorPadraoTipoFiltro = 'Todos';
     const [result, setResult] = useState(null);
+    const [result1, setResult1] = useState(null);
+
     const [tipoFiltro, setTipoFiltro] = useState(valorPadraoTipoFiltro);
 
     useEffect(() => {
@@ -56,6 +58,9 @@ export function Salas() {
         try {
             await deleteSala(id);
             await findSalas();
+            setResult1({
+                message: 'Sala excluida com sucesso'
+            });
         } catch (error) {
             setResult({
                 title: 'Houve um erro na deletação!',
@@ -70,6 +75,9 @@ export function Salas() {
             await createSala(data);
             setIsCreated(false);
             await findSalas();
+            setResult1({
+                message: 'Sala criada com sucesso'
+            });
         } catch (error) {
             setResult({
                 title: 'Houve um erro na criação!',
@@ -87,8 +95,15 @@ export function Salas() {
                 quantidadeleitosSala: data.quantidadeleitosSala
             });
             await findSalas();
+            setResult1({
+                message: 'Sala editada com sucesso'
+            });
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na edição!',
+                message: error.response.data.error,
+            });
+            //console.error(error);
         }
     }
 
@@ -100,6 +115,12 @@ export function Salas() {
                 message={result?.message}
                 handleClose={() => setResult(null)}
             />
+            <ModalComponent
+                show={result1}
+                title={result1?.title}
+                message={result1?.message}
+                handleClose={() => setResult1(null)}
+            />
             <NavbarComponent />
             <Header title="Salas" />
             <Row className="w-50 m-auto mb-3 mt-5 ">
@@ -109,8 +130,9 @@ export function Salas() {
             </Row>
 
             <Row className="w-50 m-auto mb-2">
-                <Col md='8'>
+                <Col md='10'>
                     <Select
+                    
                         name="tipoSala"
                         options={[
                             { value: 'Todos', label: 'Todos' },
@@ -125,7 +147,7 @@ export function Salas() {
                             indicatorSeparator: () => { }, // Para remover a linha vertical entre o seletor e a seta
                         }}
                     />
-                </Col>
+                </Col> 
 
                 <Col md='2'>
                     <Button onClick={handleFiltrar}>Filtrar</Button>
@@ -173,7 +195,7 @@ export function Salas() {
                                 <Form.Label>Quantidade de Leitos</Form.Label>
                                 <Input
                                     className="mb-3 "
-                                    type='number' 
+                                    type='number'
                                     required={true}
                                     name='quantidadeleitosSala'
                                     error={errors.quantidadeleitosSala}

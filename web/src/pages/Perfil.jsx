@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { NavbarComponent } from "../components/Navbar";
 import { Input } from "../components/Input";
 import '../styles/perfil.css';
+import { ModalComponent } from '../components/Modal';
 
 
 import { Header } from "../components/Header";
@@ -17,6 +18,10 @@ export function Perfil(props) {
     const { register, handleSubmit, formState: { errors, isValid } } = useForm({ mode: 'all' });
     const [isUpdated, setIsUpdated] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
+    const [result, setResult] = useState(null);
+    const [result1, setResult1] = useState(null);
+
+
     const navigate = useNavigate();
 
     const id = sessionStorage.getItem('userId')
@@ -54,13 +59,31 @@ export function Perfil(props) {
             });
             await findUser();
             setIsUpdated(false);
+            setResult1({
+                message: 'Perfil editado com sucesso'
+            });
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na edição!',
+                message: error.response.data.error,
+            });
         }
     }
 
     return (
         <Container fluid className="perfil-container">
+            <ModalComponent
+                show={result}
+                title={result?.title}
+                message={result?.message}
+                handleClose={() => setResult(null)}
+            />
+            <ModalComponent
+                show={result1}
+                title={result1?.title}
+                message={result1?.message}
+                handleClose={() => setResult1(null)}
+            />
             <NavbarComponent />
             <Header title="Perfil" className="perfil-header" />
             <Card className="mb-3 p-3 bg-light perfil-card">
@@ -70,7 +93,7 @@ export function Perfil(props) {
                     <Button
                         variant="outline-danger"
                         className="perfil-button-delete"
-                        onClick={() => setIsDeleted(true)} 
+                        onClick={() => setIsDeleted(true)}
                     >
                         Apagar
                     </Button>

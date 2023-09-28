@@ -21,6 +21,8 @@ export function Leitos() {
     const { handleSubmit, register, formState: { errors, /*isSubmitted*/ } } = useForm();
     const navigate = useNavigate();
     const [result, setResult] = useState(null);
+    const [result1, setResult1] = useState(null);
+
     const [statusFiltro, setStatusFiltro] = useState('Todos');
 
     useEffect(() => {
@@ -74,6 +76,9 @@ export function Leitos() {
         try {
             await deleteLeito(id);
             await findLeitos();
+            setResult1({
+                message: 'Leito excluido com sucesso'
+            });
         } catch (error) {
             setResult({
                 title: 'Houve um erro na deletação!',
@@ -99,6 +104,9 @@ export function Leitos() {
             await createLeito(leitoData);
             setIsCreated(false);
             await findLeitos();
+            setResult1({
+                message: 'Leito criado com sucesso'
+            });
         } catch (error) {
             setResult({
                 title: 'Houve um erro na criação!',
@@ -125,8 +133,14 @@ export function Leitos() {
 
             await reservaLeito(leitoData);
             await findLeitos();
+            setResult1({
+                message: 'Leito reservado com sucesso'
+            });
         } catch (error) {
-            console.error("Erro ao editar leito:", error);
+            setResult({
+                title: 'Houve um erro para reservar!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -146,8 +160,14 @@ export function Leitos() {
 
             await desocuparLeito(leitoData);
             await findLeitos();
+            setResult1({
+                message: 'Leito desocupado com sucesso'
+            });
         } catch (error) {
-            console.error("Erro ao editar leito:", error);
+            setResult({
+                title: 'Houve um erro ao desocupar!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -173,8 +193,14 @@ export function Leitos() {
 
             await updateLeito(leitoData);
             await findLeitos();
+            setResult1({
+                message: 'Leito editado com sucesso'
+            });
         } catch (error) {
-            console.error("Erro ao editar leito:", error);
+            setResult({
+                title: 'Houve um erro na edição!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -186,6 +212,12 @@ export function Leitos() {
                 message={result?.message}
                 handleClose={() => setResult(null)}
             />
+            <ModalComponent
+                show={result1}
+                title={result1?.title}
+                message={result1?.message}
+                handleClose={() => setResult1(null)}
+            />
             <NavbarComponent />
             <Header title="Leitos" />
             <Row className="w-50 m-auto mb-3 mt-5 ">
@@ -195,7 +227,7 @@ export function Leitos() {
             </Row>
 
             <Row className="w-50 m-auto mb-2">
-                <Col md='8'>
+                <Col md='10'>
                     <Select
                         name="statusLeito"
                         options={[

@@ -48,10 +48,10 @@ class SalaController {
         try {
             const quantidade = await SalaModel.count({
                 where: {
-                    tipo: 'Leito' 
+                    tipo: 'Leito'
                 }
             });
-            return httpHelper.ok( quantidade );
+            return httpHelper.ok(quantidade);
         } catch (error) {
             console.error('Erro ao obter a quantidade:', error);
             return httpHelper.internalError(error);
@@ -63,16 +63,16 @@ class SalaController {
         try {
             const quantidade = await SalaModel.count({
                 where: {
-                    tipo: 'Cirúrgica' 
+                    tipo: 'Cirúrgica'
                 }
             });
-            return httpHelper.ok( quantidade );
+            return httpHelper.ok(quantidade);
         } catch (error) {
             console.error('Erro ao obter a quantidade:', error);
             return httpHelper.internalError(error);
         }
     }
-    
+
 
     async getByTipo(request, response) {
         const httpHelper = new HttpHelper(response);

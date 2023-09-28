@@ -26,6 +26,8 @@ export function Reservas() {
     const { handleSubmit, register, formState: { errors, isSubmitted }, setValue, watch } = useForm();
     const navigate = useNavigate();
     const [result, setResult] = useState(null);
+    const [result1, setResult1] = useState(null);
+
     const [salaIdFiltro, setSalaIdFiltro] = useState('Todos');
 
     useEffect(() => {
@@ -74,6 +76,9 @@ export function Reservas() {
         try {
             await deleteReserva(id);
             await findReservas();
+            setResult1({
+                message: 'Reserva excluida com sucesso'
+            });
         } catch (error) {
             setResult({
                 title: 'Houve um erro na deletação!',
@@ -87,6 +92,9 @@ export function Reservas() {
             await createReserva(data);
             setIsCreated(false);
             await findReservas();
+            setResult1({
+                message: 'Reserva criada com sucesso'
+            });
         } catch (error) {
             setResult({
                 title: 'Houve um erro na criação!',
@@ -105,8 +113,14 @@ export function Reservas() {
                 salaIdReserva: data.salaIdReserva
             });
             await findReservas();
+            setResult1({
+                message: 'Reserva editada com sucesso'
+            });
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na edição!',
+                message: error.response.data.error,
+            });
         }
     }
 
@@ -118,6 +132,12 @@ export function Reservas() {
                 message={result?.message}
                 handleClose={() => setResult(null)}
             />
+            <ModalComponent
+                show={result1}
+                title={result1?.title}
+                message={result1?.message}
+                handleClose={() => setResult1(null)}
+            />
             <NavbarComponent />
             <Header title="Reservas" />
             <Row className="w-50 m-auto mb-3 mt-5 ">
@@ -127,7 +147,7 @@ export function Reservas() {
             </Row>
 
             <Row className="w-50 m-auto mb-2">
-                <Col md='8'>
+                <Col md='10'>
                     <Select
                         name="salaIdLeito"
                         options={[
