@@ -86,19 +86,21 @@ export function Perfil(props) {
             />
             <NavbarComponent />
             <Header title="Perfil" className="perfil-header" />
-            <Card className="mb-3 p-3 bg-light perfil-card">
-                <Card.Text><strong>Email: </strong>{user.email}</Card.Text>
-                <Row xs="auto" className="d-flex justify-content-end">
-                    <Button variant="primary" className="" onClick={() => setIsUpdated(true)}>Editar</Button>
-                    <Button
-                        variant="outline-danger"
-                        className="perfil-button-delete"
-                        onClick={() => setIsDeleted(true)}
-                    >
-                        Apagar
-                    </Button>
-                </Row>
-            </Card>
+            <Row className="w-50 m-auto mb-2 ">
+                <Card className="mb-3 p-3 bg-light perfil-card">
+                    <Card.Text><strong>Email: </strong>{user.email}</Card.Text>
+                    <Row xs="auto" className="d-flex justify-content-end">
+                        <Button variant="primary" className="" onClick={() => setIsUpdated(true)}>Editar</Button>
+                        <Button
+                            variant="outline-danger"
+                            className="perfil-button-delete"
+                            onClick={() => setIsDeleted(true)}
+                        >
+                            Apagar
+                        </Button>
+                    </Row>
+                </Card>
+            </Row>
 
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>

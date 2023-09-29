@@ -177,19 +177,20 @@ export function Reservas() {
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
             </Row>
-
-            <Col className="w-50 m-auto">
-                {reservas && reservas.length > 0
-                    ? reservas.map((reserva, index) => (
-                        <Reserva
-                            key={index}
-                            reserva={reserva}
-                            removeReserva={async () => await removeReserva(reserva.id)}
-                            editReserva={editReserva}
-                        />
-                    ))
-                    : <p className="text-center">Não existe nenhuma reserva cadastrada!</p>}
-            </Col>
+            <Row className="w-50 m-auto mb-2">
+                <Col className="w-50 m-auto">
+                    {reservas && reservas.length > 0
+                        ? reservas.map((reserva, index) => (
+                            <Reserva
+                                key={index}
+                                reserva={reserva}
+                                removeReserva={async () => await removeReserva(reserva.id)}
+                                editReserva={editReserva}
+                            />
+                        ))
+                        : <p className="text-center">Não existe nenhuma reserva cadastrada!</p>}
+                </Col>
+            </Row>
             {/* Formulário dentro do Modal, ideal seria componentizar também, pois é parecido com o Modal de editar */}
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>
                 <Modal.Header>

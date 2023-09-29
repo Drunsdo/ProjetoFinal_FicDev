@@ -129,10 +129,10 @@ export function Salas() {
                 </Col>
             </Row>
 
-            <Row className="w-50 m-auto mb-2">
+            <Row className="w-50 m-auto mb-2 ">
                 <Col md='10'>
                     <Select
-                    
+
                         name="tipoSala"
                         options={[
                             { value: 'Todos', label: 'Todos' },
@@ -147,25 +147,27 @@ export function Salas() {
                             indicatorSeparator: () => { }, // Para remover a linha vertical entre o seletor e a seta
                         }}
                     />
-                </Col> 
+                </Col>
 
                 <Col md='2'>
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
-            </Row>
 
-            <Col className="w-50 m-auto">
-                {salas && salas.length > 0
-                    ? salas.map((sala, index) => (
-                        <Sala
-                            key={index}
-                            sala={sala}
-                            removeSala={async () => await removeSala(sala.id)}
-                            editSala={editSala}
-                        />
-                    ))
-                    : <p className="text-center">Não existe nenhuma sala cadastrada!</p>}
-            </Col>
+            </Row>
+            <Row className="w-50 m-auto mb-2 ">
+                <Col className="w-50 m-auto">
+                    {salas && salas.length > 0
+                        ? salas.map((sala, index) => (
+                            <Sala
+                                key={index}
+                                sala={sala}
+                                removeSala={async () => await removeSala(sala.id)}
+                                editSala={editSala}
+                            />
+                        ))
+                        : <p className="text-center">Não existe nenhuma sala cadastrada!</p>}
+                </Col>
+            </Row>
             {/* Formulário dentro do Modal, ideal seria componentizar também, pois é parecido com o Modal de editar */}
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>
                 <Modal.Header>

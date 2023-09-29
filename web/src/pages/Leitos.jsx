@@ -249,21 +249,22 @@ export function Leitos() {
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
             </Row>
-
-            <Col className="w-50 m-auto">
-                {leitos && leitos.length > 0
-                    ? leitos.map((leito, index) => (
-                        <Leito
-                            key={index}
-                            leito={leito}
-                            removeLeito={async () => await removeLeito(leito.id)}
-                            reservarLeito={reservarLeito}
-                            desocupaLeito={desocupaLeito}
-                            editLeito={editLeito}
-                        />
-                    ))
-                    : <p className="text-center">Não existe nenhum leito cadastrado!</p>}
-            </Col>
+            <Row className="w-50 m-auto mb-2">
+                <Col className="w-50 m-auto">
+                    {leitos && leitos.length > 0
+                        ? leitos.map((leito, index) => (
+                            <Leito
+                                key={index}
+                                leito={leito}
+                                removeLeito={async () => await removeLeito(leito.id)}
+                                reservarLeito={reservarLeito}
+                                desocupaLeito={desocupaLeito}
+                                editLeito={editLeito}
+                            />
+                        ))
+                        : <p className="text-center">Não existe nenhum leito cadastrado!</p>}
+                </Col>
+            </Row>
             {/* Formulário dentro do Modal, ideal seria componentizar também, pois é parecido com o Modal de editar */}
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>
                 <Modal.Header>
@@ -314,6 +315,6 @@ export function Leitos() {
                     </Modal.Footer>
                 </Form>
             </Modal>
-        </Container>
+        </Container >
     );
 }

@@ -23,7 +23,7 @@ export function Sala(props) {
 
     return (
         <>
-            <Card className="mb-3 p-3 bg-light">
+            <Card className="mb-3 p-3 bg-light ">
                 <Card.Title><strong>Tipo: </strong>{props.sala.tipo}</Card.Title>
                 <Card.Text><strong>Número da sala: </strong>{props.sala.id}</Card.Text>
                 {props.sala.tipo === "Leito" && (
