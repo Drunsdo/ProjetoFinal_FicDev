@@ -11,10 +11,6 @@
     transition: transform 0.2s ease-in-out;
   }
   
-  .custom-card:hover {
-    transform: translateY(-5px);
-  }
-  
   .custom-card .card-body {
     padding: 20px;
     text-align: center;

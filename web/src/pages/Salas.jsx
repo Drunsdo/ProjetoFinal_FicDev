@@ -71,7 +71,6 @@ export function Salas() {
 
     async function addSala(data) {
         try {
-
             await createSala(data);
             setIsCreated(false);
             await findSalas();
