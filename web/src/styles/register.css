@@ -1,45 +1,24 @@
-/* Register.css */
-.register-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 50%;
-    margin: 0 auto;
-    margin-top: 20px;
+.gradient-custom-2 {
+    /* fallback for old browsers */
+    background: #90b5fc;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, #2477ee, #3a36d8, #7536dd, #9367b4);
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #2477ee, #3a36d8, #7536dd, #9367b4);
 }
 
-.register-form input[type="text"],
-.register-form input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+
+@media (min-width: 768px) {
+    .gradient-form {
+        height: 100vh !important;
+    }
 }
 
-.register-form label {
-    font-weight: bold;
-}
-
-.register-form button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.register-form button:hover {
-    background-color: #0056b3;
-}
-
-.register-form a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.register-form a:hover {
-    text-decoration: underline;
+@media (min-width: 769px) {
+    .gradient-custom-2 {
+        border-top-right-radius: .3rem;
+        border-bottom-right-radius: .3rem;
+    }
 }

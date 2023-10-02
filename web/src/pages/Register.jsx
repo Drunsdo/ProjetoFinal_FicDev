@@ -37,16 +37,16 @@ export function Register() {
     }
 
     return (
-        <MDBContainer>
+        <MDBContainer fluid className="my-5 gradient-form">
             <ModalComponent
                 show={result}
                 title={result?.title}
                 message={result?.message}
                 handleClose={() => setResult(null)}
             />
-            <MDBRow>
-                <MDBCol col='6' className="mb-5">
-                    <div className="d-flex flex-column ms-5">
+            <MDBRow className="h-100">
+                <MDBCol col='6' className="mb-5 d-flex align-items-center">
+                    <div className="d-flex flex-column ms-5 w-100">
                         <div className="text-center">
                             <img src="Captura de tela de 2023-09-29 09-21-59.png"
                                 style={{ width: '185px' }} alt="logo" />
@@ -62,6 +62,7 @@ export function Register() {
                         >
                             <MDBCol>
                                 <Input
+                                    wrapperClass='mb-4'
                                     className="mb-4"
                                     label="E-mail"
                                     type="text"
@@ -81,6 +82,7 @@ export function Register() {
                                     })}
                                 />
                                 <Input
+                                    wrapperClass='mb-4'
                                     className="mb-4"
                                     label="Senha"
                                     type="password"
@@ -101,6 +103,15 @@ export function Register() {
                                 </div>
                             </MDBCol>
                         </Form>
+                    </div>
+                </MDBCol>
+                <MDBCol col='6' className="mb-5 d-flex justify-content-center align-items-center gradient-custom-2">
+                    <div className="text-white px-3 py-4 p-md-5 mx-md-4">
+                        <h4 class="mb-4">We are more than just a company</h4>
+                        <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        </p>
                     </div>
                 </MDBCol>
             </MDBRow>
