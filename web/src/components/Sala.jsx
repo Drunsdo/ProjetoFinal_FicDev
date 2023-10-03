@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Form, Modal, Row} from "react-bootstrap";
+import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
 import { Input } from "./Input";
@@ -8,7 +8,7 @@ export function Sala(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
-
+    const [isExpanded, setIsExpanded] = useState(false); // Estado para controlar a expansão do card
 
 
     async function editSala(data) {
@@ -21,15 +21,19 @@ export function Sala(props) {
         setIsDeleted(false);
     }
 
+    function toggleExpansion() {
+        setIsExpanded(!isExpanded);
+    }
+
     return (
         <>
             <Card className="mb-3 p-3 bg-light ">
                 <Card.Title><strong>Tipo: </strong>{props.sala.tipo}</Card.Title>
-                <Card.Text><strong>Número da sala: </strong>{props.sala.id}</Card.Text>
-                {props.sala.tipo === "Leito" && (
-                    <>
-                        <Card.Text><strong>Quantidade de leitos: </strong>{props.sala.quantidadeleitos}</Card.Text>
-                    </>
+                {isExpanded && (
+                    <Card.Text><strong>Número da sala: </strong>{props.sala.id}</Card.Text>
+                )}
+                {props.sala.tipo === "Leito" && isExpanded && (
+                    <Card.Text><strong>Quantidade de leitos: </strong>{props.sala.quantidadeleitos}</Card.Text>
                 )}
                 <Row xs="auto" className="d-flex justify-content-end">
                     <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
@@ -39,6 +43,13 @@ export function Sala(props) {
                         onClick={() => setIsDeleted(true)}
                     >
                         Apagar
+                    </Button>
+                    <Button
+                        variant="outline-primary"
+                        className="ms-3"
+                        onClick={toggleExpansion}
+                    >
+                        {isExpanded ? 'Recolher' : 'Expandir'}
                     </Button>
                 </Row>
             </Card>

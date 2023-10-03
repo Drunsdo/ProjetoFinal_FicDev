@@ -13,6 +13,7 @@ export function Leito(props) {
     const [isReserva, setIsReserva] = useState(false);
     const [isDesocupa, setIsDesocupa] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false); // Estado para controlar a expansão do card
     const [salas, setSalas] = useState([]);
 
     useEffect(() => {
@@ -54,6 +55,10 @@ export function Leito(props) {
         }
     }
 
+    function toggleExpansion() {
+        setIsExpanded(!isExpanded);
+    }
+
     return (
         <>
             <Card className="mb-3 p-3 bg-light">
@@ -89,7 +94,7 @@ export function Leito(props) {
                     <Button
                         variant="outline-danger"
                         className="ms-3"
-                        onClick={() => setIsDeleted(true)} 
+                        onClick={() => setIsDeleted(true)}
                     >
                         Apagar
                     </Button>

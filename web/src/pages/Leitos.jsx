@@ -18,7 +18,7 @@ export function Leitos() {
     const [leitos, setLeitos] = useState([]);
     const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
-    const { handleSubmit, register, formState: { errors, /*isSubmitted*/ } } = useForm();
+    const { handleSubmit, register, formState: {isSubmitted } } = useForm();
     const navigate = useNavigate();
     const [result, setResult] = useState(null);
     const [result1, setResult1] = useState(null);
@@ -270,7 +270,7 @@ export function Leitos() {
                 <Modal.Header>
                     <Modal.Title>Cadastrar novo leito</Modal.Title>
                 </Modal.Header>
-                <Form noValidate autoComplete="off" onSubmit={handleSubmit(addLeito)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(addLeito)} validated={isSubmitted}>
                     <Modal.Body>
                         <Form.Group controlId="formIdSala">
                             <Form.Label>Número da sala</Form.Label>

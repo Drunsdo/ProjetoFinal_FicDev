@@ -1,18 +1,15 @@
 import { useState } from "react";
-import { Button, Col, Container, Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Input } from "../components/Input";
-import { Header } from '../components/Header';
 import { ModalComponent } from '../components/Modal';
 import '../styles/register.css';
 import {
-    MDBBtn,
     MDBContainer,
     MDBRow,
-    MDBCol,
-    MDBInput
+    MDBCol
 }
     from 'mdb-react-ui-kit';
 

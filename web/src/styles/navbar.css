@@ -2,9 +2,9 @@
 .custom-navbar {
   background: #90b5fc;
   /* Fallback para navegadores antigos */
-  background: -webkit-linear-gradient(to right, #2477ee, #3a36d8, #2acdc4);
+  background: -webkit-linear-gradient(to right, #2477ee, #2186d8, #2acdc4);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #2477ee, #3a36d8, #2acdc4);
+  background: linear-gradient(to right, #2477ee, #2186d8, #2acdc4);
 }
 
 .custom-navbar .navbar-nav .nav-link {

@@ -18,10 +18,13 @@ export function Salas() {
     const [isCreated, setIsCreated] = useState(false);
     const { handleSubmit, register, formState: { errors, isSubmitted } } = useForm();
     const navigate = useNavigate();
-    const valorPadraoTipoFiltro = 'Todos';
+
+
     const [result, setResult] = useState(null);
     const [result1, setResult1] = useState(null);
 
+    const valorPadraoTipoFiltro = 'Encontre o tipo de sala';
+    const [filtroTexto, setFiltroTexto] = useState('');
     const [tipoFiltro, setTipoFiltro] = useState(valorPadraoTipoFiltro);
 
     useEffect(() => {
@@ -41,12 +44,10 @@ export function Salas() {
 
     async function handleFiltrar() {
         try {
-            let filtro = tipoFiltro;
-
-            if (tipoFiltro === "Todos") {
+            if (tipoFiltro === "Todos" && !filtroTexto) {
                 await findSalas();
             } else {
-                const result = await getFiltroSalas({ tipoSala: filtro });
+                const result = await getFiltroSalas({ tipoSala: tipoFiltro, texto: filtroTexto });
                 setSalas(result.data);
             }
         } catch (error) {
@@ -131,27 +132,31 @@ export function Salas() {
             <Row className="w-50 m-auto mb-2 ">
                 <Col md='10'>
                     <Select
-
                         name="tipoSala"
                         options={[
                             { value: 'Todos', label: 'Todos' },
-                            { value: 'Leito', label: 'Leito' },
-                            { value: 'Cirúrgica', label: 'Cirúrgica' },
+                            { value: 'Sala de Cirurgia', label: 'Sala de Cirurgia' },
+                            { value: 'UTI', label: 'UTI (Unidade de Terapia Intensiva)' },
+                            { value: 'Quarto de Pacientes', label: 'Quarto de Pacientes' },
+                            { value: 'Sala de Parto', label: 'Sala de Parto' },
+                            { value: 'Laboratório', label: 'Laboratório' },
+                            { value: 'Sala de Emergência', label: 'Sala de Emergência' },
+                            { value: 'Sala de Espera', label: 'Sala de Espera' },
+                            { value: 'Sala de Consultas Médicas', label: 'Sala de Consultas Médicas' },
                         ]}
                         value={{ value: tipoFiltro, label: tipoFiltro }}
                         onChange={(selectedOption) => setTipoFiltro(selectedOption.value)}
                         className="salas-select-filter"
-                        isSearchable={false} // Para desativar a pesquisa
+                        isSearchable={true} // Permitir pesquisa
                         styles={{
-                            indicatorSeparator: () => { }, // Para remover a linha vertical entre o seletor e a seta
+                            indicatorSeparator: () => { },
                         }}
+                        onInputChange={(inputValue) => setFiltroTexto(inputValue)} // Atualizar o texto de filtro enquanto o usuário digita
                     />
                 </Col>
-
                 <Col md='2'>
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
-
             </Row>
             <Row className="w-50 m-auto mb-2 ">
                 <Col className="w-50 m-auto">
@@ -183,10 +188,18 @@ export function Salas() {
                             <Form.Select
                                 name="tipoSala"
                                 {...register('tipoSala')}
+                                
                             >
                                 <option disabled>Clique para selecionar</option>
-                                <option value='Leito'>Leito</option>
-                                <option value='Cirúrgica'>Cirúrgica</option>
+                                <option value='Sala de Cirurgia'>Sala de Cirurgia</option>
+                                <option value='UTI'>UTI (Unidade de Terapia Intensiva)</option>
+                                <option value='Quarto de Pacientes'>Quarto de Pacientes</option>
+                                <option value='Sala de Parto'>Sala de Parto</option>
+                                <option value='Laboratório'>Laboratório</option>
+                                <option value='Sala de Emergência'>Sala de Emergência</option>
+                                <option value='Sala de Espera'>Sala de Espera</option>
+                                <option value='Sala de Consultas'>Sala de Consultas Médicas</option>
+
                             </Form.Select>
                         </Form.Group>
 
