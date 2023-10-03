@@ -19,6 +19,10 @@ module.exports = {
             password: {
                 type: Sequelize.TEXT,
                 allowNull: false
+            },
+            nome: {
+                type: Sequelize.TEXT,
+                allowNull: false
             }
         });
     },

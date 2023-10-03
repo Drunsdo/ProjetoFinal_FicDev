@@ -70,6 +70,23 @@ export function Register() {
                                 <Input
                                     wrapperClass='mb-4'
                                     className="mb-4"
+                                    label="Nome"
+                                    type="text"
+                                    placeholder="Insira seu nome"
+                                    error={errors.nome}
+                                    required={true}
+                                    name="nome"
+                                    validations={register('nome', {
+                                        required: {
+                                            value: true,
+                                            message: 'Nome é obrigatório'
+                                        }
+
+                                    })}
+                                />
+                                <Input
+                                    wrapperClass='mb-4'
+                                    className="mb-4"
                                     label="E-mail"
                                     type="text"
                                     placeholder="Insira seu e-mail"
@@ -103,10 +120,11 @@ export function Register() {
                                         }
                                     })}
                                 />
-                                <div className="text-center pt-1 mb-5 pb-1">
+                                <div className="text-center pt-1 mb-5 pb-1 mt-auto">
                                     <Button className="mb-4 w-100 gradient-custom-2" type="submit">Criar</Button>
                                     <Link to="/">Já tenho uma conta</Link>
                                 </div>
+
                             </MDBCol>
                         </Form>
                     </div>

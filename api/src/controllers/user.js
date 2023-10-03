@@ -7,8 +7,8 @@ class UserController {
     async register(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const { email, password } = request.body;
-            if (!email || !password) return httpHelper.badRequest('E-mail e senha são obrigatórios!');
+            const { nome, email, password } = request.body;
+            if (!email || !password || !nome) return httpHelper.badRequest('E-mail, senha e nome são obrigatórios!');
             const userAlreadyExists = await UserModel.findOne({ where: { email } });
             if (userAlreadyExists) return httpHelper.badRequest('E-mail de usuário já cadastrado!');
             const passwordHashed = await bcrypt.hash(
@@ -16,6 +16,7 @@ class UserController {
                 Number(process.env.SALT)
             );
             const user = await UserModel.create({
+                nome,
                 email,
                 password: passwordHashed,
             });
@@ -74,11 +75,12 @@ class UserController {
         const httpHelper = new HttpHelper(response);
         try {
             const { id } = request.params;
-            const { email, password } = request.body;
+            const { nome,email, password } = request.body;
 
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
             if (!email) return httpHelper.badRequest('Parâmetros inválidos!');
             if (!password) return httpHelper.badRequest('Parâmetros inválidos!');
+            if (!nome) return httpHelper.badRequest('Parâmetros inválidos!');
 
             const userAlreadyExists = await UserModel.findOne({ where: { email } });
             if (userAlreadyExists) return httpHelper.badRequest('E-mail de usuário já cadastrado!');
@@ -92,6 +94,7 @@ class UserController {
             const userExists = await UserModel.findByPk(id);
             if (!userExists) return httpHelper.notFound('Usuario não encontrado');
             await UserModel.update({
+                nome,
                 email,
                 password: passwordHashed,
             }, {

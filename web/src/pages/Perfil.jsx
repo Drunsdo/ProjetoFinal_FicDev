@@ -1,4 +1,4 @@
-import { Container, Modal, Card, Button, Row, Form } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -6,9 +6,11 @@ import { NavbarComponent } from "../components/Navbar";
 import { Input } from "../components/Input";
 import '../styles/perfil.css';
 import { ModalComponent } from '../components/Modal';
+import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography } from 'mdb-react-ui-kit';
 
 
-import { Header } from "../components/Header";
+
+
 
 
 import { deleteUser, getUser, updateUser } from "../services/user-service"
@@ -54,6 +56,7 @@ export function Perfil(props) {
         try {
             await updateUser({
                 id: id,
+                nomeUser: data.nomeUser,
                 emailUser: data.emailUser,
                 passwordUser: data.passwordUser
             });
@@ -71,7 +74,7 @@ export function Perfil(props) {
     }
 
     return (
-        <Container fluid className="perfil-container">
+        <MDBContainer fluid className="perfil-container">
             <ModalComponent
                 show={result}
                 title={result?.title}
@@ -85,26 +88,53 @@ export function Perfil(props) {
                 handleClose={() => setResult1(null)}
             />
             <NavbarComponent />
-            <Header title="Perfil" className="perfil-header" />
-            <Row className="w-50 m-auto mb-2 ">
-                <Card className="mb-3 p-3 bg-light perfil-card">
-                    <Card.Text><strong>Email: </strong>{user.email}</Card.Text>
-                    <Row xs="auto" className="d-flex justify-content-end">
-                        <Button variant="primary" className="" onClick={() => setIsUpdated(true)}>Editar</Button>
-                        <Button
-                            variant="outline-danger"
-                            className="perfil-button-delete"
-                            onClick={() => setIsDeleted(true)}
-                        >
-                            Apagar
-                        </Button>
-                    </Row>
-                </Card>
-            </Row>
+            <br></br>
+            <MDBRow className="justify-content-center align-items-center h-100">
+                <MDBCol lg="6" className="mb-4 mb-lg-0">
+                    <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
+                        <MDBRow className="g-0">
+                            <MDBCol md="4" className="gradient-custom text-center text-white"
+                                style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
+                                <MDBCardImage src="user_1177568.png"
+                                    alt="Avatar" className="my-5" style={{ width: '80px' }} fluid />
+                                <MDBTypography tag="h5" className="text-black">{user.nome}</MDBTypography>
+
+                            </MDBCol>
+                            <MDBCol md="8">
+                                <MDBCardBody className="p-4">
+                                    <MDBTypography tag="h6">Informações</MDBTypography>
+                                    <hr className="mt-0 mb-4" />
+                                    <MDBRow className="pt-1">
+                                        <MDBCol size="6" className="mb-3">
+                                            <MDBTypography tag="h6">Email</MDBTypography>
+                                            <MDBCardText className="text-muted">{user.email}</MDBCardText>
+                                        </MDBCol>
+                                        <MDBCol size="6" className="mb-3">
+                                            <MDBTypography tag="h6">Password</MDBTypography>
+                                            <MDBCardText className="text-muted">xxxxxxx</MDBCardText>
+                                        </MDBCol>
+                                        <MDBCol className="d-flex justify-content-end align-items-end">
+                                            <Button variant="secondary" className="m-2" onClick={() => setIsUpdated(true)}>Editar</Button>
+                                            <Button
+                                                variant="outline-danger"
+                                                className="perfil-button-delete m-2"
+                                                onClick={() => setIsDeleted(true)}
+                                            >
+                                                Apagar
+                                            </Button>
+                                        </MDBCol>
+                                    </MDBRow>
+                                </MDBCardBody>
+                            </MDBCol>
+
+                        </MDBRow>
+                    </MDBCard>
+                </MDBCol>
+            </MDBRow>
 
             <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
-                    <Modal.Title>Editar perfil: {user.email}</Modal.Title>
+                    <Modal.Title>Editar perfil: {user.nome}</Modal.Title>
                 </Modal.Header>
                 <Form
                     noValidate
@@ -116,15 +146,34 @@ export function Perfil(props) {
                         <Input
                             className="mb-3"
                             //controlId="formGroupEmailUser"
+                            label='Nome'
+                            type='text'
+                            name='nomeUser'
+                            errors={errors.nomeUser}
+                            placeholder='Insira o nome'
+                            validations={register('nomeUser', {
+                                required: {
+                                    value: true,
+                                    message: 'Nome é obrigatório.'
+                                }
+                            })}
+                        />
+                        <Input
+                            className="mb-3"
+                            //controlId="formGroupEmailUser"
                             label='E-mail'
                             type='text'
                             name='emailUser'
                             errors={errors.emailUser}
-                            placeholder='Insira o dia da reserva'
+                            placeholder='Insira o email'
                             validations={register('emailUser', {
                                 required: {
                                     value: true,
                                     message: 'Email user é obrigatório.'
+                                },
+                                pattern: {
+                                    value: /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i,
+                                    message: 'E-mail inválido!'
                                 }
                             })}
                         />
@@ -163,7 +212,7 @@ export function Perfil(props) {
                 </Modal.Footer>
 
             </Modal>
+        </MDBContainer>
 
-        </Container>
     );
 }

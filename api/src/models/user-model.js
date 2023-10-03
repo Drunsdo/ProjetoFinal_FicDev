@@ -4,7 +4,8 @@ class UserModel extends Model {
     static init(database) {
         super.init({
             email: DataTypes.TEXT,
-            password: DataTypes.TEXT
+            password: DataTypes.TEXT,
+            nome: DataTypes.TEXT
         }, {
             tableName: 'user',
             modelName: 'UserModel',

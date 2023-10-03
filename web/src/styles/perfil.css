@@ -13,6 +13,22 @@
     margin-bottom: 20px;
 }
 
+.text-black {
+    color: black;
+}
+
+
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #ffffff;
+  
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right bottom, rgb(133, 155, 253));
+  
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right bottom, rgb(133, 155, 253))
+  }
+
 /* Estilize o cartão de perfil */
 .perfil-card {
     background-color: rgba(255, 255, 255, 0.7);
