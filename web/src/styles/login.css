@@ -3,10 +3,10 @@
     background: #90b5fc;
 
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, #2477ee, #3a36d8, #7536dd, #9367b4);
+    background: -webkit-linear-gradient(to right, #2477ee, #3a36d8, #2acdc4);
 
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, #2477ee, #3a36d8, #7536dd, #9367b4);
+    background: linear-gradient(to right, #2477ee, #3a36d8, #2acdc4);
 }
 
 

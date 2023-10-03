@@ -39,7 +39,7 @@ export function Login() {
     }
 
     return (
-        <MDBContainer fluid className="my-5 gradient-form">
+        <MDBContainer fluid className=" gradient-form ">
             <ModalComponent
                 show={result}
                 title={result?.title}
@@ -47,10 +47,19 @@ export function Login() {
                 handleClose={() => setResult(null)}
             />
             <MDBRow className="h-100">
+                <MDBCol col='6' className="mb-0 d-flex justify-content-center align-items-center gradient-custom-2">
+                    <div className="text-white px-3 py-4 p-md-5 mx-md-4">
+                        <h4 class="mb-4">Sistema de gerenciamento de salas/leitos</h4>
+                        <p class="small mb-0">A gestão de salas e leitos é essencial para otimizar espaços em diferentes contextos,
+                            como hospitais, hotéis e conferências. Esses sistemas automatizam reservas, monitoram ocupação e simplificam
+                            a administração, economizando tempo e recursos.
+                        </p>
+                    </div>
+                </MDBCol>
                 <MDBCol col='6' className="mb-5 d-flex align-items-center">
                     <div className="d-flex flex-column ms-5 w-100">
                         <div className="text-center">
-                            <img src="Captura de tela de 2023-09-29 09-21-59.png"
+                            <img src="cama-de-hospital.png"
                                 style={{ width: '185px' }} alt="logo" />
                             <h4 className="mt-1 mb-5 pb-1">Gestão de Salas e Leitos</h4>
                             <p>Por favor entre na sua conta</p>
@@ -60,7 +69,7 @@ export function Login() {
                             noValidate
                             validated={isSubmitted}
                             onSubmit={handleSubmit(onSubmit)}
-                             // Add a custom CSS class for styling
+                        // Add a custom CSS class for styling
                         >
                             <MDBCol>
                                 <Input
@@ -100,22 +109,14 @@ export function Login() {
                                     })}
                                 />
                                 <div className="text-center pt-1 mb-5 pb-1">
-                                    <MDBBtn className="mb-4 w-100 gradient-custom-2" type="submit">Entrar</MDBBtn>
+                                    <Button className="mb-4 w-100 gradient-custom-2" type="submit">Entrar</Button>
                                     <Link to="/register">Criar conta</Link>
                                 </div>
                             </MDBCol>
                         </Form>
                     </div>
                 </MDBCol>
-                <MDBCol col='6' className="mb-5 d-flex justify-content-center align-items-center gradient-custom-2">
-                    <div className="text-white px-3 py-4 p-md-5 mx-md-4">
-                        <h4 class="mb-4">We are more than just a company</h4>
-                        <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </p>
-                    </div>
-                </MDBCol>
+
             </MDBRow>
         </MDBContainer>
     );
