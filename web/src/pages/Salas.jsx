@@ -163,20 +163,25 @@ export function Salas() {
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
             </Row>
-            <Row className="w-75 m-auto mt-4 mb-2 ">
+
+            <Row className="w-75 m-auto mt-4 mb-2">
                 <Col className="w-50 m-auto">
-                    {salas && salas.length > 0
-                        ? salas.map((sala, index) => (
-                            <Sala
-                                key={index}
-                                sala={sala}
-                                removeSala={async () => await removeSala(sala.id)}
-                                editSala={editSala}
-                            />
-                        ))
-                        : <p className="text-center">Não existe nenhuma sala cadastrada!</p>}
+                    <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                        {salas && salas.length > 0
+                            ? salas.map((sala, index) => (
+                                <Sala
+                                    key={index}
+                                    sala={sala}
+                                    removeSala={async () => await removeSala(sala.id)}
+                                    editSala={editSala}
+                                />
+                            ))
+                            : <p className="text-center">Não existe nenhuma sala cadastrada!</p>}
+                    </div>
                 </Col>
             </Row>
+
+
             {/* Formulário dentro do Modal, ideal seria componentizar também, pois é parecido com o Modal de editar */}
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>
                 <Modal.Header>

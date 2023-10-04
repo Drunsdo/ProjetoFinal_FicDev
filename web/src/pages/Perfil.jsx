@@ -134,7 +134,7 @@ export function Perfil(props) {
                                             >
                                                 <Button variant="link" onClick={() => setIsUpdated(true)}>
                                                     <img
-                                                        src="/editar.png"
+                                                        src="/editar2.png"
                                                         width="30"
                                                         height="30"
                                                         alt="Editar"
@@ -152,7 +152,7 @@ export function Perfil(props) {
                                                     onClick={() => setIsDeleted(true)}
                                                 >
                                                     <img
-                                                        src="/delete.png"
+                                                        src="/deletar2.png"
                                                         width="30"
                                                         height="30"
                                                         alt="Deletar"

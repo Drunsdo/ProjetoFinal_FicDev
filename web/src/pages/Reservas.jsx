@@ -187,17 +187,20 @@ export function Reservas() {
             </Row>
             <Row className="w-75 m-auto mt-4 mb-2">
                 <Col className="w-50 m-auto">
-                    {reservas && reservas.length > 0
-                        ? reservas.map((reserva, index) => (
-                            <Reserva
-                                key={index}
-                                reserva={reserva}
-                                removeReserva={async () => await removeReserva(reserva.id)}
-                                editReserva={editReserva}
-                            />
-                        ))
-                        : <p className="text-center">Não existe nenhuma reserva cadastrada!</p>}
+                    <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                        {reservas && reservas.length > 0
+                            ? reservas.map((reserva, index) => (
+                                <Reserva
+                                    key={index}
+                                    reserva={reserva}
+                                    removeReserva={async () => await removeReserva(reserva.id)}
+                                    editReserva={editReserva}
+                                />
+                            ))
+                            : <p className="text-center">Não existe nenhuma reserva cadastrada!</p>}
+                    </div>
                 </Col>
+
             </Row>
             {/* Formulário dentro do Modal, ideal seria componentizar também, pois é parecido com o Modal de editar */}
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>
@@ -289,6 +292,6 @@ export function Reservas() {
                     </Modal.Footer>
                 </Form>
             </Modal>
-        </Container>
+        </Container >
     );
 }

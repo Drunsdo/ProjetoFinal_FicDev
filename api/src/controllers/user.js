@@ -82,8 +82,11 @@ class UserController {
             if (!password) return httpHelper.badRequest('Parâmetros inválidos!');
             if (!nome) return httpHelper.badRequest('Parâmetros inválidos!');
 
+            const userExists = await UserModel.findByPk(id);
+            if (!userExists) return httpHelper.notFound('Usuario não encontrado');
+
             const userAlreadyExists = await UserModel.findOne({ where: { email } });
-            if (userAlreadyExists) return httpHelper.badRequest('E-mail de usuário já cadastrado!');
+            if (userAlreadyExists && userAlreadyExists.dataValues.id != id) return httpHelper.badRequest('E-mail de usuário já cadastrado!');
 
 
             const passwordHashed = await bcrypt.hash(
@@ -91,8 +94,7 @@ class UserController {
                 Number(process.env.SALT)
             );
 
-            const userExists = await UserModel.findByPk(id);
-            if (!userExists) return httpHelper.notFound('Usuario não encontrado');
+
             await UserModel.update({
                 nome,
                 email,

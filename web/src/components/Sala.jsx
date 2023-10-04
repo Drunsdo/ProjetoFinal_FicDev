@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Form, Modal, Row } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Table from 'react-bootstrap/Table';
 import "../styles/salas.css";
@@ -35,6 +35,7 @@ export function Sala(props) {
             Deletar
         </Tooltip>
     );
+    
 
 
 
@@ -48,7 +49,7 @@ export function Sala(props) {
                     <col style={{ width: "10%" }} />
                     <col style={{ width: "15%" }} />
                     <col style={{ width: "4%" }} />
-                    
+
                 </colgroup>
                 <thead>
                     <tr>
@@ -59,46 +60,45 @@ export function Sala(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td className="salaNumero">{props.sala.id}</td>
-                        <td className="salaTipo">{props.sala.tipo}</td>
-                        <td className="salaQuantidade">{props.sala.quantidadeleitos}</td>
-                        <td className="salaEditar text-end"> {/* Adicione a classe text-end aqui */}
-                            <OverlayTrigger
-                                placement="top"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={editTooltip}
-                            >
-                                <Button variant="link" onClick={() => setIsUpdated(true)}>
-                                    <img
-                                        src="/editar.png"
-                                        width="30"
-                                        height="30"
-                                        alt="Editar"
-                                    />
-                                </Button>
-                            </OverlayTrigger>
-                            <OverlayTrigger
-                                placement="top"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={deleteTooltip}
-                            >
-                                <Button
-                                    variant="link"
-                                    className="ms-1"
-                                    onClick={() => setIsDeleted(true)}
+                        <tr>
+                            <td className="salaNumero">{props.sala.id}</td>
+                            <td className="salaTipo">{props.sala.tipo}</td>
+                            <td className="salaQuantidade">{props.sala.quantidadeleitos}</td>
+                            <td className="salaEditar text-end"> {/* Adicione a classe text-end aqui */}
+                                <OverlayTrigger
+                                    placement="top"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={editTooltip}
                                 >
-                                    <img
-                                        src="/delete.png"
-                                        width="30"
-                                        height="30"
-                                        alt="Deletar"
-                                    />
-                                </Button>
-                            </OverlayTrigger>
-                        </td>
-                    </tr>
-
+                                    <Button variant="link" onClick={() => setIsUpdated(true)}>
+                                        <img
+                                            src="/editar2.png"
+                                            width="30"
+                                            height="30"
+                                            alt="Editar"
+                                        />
+                                    </Button>
+                                </OverlayTrigger>
+                                <OverlayTrigger
+                                    placement="top"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={deleteTooltip}
+                                >
+                                    <Button
+                                        variant="link"
+                                        className="ms-1"
+                                        onClick={() => setIsDeleted(true)}
+                                    >
+                                        <img
+                                            src="/deletar2.png"
+                                            width="30"
+                                            height="30"
+                                            alt="Deletar"
+                                        />
+                                    </Button>
+                                </OverlayTrigger>
+                            </td>
+                        </tr>
                 </tbody>
             </Table>
 

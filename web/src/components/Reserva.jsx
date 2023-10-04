@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Form, Modal, Row } from "react-bootstrap";
+import { Button,  Form, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { getSalas } from "../services/sala-service";
@@ -95,10 +95,9 @@ export function Reserva(props) {
                                 delay={{ show: 250, hide: 400 }}
                                 overlay={editTooltip}
                             >
-                                <Button variant="link"
-                                    onClick={() => setIsUpdated(true)}>
+                                <Button variant="link" onClick={() => setIsUpdated(true)}>
                                     <img
-                                        src="/editar.png"
+                                        src="/editar2.png"
                                         width="30"
                                         height="30"
                                         alt="Editar"
@@ -116,7 +115,7 @@ export function Reserva(props) {
                                     onClick={() => setIsDeleted(true)}
                                 >
                                     <img
-                                        src="/delete.png"
+                                        src="/deletar2.png"
                                         width="30"
                                         height="30"
                                         alt="Deletar"

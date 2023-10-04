@@ -259,18 +259,21 @@ export function Leitos() {
             </Row>
             <Row className="w-75 m-auto mt-4 mb-2">
                 <Col className="w-50 m-auto">
-                    {leitos && leitos.length > 0
-                        ? leitos.map((leito, index) => (
-                            <Leito
-                                key={index}
-                                leito={leito}
-                                removeLeito={async () => await removeLeito(leito.id)}
-                                reservarLeito={reservarLeito}
-                                desocupaLeito={desocupaLeito}
-                                editLeito={editLeito}
-                            />
-                        ))
-                        : <p className="text-center">Não existe nenhum leito cadastrado!</p>}
+                    <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+
+                        {leitos && leitos.length > 0
+                            ? leitos.map((leito, index) => (
+                                <Leito
+                                    key={index}
+                                    leito={leito}
+                                    removeLeito={async () => await removeLeito(leito.id)}
+                                    reservarLeito={reservarLeito}
+                                    desocupaLeito={desocupaLeito}
+                                    editLeito={editLeito}
+                                />
+                            ))
+                            : <p className="text-center">Não existe nenhum leito cadastrado!</p>}
+                    </div>
                 </Col>
             </Row>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Form, Modal, Row } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Input } from "./Input";
 import { useEffect } from "react";
@@ -16,7 +16,7 @@ import "../styles/leitos.css";
 
 
 export function Leito(props) {
-    const { handleSubmit, register, formState: { errors }, setValue, watch } = useForm();
+    const { handleSubmit, register, formState: { errors, isSubmitted }, setValue, watch } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
     const [isReserva, setIsReserva] = useState(false);
     const [isDesocupa, setIsDesocupa] = useState(false);
@@ -159,8 +159,8 @@ export function Leito(props) {
                                         onClick={() => setIsDesocupa(true)}
                                     >
                                         <img src="desoupa.png"
-                                            width="25"
-                                            height="25"
+                                            width="27"
+                                            height="27"
                                             alt="Desocupa" />
                                     </Button>
                                 </OverlayTrigger>
@@ -174,7 +174,7 @@ export function Leito(props) {
                             >
                                 <Button variant="link" onClick={() => setIsUpdated(true)}>
                                     <img
-                                        src="/editar.png"
+                                        src="/editar2.png"
                                         width="30"
                                         height="30"
                                         alt="Editar"
@@ -192,7 +192,7 @@ export function Leito(props) {
                                     onClick={() => setIsDeleted(true)}
                                 >
                                     <img
-                                        src="/delete.png"
+                                        src="/deletar2.png"
                                         width="30"
                                         height="30"
                                         alt="Deletar"
@@ -221,7 +221,7 @@ export function Leito(props) {
                 <Modal.Header>
                     <Modal.Title>Editar leito: {props.leito.id}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate autoComplete="off" onSubmit={handleSubmit(editLeito)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(editLeito)} validated={isSubmitted}>
                     <Modal.Body>
                         <div>
                             <label>Nome do paciente</label>
@@ -236,9 +236,21 @@ export function Leito(props) {
                         <Form.Group>
                             <Form.Label>Status do Leito</Form.Label>
                             <Form.Select name="statusLeito" {...register("statusLeito")}>
-                                <option disabled>Clique para selecionar</option>
-                                <option value="Disponível">Disponível</option>
-                                <option value="Ocupado">Ocupado</option>
+                                {props.leito.status === true && (
+                                    <>
+                                        <option disabled>Clique para selecionar</option>
+                                        <option value="Disponível">Disponível</option>
+                                        <option value="Ocupado">Ocupado</option>
+                                    </>
+                                )}
+                                {props.leito.status === false && (
+                                    <>
+                                        <option disabled>Clique para selecionar</option>
+                                        <option value="Ocupado">Ocupado</option>
+                                        <option value="Disponível">Disponível</option>
+                                    </>
+                                )}
+                                
                             </Form.Select>
                         </Form.Group>
                         <br />
@@ -303,7 +315,7 @@ export function Leito(props) {
                 <Modal.Header>
                     <Modal.Title>Reserva leito: {props.leito.id}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate autoComplete="off" onSubmit={handleSubmit(reservarLeito)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(reservarLeito)} validated={isSubmitted}>
                     <Modal.Body>
                         <div>
                             <label>Nome do paciente</label>
