@@ -28,7 +28,8 @@ export function Reservas() {
     const [result, setResult] = useState(null);
     const [result1, setResult1] = useState(null);
 
-    const [salaIdFiltro, setSalaIdFiltro] = useState('Todos');
+    const [filtroTexto, setFiltroTexto] = useState('');
+    const [salaIdFiltro, setSalaIdFiltro] = useState('');
 
     useEffect(() => {
         findReservas();
@@ -59,12 +60,12 @@ export function Reservas() {
     async function handleFiltrar() {
         try {
             let filtro = salaIdFiltro;
-            if (salaIdFiltro === "Todos") {
+            if (salaIdFiltro === "Todos" && !filtroTexto) {
                 // Se a opção for "todos", não aplique filtro e retorne todas as reservas
                 await findReservas();
             } else {
                 // Caso contrário, aplique o filtro de acordo com o ID da sala selecionada
-                const result = await getFiltroReservas({ salaIdReserva: filtro });
+                const result = await getFiltroReservas({ salaIdReserva: filtro, texto: filtroTexto });
                 setReservas(result.data);
             }
         } catch (error) {
@@ -140,13 +141,13 @@ export function Reservas() {
             />
             <NavbarComponent />
             <Header title="Reservas" />
-            <Row className="w-50 m-auto mb-3 mt-5 ">
+            <Row className="w-75 m-auto mb-3 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar nova Reserva</Button>
                 </Col>
             </Row>
 
-            <Row className="w-50 m-auto mb-2">
+            <Row className="w-75 m-auto mb-2">
                 <Col md='10'>
                     <Select
                         name="salaIdLeito"
@@ -154,7 +155,7 @@ export function Reservas() {
                             { value: 'Todos', label: 'Todos' },
                             ...(salas && salas.length > 0
                                 ? salas
-                                    .filter((sala) => sala.tipo === "Cirúrgica")
+                                    .filter((sala) => sala.tipo !== "UTI" && sala.tipo !== "Quarto de Pacientes")
                                     .sort((a, b) => a.id - b.id)
                                     .map((sala) => ({
                                         value: sala.id,
@@ -166,10 +167,17 @@ export function Reservas() {
                         value={{ value: salaIdFiltro, label: salaIdFiltro.toString() }}
                         onChange={(selectedOption) => setSalaIdFiltro(selectedOption.value)}
                         className="salas-select-filter"
-                        isSearchable={false} // Para desativar a pesquisa
+                        isSearchable={true} // Para desativar a pesquisa
                         styles={{
                             indicatorSeparator: () => { }, // Para remover a linha vertical entre o seletor e a seta
                         }}
+                        onInputChange={(inputValue) => setFiltroTexto(inputValue)} // Atualizar o texto de filtro enquanto o usuário digita
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleFiltrar(); // Chama a função de filtragem quando a tecla Enter é pressionada
+                            }
+                        }}
+
                     />
                 </Col>
 
@@ -177,7 +185,7 @@ export function Reservas() {
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
             </Row>
-            <Row className="w-50 m-auto mb-2">
+            <Row className="w-75 m-auto mt-4 mb-2">
                 <Col className="w-50 m-auto">
                     {reservas && reservas.length > 0
                         ? reservas.map((reserva, index) => (
@@ -207,7 +215,7 @@ export function Reservas() {
                                 <option disabled>Clique para selecionar</option>
                                 {salas && salas.length > 0
                                     ? salas
-                                        .filter((sala) => sala.tipo === "Cirúrgica")
+                                        .filter((sala) => sala.tipo !== "UTI" && sala.tipo !== "Quarto de Pacientes")
                                         .sort((a, b) => a.id - b.id)
                                         .map((sala) => (
                                             <option key={sala.id} value={sala.id}>

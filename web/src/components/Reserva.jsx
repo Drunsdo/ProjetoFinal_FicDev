@@ -4,13 +4,19 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { getSalas } from "../services/sala-service";
 import DatePicker from "react-datepicker";
+import Table from 'react-bootstrap/Table';
+import "../styles/reservas.css";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+
+
 import "react-datepicker/dist/react-datepicker.css";
 
 
 import { Input } from "./Input";
 
 export function Reserva(props) {
-    const { handleSubmit, register, formState: { errors }, setValue, watch } = useForm();
+    const { handleSubmit, register, formState: { errors, isSubmitted }, setValue, watch } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
     const [salas, setSalas] = useState([]);
@@ -39,29 +45,89 @@ export function Reserva(props) {
         }
     }
 
+    const editTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Editar
+        </Tooltip>
+    );
+
+    const deleteTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Deletar
+        </Tooltip>
+    );
+
 
     return (
         <>
-            <Card className="mb-3 p-3 bg-light">
-                <Card.Title><strong>Sala: </strong>{props.reserva.salaId}</Card.Title>
-                <Card.Text><strong>Responsável: </strong>{props.reserva.responsavel}</Card.Text>
-                <Card.Text><strong>Número da reserva: </strong>{props.reserva.id}</Card.Text>
 
-                <Card.Text><strong>Inicio: </strong>{new Date(props.reserva.datainicio).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
-                <Card.Text><strong>Fim: </strong>{new Date(props.reserva.datafim).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</Card.Text>
+            <Table striped bordered hover size="sm">
+                <colgroup>
+                    <col style={{ width: "10%" }} />
+                    <col style={{ width: "10%" }} />
+                    <col style={{ width: "20%" }} />
+                    <col style={{ width: "20%" }} />
+                    <col style={{ width: "20%" }} />
+                    <col style={{ width: "10.5%" }} />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th className="reservaNumero">Número</th>
+                        <th className="reservaSala">Sala</th>
+                        <th className="reservaResponsavel">Responsável</th>
+                        <th className="reservaInicio">Inicio</th>
+                        <th className="reservaFim">Fim</th>
+                        <th className="reservaAcao">Edição</th>
 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td className="reservaNumero">{props.reserva.id}</td>
+                        <td className="reservaSala">{props.reserva.salaId}</td>
+                        <td className="reservaResponsavel">{props.reserva.responsavel}</td>
+                        <td className="reservaInicio">{new Date(props.reserva.datainicio).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                        <td className="reservaFim">{new Date(props.reserva.datafim).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
 
-                <Row xs="auto" className="d-flex justify-content-end">
-                    <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
-                    <Button
-                        variant="outline-danger"
-                        className="ms-3"
-                        onClick={() => setIsDeleted(true)}
-                    >
-                        Apagar
-                    </Button>
-                </Row>
-            </Card>
+                        <td className="reservaAcao text-end">
+                            <OverlayTrigger
+                                placement="top"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={editTooltip}
+                            >
+                                <Button variant="link"
+                                    onClick={() => setIsUpdated(true)}>
+                                    <img
+                                        src="/editar.png"
+                                        width="30"
+                                        height="30"
+                                        alt="Editar"
+                                    />
+                                </Button>
+                            </OverlayTrigger>
+                            <OverlayTrigger
+                                placement="top"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={deleteTooltip}
+                            >
+                                <Button
+                                    variant="link"
+                                    className="ms-1"
+                                    onClick={() => setIsDeleted(true)}
+                                >
+                                    <img
+                                        src="/delete.png"
+                                        width="30"
+                                        height="30"
+                                        alt="Deletar"
+                                    />
+                                </Button>
+                            </OverlayTrigger>
+                        </td>
+                    </tr>
+                </tbody>
+            </Table>
+
             <Modal show={isDeleted} onHide={() => setIsDeleted(false)}>
                 <Modal.Header>
                     <Modal.Title>Deseja deletar a reserva {props.reserva.id}?</Modal.Title>
@@ -78,7 +144,7 @@ export function Reserva(props) {
                 <Modal.Header>
                     <Modal.Title>Editar Reserva: {props.reserva.id}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate autoComplete="off" onSubmit={handleSubmit(editReserva)} validated={!!errors}>
+                <Form noValidate autoComplete="off" onSubmit={handleSubmit(editReserva)} validated={isSubmitted}>
                     <Modal.Body>
                         <Form.Group controlId="formIdSala">
                             <Form.Label>Número da sala</Form.Label>
@@ -97,7 +163,7 @@ export function Reserva(props) {
                                         )),
                                         // Em seguida, adicione as outras salas que atendem aos critérios
                                         ...salas
-                                            .filter((sala) => sala.tipo === "Cirúrgica" && sala.id !== props.reserva.salaId)
+                                            .filter((sala) => sala.tipo !== "UTI" && sala.tipo !== "Quarto de Pacientes" && sala.id !== props.reserva.salaId)
                                             .sort((a, b) => a.id - b.id)
                                             .map((sala) => (
                                                 <option key={sala.id} value={sala.id}>
@@ -129,6 +195,7 @@ export function Reserva(props) {
 
                         <div>
                             <label>Data de Início da Reserva</label>
+                            <br></br>
                             <DatePicker
                                 selected={watch('datainicioReserva') || null}
                                 onChange={(date) => setValue('datainicioReserva', date, { shouldValidate: true })}
@@ -144,6 +211,7 @@ export function Reserva(props) {
 
                         <div>
                             <label>Data de Fim da Reserva</label>
+                            <br></br>
                             <DatePicker
                                 selected={watch('datafimReserva') || null}
                                 onChange={(date) => setValue('datafimReserva', date, { shouldValidate: true })}

@@ -20,7 +20,7 @@ class LeitoController {
                 return httpHelper.notFound('Sala não encontrada!');
             }
 
-            if (sala.tipo === 'Leito') {
+            if (sala.tipo === 'UTI' || sala.tipo === "Quarto de Pacientes") {
                 
                 const maxLeitos = sala.quantidadeleitos;
 
@@ -28,7 +28,7 @@ class LeitoController {
                 const leitosCount = await LeitoModel.count({ where: { salaId } });
 
                 if (leitosCount >= maxLeitos) {
-                    return httpHelper.badRequest('A sala de leitos atingiu a quantidade máxima de leitos permitida.');
+                    return httpHelper.badRequest('A sala atingiu a quantidade máxima de leitos permitida.');
                 }
             }
 

@@ -1,3 +1,29 @@
 .reservas-container{
     padding: 0px;
 }
+
+
+.reservaNumero{
+    width:60px;
+}
+
+.reservaSala{
+    width: 60px;
+}
+
+.reservaAcao{
+    width: 50px;
+
+}
+
+.reservaResponsavel{
+    width: 100px;
+}
+
+.reservaInicio{
+    width: 50px;
+}
+
+.reservaFim{
+    width: 50px;
+}

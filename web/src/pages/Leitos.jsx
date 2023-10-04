@@ -18,12 +18,13 @@ export function Leitos() {
     const [leitos, setLeitos] = useState([]);
     const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
-    const { handleSubmit, register, formState: {isSubmitted } } = useForm();
+    const { handleSubmit, register, formState: { isSubmitted } } = useForm();
     const navigate = useNavigate();
     const [result, setResult] = useState(null);
     const [result1, setResult1] = useState(null);
+    const [filtroTexto, setFiltroTexto] = useState('');
 
-    const [statusFiltro, setStatusFiltro] = useState('Todos');
+    const [statusFiltro, setStatusFiltro] = useState('');
 
     useEffect(() => {
         findLeitos();
@@ -58,12 +59,12 @@ export function Leitos() {
                 filtro = filtro === "disponível" || filtro === "disponivel" ? true : false;
             }
 
-            if (filtro === "todos") {
+            if (filtro === "todos" && !filtroTexto) {
                 // Se a opção for "todos", não aplique filtro e retorne todos os leitos
                 await findLeitos();
             } else {
                 // Caso contrário, aplique o filtro de acordo com o status selecionado
-                const result = await getFiltroLeito({ statusLeito: filtro });
+                const result = await getFiltroLeito({ statusLeito: filtro, texto: filtroTexto });
                 setLeitos(result.data);
             }
         } catch (error) {
@@ -220,13 +221,13 @@ export function Leitos() {
             />
             <NavbarComponent />
             <Header title="Leitos" />
-            <Row className="w-50 m-auto mb-3 mt-5 ">
+            <Row className="w-75 m-auto mb-3 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar novo Leito</Button>
                 </Col>
             </Row>
 
-            <Row className="w-50 m-auto mb-2">
+            <Row className="w-75 m-auto mb-2">
                 <Col md='10'>
                     <Select
                         name="statusLeito"
@@ -238,10 +239,17 @@ export function Leitos() {
                         value={{ value: statusFiltro, label: statusFiltro }}
                         onChange={(selectedOption) => setStatusFiltro(selectedOption.value)}
                         className="salas-select-filter"
-                        isSearchable={false} // Para desativar a pesquisa
+                        isSearchable={true} // Para desativar a pesquisa
                         styles={{
                             indicatorSeparator: () => { }, // Para remover a linha vertical entre o seletor e a seta
                         }}
+                        onInputChange={(inputValue) => setFiltroTexto(inputValue)} // Atualizar o texto de filtro enquanto o usuário digita
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleFiltrar(); // Chama a função de filtragem quando a tecla Enter é pressionada
+                            }
+                        }}
+
                     />
                 </Col>
 
@@ -249,7 +257,7 @@ export function Leitos() {
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
             </Row>
-            <Row className="w-50 m-auto mb-2">
+            <Row className="w-75 m-auto mt-4 mb-2">
                 <Col className="w-50 m-auto">
                     {leitos && leitos.length > 0
                         ? leitos.map((leito, index) => (
@@ -265,6 +273,7 @@ export function Leitos() {
                         : <p className="text-center">Não existe nenhum leito cadastrado!</p>}
                 </Col>
             </Row>
+
             {/* Formulário dentro do Modal, ideal seria componentizar também, pois é parecido com o Modal de editar */}
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>
                 <Modal.Header>
@@ -281,7 +290,7 @@ export function Leitos() {
                                 <option disabled>Clique para selecionar</option>
                                 {salas && salas.length > 0
                                     ? salas
-                                        .filter((sala) => sala.tipo === "Leito")
+                                        .filter((sala) => sala.tipo === "Quarto de Pacientes" || sala.tipo === "UTI")
                                         .sort((a, b) => a.id - b.id)
                                         .map((sala) => (
                                             <option key={sala.id} value={sala.id}>

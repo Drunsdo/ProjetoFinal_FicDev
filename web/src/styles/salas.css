@@ -1,8 +1,32 @@
-.salas-container{
+.salas-container {
     padding: 0px;
 }
+
 .zero-padding {
     padding-left: 0px;
 }
 
 
+.salaTipo {
+    width: 250px;
+    /* Largura desejada para a coluna Tipo */
+    /* Outros estilos, como alinhamento de texto, cor de fundo, etc. */
+}
+
+.salaQuantidade {
+    width: 75px;
+    /* Deixe a largura automática ou ajuste conforme necessário */
+    /* Outros estilos, como alinhamento de texto, cor de fundo, etc. */
+}
+
+.salaNumero {
+    width: 60px;
+    /* Deixe a largura automática ou ajuste conforme necessário */
+    /* Outros estilos, como alinhamento de texto, cor de fundo, etc. */
+}
+
+.salaEditar {
+    width: 50px;
+    /* Largura desejada para a coluna Ações */
+    /* Outros estilos, como alinhamento de texto, cor de fundo, etc. */
+}

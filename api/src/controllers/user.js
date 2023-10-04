@@ -75,7 +75,7 @@ class UserController {
         const httpHelper = new HttpHelper(response);
         try {
             const { id } = request.params;
-            const { nome,email, password } = request.body;
+            const { nome, email, password } = request.body;
 
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
             if (!email) return httpHelper.badRequest('Parâmetros inválidos!');

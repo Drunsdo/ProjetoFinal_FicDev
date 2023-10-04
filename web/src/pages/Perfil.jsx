@@ -8,7 +8,8 @@ import '../styles/perfil.css';
 import { ModalComponent } from '../components/Modal';
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography } from 'mdb-react-ui-kit';
 
-
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 
 
@@ -73,6 +74,18 @@ export function Perfil(props) {
         }
     }
 
+    const editTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Editar
+        </Tooltip>
+    );
+
+    const deleteTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Deletar
+        </Tooltip>
+    );
+
     return (
         <MDBContainer fluid className="perfil-container">
             <ModalComponent
@@ -96,7 +109,7 @@ export function Perfil(props) {
                             <MDBCol md="4" className="gradient-custom text-center text-white"
                                 style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
                                 <MDBCardImage src="user_1177568.png"
-                                    alt="Avatar" className="my-5" style={{ width: '80px' }} fluid />
+                                    alt="Avatar" className="my-5" style={{ width: '60px' }} fluid />
                                 <MDBTypography tag="h5" className="text-black">{user.nome}</MDBTypography>
 
                             </MDBCol>
@@ -110,18 +123,42 @@ export function Perfil(props) {
                                             <MDBCardText className="text-muted">{user.email}</MDBCardText>
                                         </MDBCol>
                                         <MDBCol size="6" className="mb-3">
-                                            <MDBTypography tag="h6">Password</MDBTypography>
+                                            <MDBTypography tag="h6">Senha</MDBTypography>
                                             <MDBCardText className="text-muted">xxxxxxx</MDBCardText>
                                         </MDBCol>
                                         <MDBCol className="d-flex justify-content-end align-items-end">
-                                            <Button variant="secondary" className="m-2" onClick={() => setIsUpdated(true)}>Editar</Button>
-                                            <Button
-                                                variant="outline-danger"
-                                                className="perfil-button-delete m-2"
-                                                onClick={() => setIsDeleted(true)}
+                                            <OverlayTrigger
+                                                placement="top"
+                                                delay={{ show: 250, hide: 400 }}
+                                                overlay={editTooltip}
                                             >
-                                                Apagar
-                                            </Button>
+                                                <Button variant="link" onClick={() => setIsUpdated(true)}>
+                                                    <img
+                                                        src="/editar.png"
+                                                        width="30"
+                                                        height="30"
+                                                        alt="Editar"
+                                                    />
+                                                </Button>
+                                            </OverlayTrigger>
+                                            <OverlayTrigger
+                                                placement="top"
+                                                delay={{ show: 250, hide: 400 }}
+                                                overlay={deleteTooltip}
+                                            >
+                                                <Button
+                                                    variant="link"
+                                                    className="ms-0"
+                                                    onClick={() => setIsDeleted(true)}
+                                                >
+                                                    <img
+                                                        src="/delete.png"
+                                                        width="30"
+                                                        height="30"
+                                                        alt="Deletar"
+                                                    />
+                                                </Button>
+                                            </OverlayTrigger>
                                         </MDBCol>
                                     </MDBRow>
                                 </MDBCardBody>

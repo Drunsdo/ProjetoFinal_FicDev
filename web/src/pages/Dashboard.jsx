@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Header } from "../components/Header";
 import { NavbarComponent } from "../components/Navbar";
-import { getQuantidadeSalas, getQuantidadeLeitoSalas, getQuantidadeCirurgicaSalas } from "../services/sala-service";
+import {
+    getQuantidadeSalas, getQuantidadeUTISalas, getQuantidadeQuartoSalas, getQuantidadeCirurgiaSalas, getQuantidadeConsultaSalas,
+    getQuantidadeEmergenciaSalas, getQuantidadeEsperaSalas, getQuantidadeLaboratorioSalas, getQuantidadePartoSalas
+} from "../services/sala-service";
 import { getQuantidadeLeitos, getQuantidadeDisponivelLeitos, getQuantidadeOcupadoLeitos } from "../services/leito-service";
 import { getQuantidadeReservas } from "../services/reserva-service";
 import '../styles/dash.css';
@@ -14,9 +17,16 @@ export function Dashboard() {
     const [quantidadeSalas, setQuantidadeSalas] = useState([]);
     const [quantidadeLeitos, setQuantidadeLeitos] = useState([]);
     const [quantidadeReservas, setQuantidadeReservas] = useState([]);
-    //Gráficos
-    const [dadosLeitoSalas, setDadosLeitoSalas] = useState([]);
-    const [dadosCirurgicaSalas, setDadosCirurgicaSalas] = useState([]);
+    //Gráficos Bar
+    const [dadosUTISalas, setDadosUTISalas] = useState([]);
+    const [dadosQuartoSalas, setDadosQuartoSalas] = useState([]);
+    const [dadosCirurgiaSalas, setDadosCirurgiaSalas] = useState([]);
+    const [dadosConsultaSalas, setDadosConsultaSalas] = useState([]);
+    const [dadosEmergenciaSalas, setDadosEmergenciaSalas] = useState([]);
+    const [dadosEsperaSalas, setDadosEsperaSalas] = useState([]);
+    const [dadosLaboratorioSalas, setDadosLaboratorioSalas] = useState([]);
+    const [dadosPartoSalas, setDadosPartoSalas] = useState([]);
+    //Gráficos Donut
     const [dadosDisponivelLeitos, setDadosDisponivelLeitos] = useState([]);
     const [dadosOcupadoLeitos, setDadosOcupadoLeitos] = useState([]);
 
@@ -27,17 +37,30 @@ export function Dashboard() {
                 const resultSalas = await getQuantidadeSalas();
                 const resultLeitos = await getQuantidadeLeitos();
                 const resultReservas = await getQuantidadeReservas();
-                const resultLeitoSalas = await getQuantidadeLeitoSalas();
-                const resultCirurgicaSalas = await getQuantidadeCirurgicaSalas();
+                const resultUTISalas = await getQuantidadeUTISalas();
+                const resultQuartoSalas = await getQuantidadeQuartoSalas();
                 const resultDisponivelLeitos = await getQuantidadeDisponivelLeitos();
                 const resultOcupadoLeitos = await getQuantidadeOcupadoLeitos();
-
+                const resultCirurgiaSalas = await getQuantidadeCirurgiaSalas();
+                const resultConsultaSalas = await getQuantidadeConsultaSalas();
+                const resultEmergenciaSalas = await getQuantidadeEmergenciaSalas();
+                const resultEsperaSalas = await getQuantidadeEsperaSalas();
+                const resultLaboratorioSalas = await getQuantidadeLaboratorioSalas();
+                const resultPartoSalas = await getQuantidadePartoSalas();
 
                 setQuantidadeSalas(resultSalas.data);
                 setQuantidadeLeitos(resultLeitos.data);
                 setQuantidadeReservas(resultReservas.data);
-                setDadosLeitoSalas(resultLeitoSalas.data);
-                setDadosCirurgicaSalas(resultCirurgicaSalas.data);
+
+                setDadosUTISalas(resultUTISalas.data);
+                setDadosQuartoSalas(resultQuartoSalas.data);
+                setDadosCirurgiaSalas(resultCirurgiaSalas.data);
+                setDadosConsultaSalas(resultConsultaSalas.data);
+                setDadosEmergenciaSalas(resultEmergenciaSalas.data);
+                setDadosEsperaSalas(resultEsperaSalas.data);
+                setDadosLaboratorioSalas(resultLaboratorioSalas.data);
+                setDadosPartoSalas(resultPartoSalas.data)
+
                 setDadosDisponivelLeitos(resultDisponivelLeitos.data);
                 setDadosOcupadoLeitos(resultOcupadoLeitos.data);
 
@@ -90,32 +113,50 @@ export function Dashboard() {
                     <Card className="custom-card">
                         <Card.Body>
                             <Chart
-                                type='donut'
+                                type='bar'
                                 width='100%' /* Use 100% de largura para tornar o gráfico responsivo */
-                                height={550}
-                                series={[dadosLeitoSalas, dadosCirurgicaSalas]}
+                                height={600}
+                                series={[
+                                    {
+                                        name: "Quantidade: ",
+                                        data: [dadosUTISalas, dadosQuartoSalas, dadosCirurgiaSalas, dadosConsultaSalas, dadosEmergenciaSalas, dadosEsperaSalas, dadosLaboratorioSalas, dadosPartoSalas]
+                                    },
+                                ]}
                                 options={{
-                                    labels: ['Leito', 'Cirúrgica'],
-                                    title:{
-                                        text: "Gráfico de Tipos de Salas"
+                                    labels: ['UTI', 'Quarto de Pacientes', 'Sala de Cirurgia', 'Sala de Consultas', 'Sala de Emergência', 'Sala de Espera', 'Laboratório', 'Sala de Parto'],
+                                    title: {
+                                        text: "Quantidade de Salas por Tipo"
+                                    },
+                                    xaxis: {
+                                        title: {
+                                            text: "Tipo da Sala",
+                                            style: { fontSize: 15 }
+                                        }
+                                    },
+                                    yaxis: {
+                                        title: {
+                                            text: "Quantidade",
+                                            style: { fontSize: 15 }
+                                        }
                                     }
                                 }}
                             />
+
                         </Card.Body>
                     </Card>
                 </Col>
 
-                <Col lg={6} md={12}> 
+                <Col lg={6} md={12}>
                     <Card className="custom-card">
                         <Card.Body>
                             <Chart
                                 type='donut'
                                 width='100%' /* Use 100% de largura para tornar o gráfico responsivo */
-                                height={550}
+                                height={612}
                                 series={[dadosDisponivelLeitos, dadosOcupadoLeitos]}
                                 options={{
                                     labels: ['Disponível', 'Ocupado'],
-                                    title:{
+                                    title: {
                                         text: "Gráfico de Leitos Diponíveis e Ocupados"
                                     }
                                 }}
@@ -124,10 +165,6 @@ export function Dashboard() {
                     </Card>
                 </Col>
             </Row>
-
-
-
-
         </Container>
     );
 }

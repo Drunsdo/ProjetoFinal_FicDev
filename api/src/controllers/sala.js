@@ -43,12 +43,12 @@ class SalaController {
         }
     }
 
-    async getQuantidadeTipoLeito(request, response) {
+    async getQuantidadeTipoUTI(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
             const quantidade = await SalaModel.count({
                 where: {
-                    tipo: 'Leito'
+                    tipo: 'UTI'
                 }
             });
             return httpHelper.ok(quantidade);
@@ -58,12 +58,102 @@ class SalaController {
         }
     }
 
-    async getQuantidadeTipoCirurgica(request, response) {
+    async getQuantidadeTipoQuarto(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
             const quantidade = await SalaModel.count({
                 where: {
-                    tipo: 'Cirúrgica'
+                    tipo: 'Quarto de Pacientes'
+                }
+            });
+            return httpHelper.ok(quantidade);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidadeTipoParto(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await SalaModel.count({
+                where: {
+                    tipo: 'Sala de Parto'
+                }
+            });
+            return httpHelper.ok(quantidade);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidadeTipoCirurgia(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await SalaModel.count({
+                where: {
+                    tipo: 'Sala de Cirurgia'
+                }
+            });
+            return httpHelper.ok(quantidade);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidadeTipoLaboratorio(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await SalaModel.count({
+                where: {
+                    tipo: 'Laboratório'
+                }
+            });
+            return httpHelper.ok(quantidade);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidadeTipoEmergencia(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await SalaModel.count({
+                where: {
+                    tipo: 'Sala de Emergência'
+                }
+            });
+            return httpHelper.ok(quantidade);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidadeTipoEspera(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await SalaModel.count({
+                where: {
+                    tipo: 'Sala de Espera'
+                }
+            });
+            return httpHelper.ok(quantidade);
+        } catch (error) {
+            console.error('Erro ao obter a quantidade:', error);
+            return httpHelper.internalError(error);
+        }
+    }
+
+    async getQuantidadeTipoConsulta(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const quantidade = await SalaModel.count({
+                where: {
+                    tipo: 'Sala de Consultas Médicas'
                 }
             });
             return httpHelper.ok(quantidade);

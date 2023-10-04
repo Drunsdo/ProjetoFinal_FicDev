@@ -23,7 +23,7 @@ export function Salas() {
     const [result, setResult] = useState(null);
     const [result1, setResult1] = useState(null);
 
-    const valorPadraoTipoFiltro = 'Encontre o tipo de sala';
+    const valorPadraoTipoFiltro = '';
     const [filtroTexto, setFiltroTexto] = useState('');
     const [tipoFiltro, setTipoFiltro] = useState(valorPadraoTipoFiltro);
 
@@ -123,13 +123,13 @@ export function Salas() {
             />
             <NavbarComponent />
             <Header title="Salas" />
-            <Row className="w-50 m-auto mb-3 mt-5 ">
+            <Row className="w-75 m-auto mb-3 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar nova Sala</Button>
                 </Col>
             </Row>
 
-            <Row className="w-50 m-auto mb-2 ">
+            <Row className="w-75 m-auto mb-2 ">
                 <Col md='10'>
                     <Select
                         name="tipoSala"
@@ -152,13 +152,18 @@ export function Salas() {
                             indicatorSeparator: () => { },
                         }}
                         onInputChange={(inputValue) => setFiltroTexto(inputValue)} // Atualizar o texto de filtro enquanto o usuário digita
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleFiltrar(); // Chama a função de filtragem quando a tecla Enter é pressionada
+                            }
+                        }}
                     />
                 </Col>
                 <Col md='2'>
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
             </Row>
-            <Row className="w-50 m-auto mb-2 ">
+            <Row className="w-75 m-auto mt-4 mb-2 ">
                 <Col className="w-50 m-auto">
                     {salas && salas.length > 0
                         ? salas.map((sala, index) => (
@@ -188,9 +193,8 @@ export function Salas() {
                             <Form.Select
                                 name="tipoSala"
                                 {...register('tipoSala')}
-                                
+
                             >
-                                <option disabled>Clique para selecionar</option>
                                 <option value='Sala de Cirurgia'>Sala de Cirurgia</option>
                                 <option value='UTI'>UTI (Unidade de Terapia Intensiva)</option>
                                 <option value='Quarto de Pacientes'>Quarto de Pacientes</option>

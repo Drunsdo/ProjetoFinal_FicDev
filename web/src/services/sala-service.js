@@ -31,9 +31,9 @@ export async function getQuantidadeSalas() {
     return result;
 }
 
-export async function getQuantidadeLeitoSalas() {
+export async function getQuantidadeUTISalas() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/salas/get/tipo/leito', {
+    const result = await api.get('/salas/get/tipo/uti', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }
@@ -42,9 +42,82 @@ export async function getQuantidadeLeitoSalas() {
     return result;
 }
 
-export async function getQuantidadeCirurgicaSalas() {
+export async function getQuantidadeQuartoSalas() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/salas/get/tipo/cirurgica', {
+    const result = await api.get('/salas/get/tipo/quarto', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    console.log(result.data)
+    return result;
+}
+
+
+export async function getQuantidadePartoSalas() {
+
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/salas/get/tipo/parto', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    console.log(result.data)
+    return result;
+}
+
+export async function getQuantidadeCirurgiaSalas() {
+
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/salas/get/tipo/cirurgia', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    console.log(result.data)
+    return result;
+}
+
+export async function getQuantidadeLaboratorioSalas() {
+
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/salas/get/tipo/laboratorio', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    console.log(result.data)
+    return result;
+}
+
+export async function getQuantidadeEmergenciaSalas() {
+
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/salas/get/tipo/emergencia', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    console.log(result.data)
+    return result;
+}
+
+export async function getQuantidadeEsperaSalas() {
+
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/salas/get/tipo/espera', {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    console.log(result.data)
+    return result;
+}
+
+export async function getQuantidadeConsultaSalas() {
+
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.get('/salas/get/tipo/consulta', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }
