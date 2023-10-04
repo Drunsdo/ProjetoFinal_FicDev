@@ -287,7 +287,7 @@ export function Leito(props) {
                                         )),
                                         // Em seguida, adicione as outras salas que atendem aos critérios
                                         ...salas
-                                            .filter((sala) => sala.tipo === "Leito" && sala.id !== props.leito.salaId)
+                                            .filter((sala) => (sala.tipo === "UTI" || sala.tipo === "Quarto de Pacientes") && (sala.id !== props.leito.salaId))
                                             .sort((a, b) => a.id - b.id)
                                             .map((sala) => (
                                                 <option key={sala.id} value={sala.id}>

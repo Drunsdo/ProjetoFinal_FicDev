@@ -35,7 +35,7 @@ export function Sala(props) {
             Deletar
         </Tooltip>
     );
-    
+
 
 
 
@@ -60,45 +60,45 @@ export function Sala(props) {
                     </tr>
                 </thead>
                 <tbody>
-                        <tr>
-                            <td className="salaNumero">{props.sala.id}</td>
-                            <td className="salaTipo">{props.sala.tipo}</td>
-                            <td className="salaQuantidade">{props.sala.quantidadeleitos}</td>
-                            <td className="salaEditar text-end"> {/* Adicione a classe text-end aqui */}
-                                <OverlayTrigger
-                                    placement="top"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={editTooltip}
+                    <tr>
+                        <td className="salaNumero">{props.sala.id}</td>
+                        <td className="salaTipo">{props.sala.tipo}</td>
+                        <td className="salaQuantidade">{props.sala.quantidadeleitos}</td>
+                        <td className="salaEditar text-end"> {/* Adicione a classe text-end aqui */}
+                            <OverlayTrigger
+                                placement="top"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={editTooltip}
+                            >
+                                <Button variant="link" onClick={() => setIsUpdated(true)}>
+                                    <img
+                                        src="/editar2.png"
+                                        width="30"
+                                        height="30"
+                                        alt="Editar"
+                                    />
+                                </Button>
+                            </OverlayTrigger>
+                            <OverlayTrigger
+                                placement="top"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={deleteTooltip}
+                            >
+                                <Button
+                                    variant="link"
+                                    className="ms-1"
+                                    onClick={() => setIsDeleted(true)}
                                 >
-                                    <Button variant="link" onClick={() => setIsUpdated(true)}>
-                                        <img
-                                            src="/editar2.png"
-                                            width="30"
-                                            height="30"
-                                            alt="Editar"
-                                        />
-                                    </Button>
-                                </OverlayTrigger>
-                                <OverlayTrigger
-                                    placement="top"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={deleteTooltip}
-                                >
-                                    <Button
-                                        variant="link"
-                                        className="ms-1"
-                                        onClick={() => setIsDeleted(true)}
-                                    >
-                                        <img
-                                            src="/deletar2.png"
-                                            width="30"
-                                            height="30"
-                                            alt="Deletar"
-                                        />
-                                    </Button>
-                                </OverlayTrigger>
-                            </td>
-                        </tr>
+                                    <img
+                                        src="/deletar2.png"
+                                        width="30"
+                                        height="30"
+                                        alt="Deletar"
+                                    />
+                                </Button>
+                            </OverlayTrigger>
+                        </td>
+                    </tr>
                 </tbody>
             </Table>
 
@@ -127,6 +127,8 @@ export function Sala(props) {
                                 name="tipoSala"
                                 {...register('tipoSala')}
                             >
+                                <option disabled>Clique para selecionar</option>
+
                                 {props.sala.tipo === 'Sala de Cirurgia' && (
                                     <>
                                         <option value='Sala de Cirurgia'>Sala de Cirurgia</option>

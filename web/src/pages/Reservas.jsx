@@ -148,7 +148,7 @@ export function Reservas() {
             </Row>
 
             <Row className="w-75 m-auto mb-2">
-                <Col md='10'>
+                <Col md='11'>
                     <Select
                         name="salaIdLeito"
                         options={[
@@ -181,7 +181,7 @@ export function Reservas() {
                     />
                 </Col>
 
-                <Col md='2'>
+                <Col md='1'>
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
             </Row>
