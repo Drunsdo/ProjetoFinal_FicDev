@@ -140,7 +140,7 @@ export function Reservas() {
                 handleClose={() => setResult1(null)}
             />
             <NavbarComponent />
-            <Header title="Reservas" />
+            <Header title="Gerenciamento de Reservas de Salas" />
             <Row className="w-75 m-auto mb-3 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar nova Reserva</Button>

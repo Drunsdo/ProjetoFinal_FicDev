@@ -220,7 +220,7 @@ export function Leitos() {
                 handleClose={() => setResult1(null)}
             />
             <NavbarComponent />
-            <Header title="Leitos" />
+            <Header title="Gerenciamento de Leitos" />
             <Row className="w-75 m-auto mb-3 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar novo Leito</Button>

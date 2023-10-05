@@ -28,6 +28,13 @@
   color: #333;
 }
 
+.home-subtitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333; /* Cor do texto do subtítulo */
+}
+
 /* Estilize o título dentro dos cartões */
 .home-card-title {
   font-size: 20px;

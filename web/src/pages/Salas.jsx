@@ -11,6 +11,7 @@ import Select from 'react-select';
 import { ModalComponent } from '../components/Modal';
 
 
+
 import { createSala, deleteSala, getSalas, updateSala, getFiltroSalas } from "../services/sala-service";
 
 export function Salas() {
@@ -122,7 +123,7 @@ export function Salas() {
                 handleClose={() => setResult1(null)}
             />
             <NavbarComponent />
-            <Header title="Salas" />
+            <Header title="Gerenciamento de Salas" />
             <Row className="w-75 m-auto mb-3 mt-5 ">
                 <Col md='10'>
                     <Button onClick={() => setIsCreated(true)}>Criar nova Sala</Button>
@@ -167,6 +168,7 @@ export function Salas() {
             <Row className="w-75 m-auto mt-4 mb-2">
                 <Col className="w-50 m-auto">
                     <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+
                         {salas && salas.length > 0
                             ? salas.map((sala, index) => (
                                 <Sala
