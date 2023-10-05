@@ -117,20 +117,29 @@ export function Leito(props) {
                         <td className="leitoNumero">{props.leito.id}</td>
                         <td className="leitoSala">{props.leito.salaId}</td>
                         <td className="leitoStatus">{props.leito.status ? "Disponível" : "Ocupado"}</td>
-                        {props.leito.status === false && (
+                        {props.leito.status === false && props.leito.pacienteatual !== null && (
                             <td className="leitoPaciente">{props.leito.pacienteatual}</td>
-
+                        )}
+                        {props.leito.status === false && props.leito.pacienteatual === null && (
+                            <td className="leitoPaciente">Nenhum Paciente</td>
                         )}
                         {props.leito.status === true && (
                             <td className="leitoPaciente">Nenhum Paciente</td>
                         )}
-                        {props.leito.status === false && (
-                            <td className="leitoData">{new Date(props.leito.data).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
 
-                        )}
                         {props.leito.status === true && (
                             <td className="leitoData">Nenhuma Data</td>
                         )}
+
+                        {props.leito.status === false && props.leito.pacienteatual === null && (
+                            <td className="leitoData">Nenhum Data</td>
+                        )}
+
+                        {props.leito.status === false && props.leito.pacienteatual !== null && (
+                            <td className="leitoData">{new Date(props.leito.data).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                        )}
+
+
                         <td className="leitoReserva text-center">
                             {props.leito.status === true && (
                                 <OverlayTrigger
@@ -250,7 +259,7 @@ export function Leito(props) {
                                         <option value="Disponível">Disponível</option>
                                     </>
                                 )}
-                                
+
                             </Form.Select>
                         </Form.Group>
                         <br />

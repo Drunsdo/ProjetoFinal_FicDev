@@ -18,6 +18,10 @@ class ReservaController {
                 return httpHelper.badRequest('Parâmetros inválidos!');
             }
 
+            if (datainicio > datafim) {
+                return httpHelper.badRequest('Parâmetros inválidos!');
+            }
+
             const verificarReservas = await ReservaModel.findAll({
                 where: {
                     salaId: salaId,
