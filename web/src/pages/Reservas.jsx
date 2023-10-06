@@ -241,7 +241,7 @@ export function Reservas() {
                                     .sort((a, b) => a.id - b.id)
                                     .map((sala) => ({
                                         value: sala.id,
-                                        label: sala.id.toString(),
+                                        label: sala.id.toString()+ ' - ' + sala.tipo,
                                     }))
                                 : [{ value: '', label: 'Não existe nenhuma sala do tipo "Cirúrgica" cadastrada!' }]
                             )
@@ -294,7 +294,7 @@ export function Reservas() {
                                         .sort((a, b) => a.id - b.id)
                                         .map((sala) => (
                                             <option key={sala.id} value={sala.id}>
-                                                {sala.id}
+                                                {sala.id} - {sala.tipo}
                                             </option>
                                         ))
                                     : <p className="text-center">Não existe nenhuma sala do tipo "Leito" cadastrada!</p>}

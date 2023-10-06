@@ -371,7 +371,7 @@ export function Leitos() {
                                         .sort((a, b) => a.id - b.id)
                                         .map((sala) => (
                                             <option key={sala.id} value={sala.id}>
-                                                {sala.id}
+                                                {sala.id} - {sala.tipo}
                                             </option>
                                         ))
                                     : <p className="text-center">Não existe nenhuma sala do status "Leito" cadastrada!</p>}

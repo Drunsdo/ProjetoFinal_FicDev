@@ -137,7 +137,7 @@ export function Reserva(props) {
                                         // Coloque a sala correspondente a salaIdLeito no topo da lista
                                         ...salas.filter((sala) => sala.id === props.reserva.salaId).map((sala) => (
                                             <option key={sala.id} value={sala.id}>
-                                                {sala.id}
+                                                {sala.id} - {sala.tipo}
                                             </option>
                                         )),
                                         // Em seguida, adicione as outras salas que atendem aos critérios
@@ -146,7 +146,7 @@ export function Reserva(props) {
                                             .sort((a, b) => a.id - b.id)
                                             .map((sala) => (
                                                 <option key={sala.id} value={sala.id}>
-                                                    {sala.id}
+                                                    {sala.id} - {sala.tipo}
                                                 </option>
                                             ))
                                     ]

@@ -60,7 +60,7 @@ export function Login() {
                         <div className="text-center">
                             <img src="cama-de-hospital.png"
                                 style={{ width: '185px' }} alt="logo" />
-                            <h4 className="mt-1 mb-5 pb-1">Gestão de Salas e Leitos</h4>
+                            <h4 className="mt-1 mb-5 pb-1">Gestão de Salas e Leitos (GSL)</h4>
                             <p>Por favor entre na sua conta</p>
                         </div>
 
