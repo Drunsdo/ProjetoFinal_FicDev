@@ -327,7 +327,7 @@ export function Leito(props) {
                             <label>Data</label>
                             <br />
                             <DatePicker
-                                selected={watch('dataLeito') || new Date()}
+                                selected={watch('dataLeito')}
                                 onChange={(date) => setValue('dataLeito', date, { shouldValidate: true })}
                                 showTimeSelect
                                 timeFormat="HH:mm"
