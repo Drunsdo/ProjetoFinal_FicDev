@@ -1,4 +1,4 @@
-import { Container, Col, Modal, Form, Button, Row } from "react-bootstrap";
+import { Container, Col, Modal, Form, Button, Row, Pagination } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,8 @@ import { getSalas } from "../services/sala-service";
 import Select from 'react-select';
 import "../styles/leitos.css";
 import { ModalComponent } from '../components/Modal';
+import Table from 'react-bootstrap/Table';
+
 
 
 
@@ -23,6 +25,8 @@ export function Leitos() {
     const [result, setResult] = useState(null);
     const [result1, setResult1] = useState(null);
     const [filtroTexto, setFiltroTexto] = useState('');
+    const ItemsPerPage = 7;
+
 
     const [statusFiltro, setStatusFiltro] = useState('');
 
@@ -205,6 +209,87 @@ export function Leitos() {
         }
     }
 
+    function Tabela({ leitos, removeLeito, editLeito, reservarLeito, desocupaLeito }) {
+        const [currentPage, setCurrentPage] = useState(1);
+
+        const indexOfLastItem = currentPage * ItemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - ItemsPerPage;
+        const currentItems = leitos
+            .slice()
+            .sort((a, b) => a.id - b.id)
+            .slice(indexOfFirstItem, indexOfLastItem);
+
+        const totalPages = Math.ceil(leitos.length / ItemsPerPage);
+
+        const handlePageChange = (page) => {
+            setCurrentPage(page);
+        };
+
+        return (
+            <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
+                <Table striped bordered hover size="sm" >
+                    <colgroup>
+                        <col style={{ width: "5%" }} />
+                        <col style={{ width: "15%" }} />
+                        <col style={{ width: "15%" }} />
+                        <col style={{ width: "20%" }} />
+                        <col style={{ width: "20%" }} />
+                        <col style={{ width: "10%" }} />
+                        <col style={{ width: "11%" }} />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th className="leitoNumero">Número</th>
+                            <th className="leitoSala">Sala</th>
+                            <th className="leitoStatus">Status</th>
+                            <th className="leitoPaciente">Paciente</th>
+                            <th className="leitoData">Data de Entrada</th>
+                            <th className="leitoReserva">Reserva</th>
+                            <th className="leitoEditar">Edição</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentItems && currentItems.length > 0 ? (
+                            currentItems
+                                .sort((a, b) => a.id - b.id)
+                                .map((leito, index) => (
+                                    <Leito
+                                        key={index}
+                                        leito={leito}
+                                        removeLeito={async () => await removeLeito(leito.id)}
+                                        reservarLeito={reservarLeito}
+                                        desocupaLeito={desocupaLeito}
+                                        editLeito={editLeito}
+                                    />
+                                ))
+                        ) : (
+                            <tr>
+                                <td colSpan="7" className="text-center">
+                                    Não existe nenhuma sala cadastrada!
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+
+                <div className='d-flex justify-content-end'>
+                    <Pagination>
+                        {Array.from({ length: totalPages }).map((_, index) => (
+                            <Pagination.Item
+                                key={index}
+                                active={index + 1 === currentPage}
+                                onClick={() => handlePageChange(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                    </Pagination>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <Container fluid className="leitos-container">
             <ModalComponent
@@ -256,27 +341,15 @@ export function Leitos() {
                 <Col md='1'>
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
-                
+
             </Row>
+
             <Row className="w-75 m-auto mt-4 mb-2">
                 <Col className="w-50 m-auto">
-                    <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-
-                        {leitos && leitos.length > 0
-                            ? leitos.map((leito, index) => (
-                                <Leito
-                                    key={index}
-                                    leito={leito}
-                                    removeLeito={async () => await removeLeito(leito.id)}
-                                    reservarLeito={reservarLeito}
-                                    desocupaLeito={desocupaLeito}
-                                    editLeito={editLeito}
-                                />
-                            ))
-                            : <p className="text-center">Não existe nenhum leito cadastrado!</p>}
-                    </div>
+                    <Tabela leitos={leitos} removeLeito={removeLeito} editLeito={editLeito} reservarLeito={reservarLeito} desocupaLeito={desocupaLeito} />
                 </Col>
             </Row>
+
 
             {/* Formulário dentro do Modal, ideal seria componentizar também, pois é parecido com o Modal de editar */}
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>

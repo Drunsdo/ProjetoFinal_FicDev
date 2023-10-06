@@ -1,17 +1,14 @@
-import { Container, Col, Modal, Form, Button, Row } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Container, Col, Modal, Form, Button, Row, Table, Pagination } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 import { NavbarComponent } from "../components/Navbar";
-import "../styles/salas.css"
 import { Sala } from "../components/Sala";
 import { Header } from "../components/Header";
-import { Input } from '../components/Input';
 import Select from 'react-select';
+import { Input } from '../components/Input';
+
 import { ModalComponent } from '../components/Modal';
-
-
-
 import { createSala, deleteSala, getSalas, updateSala, getFiltroSalas } from "../services/sala-service";
 
 export function Salas() {
@@ -19,7 +16,7 @@ export function Salas() {
     const [isCreated, setIsCreated] = useState(false);
     const { handleSubmit, register, formState: { errors, isSubmitted } } = useForm();
     const navigate = useNavigate();
-
+    const ItemsPerPage = 7;
 
     const [result, setResult] = useState(null);
     const [result1, setResult1] = useState(null);
@@ -61,11 +58,11 @@ export function Salas() {
             await deleteSala(id);
             await findSalas();
             setResult1({
-                message: 'Sala excluida com sucesso'
+                message: 'Sala excluída com sucesso'
             });
         } catch (error) {
             setResult({
-                title: 'Houve um erro na deletação!',
+                title: 'Houve um erro na exclusão!',
                 message: error.response.data.error,
             });
         }
@@ -108,6 +105,79 @@ export function Salas() {
         }
     }
 
+    function Tabela({ salas, removeSala, editSala }) {
+        const [currentPage, setCurrentPage] = useState(1);
+
+        const indexOfLastItem = currentPage * ItemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - ItemsPerPage;
+        const currentItems = salas
+            .slice()
+            .sort((a, b) => a.id - b.id)
+            .slice(indexOfFirstItem, indexOfLastItem);
+
+        const totalPages = Math.ceil(salas.length / ItemsPerPage);
+
+        const handlePageChange = (page) => {
+            setCurrentPage(page);
+        };
+
+        return (
+            <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
+                <Table striped bordered hover size="sm">
+                    <colgroup>
+                        <col style={{ width: "10%" }} />
+                        <col style={{ width: "10%" }} />
+                        <col style={{ width: "15%" }} />
+                        <col style={{ width: "4%" }} />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th className="salaNumero">Número</th>
+                            <th className="salaTipo">Tipo da Sala</th>
+                            <th className="salaQuantidade">Quantidade de leitos</th>
+                            <th className="salaEditar">Edição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentItems && currentItems.length > 0 ? (
+                            currentItems.map((sala, index) => (
+                                <Sala
+                                    key={index}
+                                    sala={sala}
+                                    removeSala={async () => await removeSala(sala.id)}
+                                    editSala={editSala}
+                                />
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="4" className="text-center">
+                                    Não existe nenhuma sala cadastrada!
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+
+                <div className='d-flex justify-content-end'>
+                    <Pagination>
+                        {Array.from({ length: totalPages }).map((_, index) => (
+                            <Pagination.Item
+                                key={index}
+                                active={index + 1 === currentPage}
+                                onClick={() => handlePageChange(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                    </Pagination>
+                </div>
+            </div>
+        );
+    }
+
+
+
+
     return (
         <Container fluid className="salas-container">
             <ModalComponent
@@ -143,7 +213,7 @@ export function Salas() {
                             { value: 'Laboratório', label: 'Laboratório' },
                             { value: 'Sala de Emergência', label: 'Sala de Emergência' },
                             { value: 'Sala de Espera', label: 'Sala de Espera' },
-                            { value: 'Sala de Consultas Médicas', label: 'Sala de Consultas Médicas' },
+                            { value: 'Sala de Consultas', label: 'Sala de Consultas' },
                         ]}
                         value={{ value: tipoFiltro, label: tipoFiltro }}
                         onChange={(selectedOption) => setTipoFiltro(selectedOption.value)}
@@ -167,22 +237,9 @@ export function Salas() {
 
             <Row className="w-75 m-auto mt-4 mb-2">
                 <Col className="w-50 m-auto">
-                    <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-
-                        {salas && salas.length > 0
-                            ? salas.map((sala, index) => (
-                                <Sala
-                                    key={index}
-                                    sala={sala}
-                                    removeSala={async () => await removeSala(sala.id)}
-                                    editSala={editSala}
-                                />
-                            ))
-                            : <p className="text-center">Não existe nenhuma sala cadastrada!</p>}
-                    </div>
+                    <Tabela salas={salas} removeSala={removeSala} editSala={editSala} />
                 </Col>
             </Row>
-
 
             {/* Formulário dentro do Modal, ideal seria componentizar também, pois é parecido com o Modal de editar */}
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>
@@ -200,9 +257,7 @@ export function Salas() {
                             <Form.Select
                                 name="tipoSala"
                                 {...register('tipoSala')}
-
                             >
-
                                 <option disabled>Clique para selecionar</option>
                                 <option value='Sala de Cirurgia'>Sala de Cirurgia</option>
                                 <option value='UTI'>UTI (Unidade de Terapia Intensiva)</option>
@@ -211,12 +266,9 @@ export function Salas() {
                                 <option value='Laboratório'>Laboratório</option>
                                 <option value='Sala de Emergência'>Sala de Emergência</option>
                                 <option value='Sala de Espera'>Sala de Espera</option>
-                                <option value='Sala de Consultas'>Sala de Consultas Médicas</option>
-
+                                <option value='Sala de Consultas'>Sala de Consultas</option>
                             </Form.Select>
                         </Form.Group>
-
-
                         <div>
                             <Form.Group>
                                 <Form.Label>Quantidade de Leitos</Form.Label>
@@ -230,13 +282,12 @@ export function Salas() {
                                     validations={register('quantidadeleitosSala', {
                                         required: {
                                             value: true,
-                                            message: 'Quantidade de leitos é obrigatório.'
+                                            message: 'Quantidade de leitos é obrigatória.'
                                         }
                                     })}
                                 />
                             </Form.Group>
                         </div>
-
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">
@@ -245,10 +296,9 @@ export function Salas() {
                         <Button variant="secondary" onClick={() => setIsCreated(false)}>
                             Fechar
                         </Button>
-
                     </Modal.Footer>
                 </Form>
             </Modal>
-        </Container >
+        </Container>
     );
 }

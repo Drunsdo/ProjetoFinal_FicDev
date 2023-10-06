@@ -10,11 +10,11 @@ export function NavbarComponent(props) {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="/home">Home</Nav.Link>
+                        <Nav.Link href="/dashboard">Dashboard</Nav.Link>
                         <Nav.Link href="/salas">Salas</Nav.Link>
                         <Nav.Link href="/reservas">Reservas de Sala</Nav.Link>
                         <Nav.Link href="/leitos">Leitos</Nav.Link>
-                        <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+
                     </Nav>
                     <Nav>
                         <Navbar.Brand href="/perfil">

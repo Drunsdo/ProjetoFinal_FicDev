@@ -2,7 +2,6 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { Home } from "./pages/Home"
 import { Salas } from "./pages/Salas";
 import { Leitos } from "./pages/Leitos";
 import { Reservas } from "./pages/Reservas";
@@ -52,14 +51,7 @@ export function Navigations() {
                         </PrivateRoute>
                     )}
                 />
-                <Route
-                    path="/home"
-                    element={(
-                        <PrivateRoute>
-                            <Home />
-                        </PrivateRoute>
-                    )}
-                />
+                
                 <Route
                     path="/perfil"
                     element={(

@@ -1,4 +1,4 @@
-import { Container, Col, Modal, Form, Button, Row } from "react-bootstrap";
+import { Container, Col, Modal, Form, Button, Row, Pagination } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
@@ -8,6 +8,7 @@ import "../styles/reservas.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ModalComponent } from '../components/Modal';
+import Table from 'react-bootstrap/Table';
 
 
 import { Reserva } from "../components/Reserva";
@@ -27,6 +28,8 @@ export function Reservas() {
     const navigate = useNavigate();
     const [result, setResult] = useState(null);
     const [result1, setResult1] = useState(null);
+    const ItemsPerPage = 7;
+
 
     const [filtroTexto, setFiltroTexto] = useState('');
     const [salaIdFiltro, setSalaIdFiltro] = useState('');
@@ -125,6 +128,85 @@ export function Reservas() {
         }
     }
 
+    function Tabela({ reservas, removeReserva, editReserva }) {
+        const [currentPage, setCurrentPage] = useState(1);
+
+        const indexOfLastItem = currentPage * ItemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - ItemsPerPage;
+        const currentItems = reservas
+            .slice()
+            .sort((a, b) => a.id - b.id)
+            .slice(indexOfFirstItem, indexOfLastItem);
+
+        const totalPages = Math.ceil(reservas.length / ItemsPerPage);
+
+        const handlePageChange = (page) => {
+            setCurrentPage(page);
+        };
+
+        return (
+            <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
+                <Table striped bordered hover size="sm">
+                    <colgroup>
+                        <col style={{ width: "5%" }} />
+                        <col style={{ width: "15%" }} />
+                        <col style={{ width: "20%" }} />
+                        <col style={{ width: "20%" }} />
+                        <col style={{ width: "20%" }} />
+                        <col style={{ width: "10.5%" }} />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th className="reservaNumero">Número</th>
+                            <th className="reservaSala">Sala</th>
+                            <th className="reservaResponsavel">Responsável</th>
+                            <th className="reservaInicio">Inicio</th>
+                            <th className="reservaFim">Fim</th>
+                            <th className="reservaAcao">Edição</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentItems && currentItems.length > 0 ? (
+                            currentItems
+                                .sort((a, b) => a.id - b.id)
+                                .map((reserva, index) => (
+                                    <Reserva
+                                        key={index}
+                                        reserva={reserva}
+                                        removeReserva={async () => await removeReserva(reserva.id)}
+                                        editReserva={editReserva}
+                                    />
+                                ))
+                        ) : (
+                            <tr>
+                                <td colSpan="6" className="text-center">
+                                    Não existe nenhuma sala cadastrada!
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+
+                <div className='d-flex justify-content-end'>
+                    <Pagination>
+                        {Array.from({ length: totalPages }).map((_, index) => (
+                            <Pagination.Item
+                                key={index}
+                                active={index + 1 === currentPage}
+                                onClick={() => handlePageChange(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                    </Pagination>
+                </div>
+            </div>
+        );
+    }
+
+
+
     return (
         <Container fluid className="reservas-container">
             <ModalComponent
@@ -185,23 +267,13 @@ export function Reservas() {
                     <Button onClick={handleFiltrar}>Filtrar</Button>
                 </Col>
             </Row>
+
             <Row className="w-75 m-auto mt-4 mb-2">
                 <Col className="w-50 m-auto">
-                    <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                        {reservas && reservas.length > 0
-                            ? reservas.map((reserva, index) => (
-                                <Reserva
-                                    key={index}
-                                    reserva={reserva}
-                                    removeReserva={async () => await removeReserva(reserva.id)}
-                                    editReserva={editReserva}
-                                />
-                            ))
-                            : <p className="text-center">Não existe nenhuma reserva cadastrada!</p>}
-                    </div>
+                    <Tabela reservas={reservas} removeReserva={removeReserva} editReserva={editReserva} />
                 </Col>
-
             </Row>
+
             {/* Formulário dentro do Modal, ideal seria componentizar também, pois é parecido com o Modal de editar */}
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>
                 <Modal.Header>

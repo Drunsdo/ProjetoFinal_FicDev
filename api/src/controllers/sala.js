@@ -153,7 +153,7 @@ class SalaController {
         try {
             const quantidade = await SalaModel.count({
                 where: {
-                    tipo: 'Sala de Consultas Médicas'
+                    tipo: 'Sala de Consultas'
                 }
             });
             return httpHelper.ok(quantidade);

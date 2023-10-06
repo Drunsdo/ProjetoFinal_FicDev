@@ -9,7 +9,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import "../styles/leitos.css";
-import Table from 'react-bootstrap/Table';
 import "../styles/leitos.css";
 
 
@@ -40,7 +39,7 @@ export function Leito(props) {
 
     async function desocupaLeito(data) {
         if (props.desocupaLeito) {
-            await props.desocupaLeito({ ...data, id: props.leito.id, statusLeito: "Disponível" });
+            await props.desocupaLeito({ ...data, id: props.leito.id, statusLeito: "Disponível", pacienteatualLeito: "Nenhum Paciente" });
         } else {
             console.error("props.desocupaLeito não está definido.");
         }
@@ -90,129 +89,108 @@ export function Leito(props) {
 
     return (
         <>
-            <Table striped bordered hover size="sm" >
-                <colgroup>
-                    <col style={{ width: "10%" }} />
-                    <col style={{ width: "10%" }} />
-                    <col style={{ width: "15%" }} />
-                    <col style={{ width: "20%" }} />
-                    <col style={{ width: "20%" }} />
-                    <col style={{ width: "10%" }} />
-                    <col style={{ width: "11%" }} />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th className="leitoNumero">Número</th>
-                        <th className="leitoSala">Sala</th>
-                        <th className="leitoStatus">Status</th>
-                        <th className="leitoPaciente">Paciente</th>
-                        <th className="leitoData">Data de Entrada</th>
-                        <th className="leitoReserva">Reserva</th>
-                        <th className="leitoEditar">Edição</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className="leitoNumero">{props.leito.id}</td>
-                        <td className="leitoSala">{props.leito.salaId}</td>
-                        <td className="leitoStatus">{props.leito.status ? "Disponível" : "Ocupado"}</td>
-                        {props.leito.status === false && props.leito.pacienteatual !== null && (
-                            <td className="leitoPaciente">{props.leito.pacienteatual}</td>
-                        )}
-                        {props.leito.status === false && props.leito.pacienteatual === null && (
-                            <td className="leitoPaciente">Nenhum Paciente</td>
-                        )}
-                        {props.leito.status === true && (
-                            <td className="leitoPaciente">Nenhum Paciente</td>
-                        )}
+            <tr>
+                <td className="leitoNumero">{props.leito.id}</td>
+                <td className="leitoSala">
+                    {props.leito.salaId} - {salas.find((sala) => sala.id === props.leito.salaId)?.tipo}
+                </td>
+                <td className="leitoStatus">{props.leito.status ? "Disponível" : "Ocupado"}</td>
+                {props.leito.status === false && props.leito.pacienteatual !== null && (
+                    <td className="leitoPaciente">{props.leito.pacienteatual}</td>
+                )}
+                {props.leito.status === false && props.leito.pacienteatual === null && (
+                    <td className="leitoPaciente">Nenhum Paciente</td>
+                )}
+                {props.leito.status === true && (
+                    <td className="leitoPaciente">Nenhum Paciente</td>
+                )}
 
-                        {props.leito.status === true && (
-                            <td className="leitoData">Nenhuma Data</td>
-                        )}
+                {props.leito.status === true && (
+                    <td className="leitoData">Nenhuma Data</td>
+                )}
 
-                        {props.leito.status === false && props.leito.pacienteatual === null && (
-                            <td className="leitoData">Nenhum Data</td>
-                        )}
+                {props.leito.status === false && props.leito.pacienteatual === null && (
+                    <td className="leitoData">Nenhum Data</td>
+                )}
 
-                        {props.leito.status === false && props.leito.pacienteatual !== null && (
-                            <td className="leitoData">{new Date(props.leito.data).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
-                        )}
+                {props.leito.status === false && props.leito.pacienteatual !== null && (
+                    <td className="leitoData">{new Date(props.leito.data).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                )}
 
 
-                        <td className="leitoReserva text-center">
-                            {props.leito.status === true && (
-                                <OverlayTrigger
-                                    placement="top"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={reservaTooltip}
-                                >
-                                    <Button variant="link" onClick={() => setIsReserva(true)}>
-                                        <img src="reserva.png"
-                                            width="30"
-                                            height="30"
-                                            alt="reserva" />
-                                    </Button>
-                                </OverlayTrigger>
-                            )}
-                            {props.leito.status === false && (
-                                <OverlayTrigger
-                                    placement="top"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={desocupaTooltip}
-                                >
-                                    < Button
-                                        variant="link"
-                                        className="ms-0"
+                <td className="leitoReserva text-center">
+                    {props.leito.status === true && (
+                        <OverlayTrigger
+                            placement="top"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={reservaTooltip}
+                        >
+                            <Button variant="link" onClick={() => setIsReserva(true)}>
+                                <img src="reserva.png"
+                                    width="30"
+                                    height="30"
+                                    alt="reserva" />
+                            </Button>
+                        </OverlayTrigger>
+                    )}
+                    {props.leito.status === false && (
+                        <OverlayTrigger
+                            placement="top"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={desocupaTooltip}
+                        >
+                            < Button
+                                variant="link"
+                                className="ms-0"
 
-                                        onClick={() => setIsDesocupa(true)}
-                                    >
-                                        <img src="desoupa.png"
-                                            width="27"
-                                            height="27"
-                                            alt="Desocupa" />
-                                    </Button>
-                                </OverlayTrigger>
-                            )}
-                        </td>
-                        <td className="leitoEditar text-end">
-                            <OverlayTrigger
-                                placement="top"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={editTooltip}
+                                onClick={() => setIsDesocupa(true)}
                             >
-                                <Button variant="link" onClick={() => setIsUpdated(true)}>
-                                    <img
-                                        src="/editar2.png"
-                                        width="30"
-                                        height="30"
-                                        alt="Editar"
-                                    />
-                                </Button>
-                            </OverlayTrigger>
-                            <OverlayTrigger
-                                placement="top"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={deleteTooltip}
-                            >
-                                <Button
-                                    variant="link"
-                                    className="ms-0"
-                                    onClick={() => setIsDeleted(true)}
-                                >
-                                    <img
-                                        src="/deletar2.png"
-                                        width="30"
-                                        height="30"
-                                        alt="Deletar"
-                                    />
-                                </Button>
-                            </OverlayTrigger>
+                                <img src="desoupa.png"
+                                    width="27"
+                                    height="27"
+                                    alt="Desocupa" />
+                            </Button>
+                        </OverlayTrigger>
+                    )}
+                </td>
+                <td className="leitoEditar text-end">
+                    <OverlayTrigger
+                        placement="top"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={editTooltip}
+                    >
+                        <Button variant="link" onClick={() => setIsUpdated(true)}>
+                            <img
+                                src="/editar2.png"
+                                width="30"
+                                height="30"
+                                alt="Editar"
+                            />
+                        </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                        placement="top"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={deleteTooltip}
+                    >
+                        <Button
+                            variant="link"
+                            className="ms-0"
+                            onClick={() => setIsDeleted(true)}
+                        >
+                            <img
+                                src="/deletar2.png"
+                                width="30"
+                                height="30"
+                                alt="Deletar"
+                            />
+                        </Button>
+                    </OverlayTrigger>
 
-                        </td>
-                    </tr>
-                </tbody>
-            </Table>
+                </td>
+            </tr>
+
 
             <Modal show={isDeleted} onHide={() => setIsDeleted(false)}>
                 <Modal.Header>
