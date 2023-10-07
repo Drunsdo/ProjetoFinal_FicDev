@@ -10,7 +10,7 @@ import { Input } from '../components/Input';
 
 import { ModalComponent } from '../components/Modal';
 import { createSala, deleteSala, getSalas, updateSala, getFiltroSalas } from "../services/sala-service";
-
+//Teste
 export function Salas() {
     const [salas, setSalas] = useState([]);
     const [isCreated, setIsCreated] = useState(false);
