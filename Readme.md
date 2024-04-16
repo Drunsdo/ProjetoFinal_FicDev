@@ -23,8 +23,13 @@ Os usuários podem cadastrar categorias para os diferentes tipos de erro encontr
 - Maria Eduarda Ramos de Queiroz
 - Ayron Brhenno Silva Figueiredo
 
+## Instalação
+?.
+
+## Visuais
+?.
+
 ## Como Contribuir
 Contribuições são bem-vindas! Para contribuir com o projeto, por favor, siga as diretrizes de contribuição ou entre em contato com um dos autores para mais informações.
 
-## Licença
-?
+
