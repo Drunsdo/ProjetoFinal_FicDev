@@ -19,12 +19,12 @@ O software permite visualizar todos os logs armazenados em um banco de dados em 
 Os usuários podem cadastrar categorias para os diferentes tipos de erro encontrados nos logs. Essas categorias podem ser usadas para classificar e organizar os erros, facilitando a análise e a resolução de problemas. Os erros serão relacionados a essa categoria, pois no software após cadastrar a categoria uma função irá percorrer os erros que não têm categoria, a fim de que seja encontrado um erro que possui essa categoria dentro do texto dele.
 
 ## Autores
-- Rogério Moura
-- Maria Queiroz
-- Ayron
+- Rogério Matheus Gomes Moura
+- Maria Eduarda Ramos de Queiroz
+- Ayron Brhenno Silva Figueiredo
 
 ## Como Contribuir
 Contribuições são bem-vindas! Para contribuir com o projeto, por favor, siga as diretrizes de contribuição ou entre em contato com um dos autores para mais informações.
 
 ## Licença
-Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE.md para detalhes.
+?
